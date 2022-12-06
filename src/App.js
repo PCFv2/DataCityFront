@@ -3,7 +3,7 @@ import "./App.css";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App" basename={process.env.PUBLIC_URL}>
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
