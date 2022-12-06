@@ -1,16 +1,12 @@
 {
   "files": {
-    "main.css": "/DataCityFront/index.html/static/css/main.073c9b0a.css",
-    "main.js": "/DataCityFront/index.html/static/js/main.57e9f88c.js",
+    "main.js": "/DataCityFront/index.html/static/js/main.a16ab064.js",
     "static/js/787.481f953a.chunk.js": "/DataCityFront/index.html/static/js/787.481f953a.chunk.js",
-    "static/media/logo.svg": "/DataCityFront/index.html/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/DataCityFront/index.html/index.html",
-    "main.073c9b0a.css.map": "/DataCityFront/index.html/static/css/main.073c9b0a.css.map",
-    "main.57e9f88c.js.map": "/DataCityFront/index.html/static/js/main.57e9f88c.js.map",
+    "main.a16ab064.js.map": "/DataCityFront/index.html/static/js/main.a16ab064.js.map",
     "787.481f953a.chunk.js.map": "/DataCityFront/index.html/static/js/787.481f953a.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.073c9b0a.css",
-    "static/js/main.57e9f88c.js"
+    "static/js/main.a16ab064.js"
   ]
 }
