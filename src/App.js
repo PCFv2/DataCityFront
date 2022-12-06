@@ -1,14 +1,7 @@
-import logo from "./logo.svg";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import "./App.css";
+import React from "react";
 
-function App() {
-  return (
-    <BrowserRouter basename={process.env.PUBLIC_URL}>
-      <h1>salut</h1>
-    </BrowserRouter>
-    
-  );
-}
+const App = () => {
+  return <h1>Bienvenue sur le front</h1>
+};
 
 export default App;
