@@ -1,14 +1,17 @@
 import React from "react";
-import { useGetGamesQuery } from "./services/queries/game";
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import RoutesApp from "./app/routes/RoutesApp";
+import { store } from "./app/store";
+import { Provider } from "react-redux";
 
 const App = () => {
   return (
-    <BrowserRouter basename={process.env.PUBLIC_URL}>
-      <RoutesApp />
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
+        <RoutesApp />
+      </BrowserRouter>
+    </Provider>
   );
 };
 

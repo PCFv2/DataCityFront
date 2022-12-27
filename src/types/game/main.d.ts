@@ -19,3 +19,13 @@ type GameIdAndRoundId = {
   gameId: number;
   roundId: number;
 };
+
+type JoinGameForm = {
+  gameId: number;
+  username: string;
+};
+
+type UserInGame = {
+  userId: string;
+  username: string;
+};
