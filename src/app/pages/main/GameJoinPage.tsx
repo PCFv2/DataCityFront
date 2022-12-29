@@ -1,5 +1,5 @@
 import React from "react";
-import GameJoin from "../../features/game/GameJoin";
+import GameJoin from "../../../features/game/components/GameJoin";
 
 const GameJoinPage = () => {
   return (

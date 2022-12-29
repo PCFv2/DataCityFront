@@ -1,6 +1,6 @@
 import React from "react";
 
-import Home from "../../features/home/Home";
+import Home from "../../../features/home/Home";
 
 const HomePage = () => {
   return <Home />;

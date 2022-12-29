@@ -25,7 +25,8 @@ type JoinGameForm = {
   username: string;
 };
 
-type UserInGame = {
-  userId: string;
-  username: string;
+type HosterGameForm = {
+  maxPlayers: number;
+  startNbPoints: number;
+  difficulty: string;
 };

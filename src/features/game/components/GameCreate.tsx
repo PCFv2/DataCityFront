@@ -1,9 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { routes } from "../../constants";
-import { usePostCreateGameMutation } from "../../services";
+import { ROUTES } from "../../../constants";
+import { usePostCreateGameMutation } from "../../../services";
 import { useDispatch } from "react-redux";
-import { setHasCreateGame } from "./slice";
+import { setHasCreateGame } from "../slice";
 
 const GameCreate = () => {
   const dispatch = useDispatch();
@@ -16,7 +16,7 @@ const GameCreate = () => {
     /* Lors de la réponse du Back, création de la socket, 
 et envoie des données au serveur. */
     navigate(
-      routes.game.hostGame + `/1`
+      ROUTES.game.hostGame + `/1`
     ); /* Affichage de la page host avec l'id de la partie */
   };
   return <button onClick={handleClick}>Créer une partie</button>;

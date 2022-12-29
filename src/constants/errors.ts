@@ -1,4 +1,4 @@
-export const errors = {
+export const ERRORS = {
   gameJoin: {
     badGameId: "Erreur : mauvais identifiant de partie",
   },
