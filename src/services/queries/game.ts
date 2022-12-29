@@ -25,7 +25,7 @@ export const gameApi = createApi({
     getUserByGameId: builder.query<User[], number>({
       query: (id) => `/${id}/user`,
     }),
-    putUserByGameId: builder.mutation<User, User & { gameId: number }>({
+    putUserByGameId: builder.mutation<PutUser, PutUser & { gameId: number }>({
       query: ({ gameId, ...putData }) => ({
         url: `/${gameId}/user`,
         method: "PUT",
