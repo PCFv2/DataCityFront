@@ -8,5 +8,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
-      - run: npm install
-      - run: npm run build
+      - uses: mskelton/setup-yarn@v1
+        with:
+          node-version: '16'
+          flags: --immutable-cache
+      - run: yarn install
+      - run: yarn build

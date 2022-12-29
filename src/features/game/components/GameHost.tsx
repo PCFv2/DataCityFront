@@ -8,7 +8,7 @@ import {
 const GameHost = () => {
   const { register, handleSubmit } = useForm<HosterGameForm>();
   const [updateConfig, result] = usePutGameByIdMutation();
-  const { data: userInGame } = useGetUserByGameIdQuery(1);
+  // const { data: userInGame } = useGetUserByGameIdQuery(1);
 
   const onSubmit = async (data: HosterGameForm) => {
     await updateConfig({ gameId: 1, ...data }); //Envoie des données saisies au back
