@@ -13,7 +13,6 @@ const GameHost = () => {
   const [updateConfig, result] = usePutGameByIdMutation();
   const { gameId } = params;
   const { data: userInGame } = useGetUserByGameIdQuery(Number(gameId));
-
   const onSubmit = async (data: HosterGameForm) => {
     await updateConfig({ gameId: Number(gameId), ...data }); //Envoie des données saisies au back
     if (!result.isError) console.log("message d'erreur");
