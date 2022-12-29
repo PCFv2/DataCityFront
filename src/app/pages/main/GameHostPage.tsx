@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import GameHost from "../../../features/game/components/GameHost";
 
 const GameHostPage = () => {
