@@ -6,3 +6,10 @@ type Configuration = {
   value4: string;
   name: string;
 };
+
+type ConfigProfilForm = {
+  configuration: {
+    name: string;
+    value: string;
+  }[];
+};
