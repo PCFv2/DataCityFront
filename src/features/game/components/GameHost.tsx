@@ -2,7 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import {
-  useGetUserByGameIdQuery,
+  useGetAllUsersByGameIdQuery,
   usePutGameByIdMutation,
 } from "../../../services";
 import OverlayLoader from "../../../UI-KIT/components/OverlayLoader";
@@ -12,7 +12,7 @@ const GameHost = () => {
   const { register, handleSubmit } = useForm<HosterGameForm>();
   const [updateConfig, result] = usePutGameByIdMutation();
   const { gameId } = params;
-  const { data: userInGame } = useGetUserByGameIdQuery(Number(gameId));
+  const { data: userInGame } = useGetAllUsersByGameIdQuery(Number(gameId));
   const onSubmit = async (data: HosterGameForm) => {
     await updateConfig({ gameId: Number(gameId), ...data }); //Envoie des données saisies au back
     if (!result.isError) console.log("message d'erreur");

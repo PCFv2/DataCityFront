@@ -7,9 +7,15 @@ type Configuration = {
   name: string;
 };
 
-type ConfigProfilForm = {
+type UserConfigurationForm = {
   configuration: {
     name: string;
     value: string;
   }[];
+};
+
+type UserConfiguration = {
+  category: string;
+  nom: string;
+  value: string;
 };
