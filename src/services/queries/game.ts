@@ -22,7 +22,7 @@ export const gameApi = createApi({
     getJoinGameById: builder.query<boolean, number>({
       query: (id) => `/${id}/join`,
     }),
-    getUserByGameId: builder.query<User[], number>({
+    getAllUsersByGameId: builder.query<User[], number>({
       query: (id) => `/${id}/user`,
     }),
     putUserByGameId: builder.mutation<PutUser, PutUser & { gameId: number }>({
@@ -35,6 +35,16 @@ export const gameApi = createApi({
     putGameById: builder.mutation<Game, HosterGameForm & { gameId: number }>({
       query: ({ gameId, ...putData }) => ({
         url: `/${gameId}`,
+        method: "PUT",
+        body: putData,
+      }),
+    }),
+    putUserConfigurationByGameId: builder.mutation<
+      UserConfiguration,
+      UserConfiguration & { gameId: number; userId: string }
+    >({
+      query: ({ gameId, userId, ...putData }) => ({
+        url: `/${gameId}/user/${userId}/configuration`,
         method: "PUT",
         body: putData,
       }),
@@ -65,5 +75,6 @@ export const {
   usePutUserByGameIdMutation,
   usePostCreateGameMutation,
   usePutGameByIdMutation,
-  useGetUserByGameIdQuery,
+  useGetAllUsersByGameIdQuery,
+  usePutUserConfigurationByGameIdMutation,
 } = gameApi;
