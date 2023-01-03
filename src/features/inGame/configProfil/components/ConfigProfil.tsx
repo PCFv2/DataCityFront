@@ -3,13 +3,24 @@ import { useGetAllConfigurationQuery } from "../../../../services";
 import OverlayLoader from "../../../../UI-KIT/components/OverlayLoader";
 
 import { useForm } from "react-hook-form";
-import { getSumOfPoints } from "./service";
+import { getSumOfPoints } from "../service";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../../app/store";
+import { setNbPoints } from "../../../../app/redux/userSlice";
 
 // TODO performance du composant !
 
-const ConfigProfil = () => {
+const ConfigProfil = (props: {
+  setDisplayComponent: React.Dispatch<React.SetStateAction<string>>;
+}) => {
   /* Queries */
   const { data: allConfiguration, isLoading } = useGetAllConfigurationQuery();
+
+  /* redux */
+  const dispatch = useDispatch();
+  const user = useSelector(
+    (state: RootState) => state.user
+  ); /* get user info */
 
   /* Hook */
   const playerPoints: number = 9; /* TODO here get current points of user in the redux store */
@@ -37,6 +48,7 @@ const ConfigProfil = () => {
 
   const onSubmit = (data: UserConfigurationForm) => {
     console.log({ ...data });
+    dispatch(setNbPoints(displayPlayerPoints)); /* set nbPoints of user */
     /* Envoie les informations au back */
   };
 
