@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../app/store";
+import { DISPLAY_COMPONENT } from "constants/";
 
 const Morning = (props: {
   setDisplayComponent: React.Dispatch<React.SetStateAction<string>>;
@@ -12,7 +13,11 @@ const Morning = (props: {
       <p>{`Vous avez gagné ${
         user.nbPoints - user.lastNbPoints
       } points hier`}</p>
-      <button onClick={() => props.setDisplayComponent("ConfigProfil")}>
+      <button
+        onClick={() =>
+          props.setDisplayComponent(DISPLAY_COMPONENT.inGameConfigProfil)
+        }
+      >
         Modifier
       </button>
       <button>Jour suivant</button> {/* next round */}
