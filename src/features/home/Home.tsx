@@ -1,3 +1,4 @@
+import Phishing from "features/inGame/attack/components/Phishing";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../../constants";
@@ -13,6 +14,7 @@ const Home = () => {
         Rejoindre une partie
       </button>
       <GameCreate /> {/* Button create game */}
+      <Phishing />
     </div>
   );
 };
