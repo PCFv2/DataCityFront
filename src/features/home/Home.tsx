@@ -1,3 +1,4 @@
+import EavesDropping from "features/inGame/attack/components/Eavesdropping";
 import Phishing from "features/inGame/attack/components/Phishing";
 import React from "react";
 import { useNavigate } from "react-router-dom";
@@ -14,7 +15,6 @@ const Home = () => {
         Rejoindre une partie
       </button>
       <GameCreate /> {/* Button create game */}
-      <Phishing />
     </div>
   );
 };
