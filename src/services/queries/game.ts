@@ -57,7 +57,7 @@ export const gameApi = createApi({
         body: id,
       }),
     }),
-    postCreateGame: builder.mutation<void, void>({
+    postCreateGame: builder.mutation<number, void>({
       query: () => ({
         url: "/create",
         method: "POST",

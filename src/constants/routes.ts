@@ -2,6 +2,6 @@ export const ROUTES = {
   game: {
     joinGame: "game-join",
     hostGame: "game-host",
-    inGame: "in-game",
+    inGame: "game",
   },
 };
