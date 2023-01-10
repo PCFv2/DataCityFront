@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom";
 import {
   gameApi,
   useGetAllUsersByGameIdQuery,
+  useGetGameByIdQuery,
   usePutGameByIdMutation,
 } from "../../../services";
 import OverlayLoader from "../../../UI-KIT/components/OverlayLoader";
@@ -19,37 +20,14 @@ import { useSelector } from "react-redux";
 import { RootState } from "app/store";
 import { useNavigate } from "react-router-dom";
 
-const requestCreateGame = async (
-  webSocket: WebSocket,
-  setIsLoading: Dispatch<SetStateAction<boolean>>,
-  setIsVisible: Dispatch<SetStateAction<boolean>>
-) => {
-  webSocket.send("99"); /* request create game server */
-  webSocket.addEventListener("message", async (message) => {
-    return new Promise((resolve, rejected) => {
-      if (message.data === "gpong") {
-        setIsLoading(false);
-      } else setIsVisible(false);
-    });
-  });
-};
-
 const GameHost = (props: { webSocket: WebSocket }) => {
   const { webSocket } = props;
   const navigate = useNavigate();
 
   const { gameId } = useSelector((state: RootState) => state.gameSlice);
   //query
-  const [gameInfos, { data: data, isLoading: isLoadingGame }] =
-    gameApi.endpoints.getGameById.useLazyQuery();
-  // const [isVisible, setIsVisible] = useState<boolean>(true);
+  const { data: gameInfos, isLoading } = useGetGameByIdQuery(gameId);
 
-  // if (isLoading)
-  //   requestCreateGame(webSocket, setIsLoading, setIsVisible).then(() =>
-  //     console.log("ok")
-  //   );
-
-  // if (!isVisible) navigate("/");
   const { register, handleSubmit } = useForm<HosterGameForm>();
   /* mutation */
   const [updateConfig, result] = usePutGameByIdMutation();
@@ -62,8 +40,7 @@ const GameHost = (props: { webSocket: WebSocket }) => {
     if (!result.isError) console.log("message d'erreur");
     /* Une fois la réponse du back, envoie des données au serveur */
   };
-  console.log(gameId);
-  if (result.isLoading || isLoadingGame) return <OverlayLoader />;
+  if (result.isLoading || isLoading) return <OverlayLoader />;
   return (
     <div>
       <div>

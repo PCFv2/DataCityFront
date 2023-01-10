@@ -5,8 +5,12 @@ import { usePostCreateGameMutation } from "../../../services";
 import { useDispatch } from "react-redux";
 import { setHasCreateGame } from "../slice";
 import useWebSocket from "react-use-websocket";
-import { setDisplayComponent } from "app/redux/displayComponentSlice";
+import {
+  setDisplayComponent,
+  setSocketCode,
+} from "app/redux/displayComponentSlice";
 import { setGameId } from "app/redux/gameSlice";
+import OverlayLoader from "UI-KIT/components/OverlayLoader";
 
 const GameCreate = () => {
   const dispatch = useDispatch();
@@ -15,6 +19,7 @@ const GameCreate = () => {
 
   const handleClick = async () => {
     dispatch(setDisplayComponent(DISPLAY_COMPONENT.inGameHost));
+    dispatch(setSocketCode(21));
     const result =
       await createGame(); /* Envoie d'une demande de création d'une partie au Back */
 
@@ -30,7 +35,7 @@ const GameCreate = () => {
       ROUTES.game.inGame
     ); /* Affichage de la page host avec l'id de la partie */
   };
-  if (isLoading) return <p>Loading</p>;
+  if (isLoading) return <OverlayLoader />;
   return <button onClick={handleClick}>Créer une partie</button>;
 };
 
