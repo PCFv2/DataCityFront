@@ -1,16 +1,15 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { DISPLAY_COMPONENT, ROUTES } from "../../../constants";
-import { usePostCreateGameMutation } from "../../../services";
+import { DISPLAY_COMPONENT, ROUTES } from "src/constants";
+import { usePostCreateGameMutation } from "src/services";
 import { useDispatch } from "react-redux";
-import { setHasCreateGame } from "../slice";
-import useWebSocket from "react-use-websocket";
 import {
   setDisplayComponent,
   setSocketCode,
-} from "app/redux/displayComponentSlice";
-import { setGameId } from "app/redux/gameSlice";
-import OverlayLoader from "UI-KIT/components/OverlayLoader";
+} from "src/app/redux/displayComponentSlice";
+import { setGameId } from "src/app/redux/gameSlice";
+import OverlayLoader from "src/UI-KIT/components/OverlayLoader";
+import { SOCKET_CODE } from "src/constants";
 
 const GameCreate = () => {
   const dispatch = useDispatch();
@@ -18,8 +17,8 @@ const GameCreate = () => {
   const [createGame, { isLoading }] = usePostCreateGameMutation();
 
   const handleClick = async () => {
-    dispatch(setDisplayComponent(DISPLAY_COMPONENT.inGameHost));
-    dispatch(setSocketCode(21));
+    dispatch(setDisplayComponent("noProblem"));
+    dispatch(setSocketCode(SOCKET_CODE.client.gameCreate));
     const result =
       await createGame(); /* Envoie d'une demande de création d'une partie au Back */
 

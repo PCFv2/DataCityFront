@@ -3,10 +3,10 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 const initialState: Game = {
   gameId: 0,
-  hostId: 0,
+  hostId: "",
   maxPlayers: 0,
   startNbPoints: 0,
-  difficulty: "",
+  difficulty: 0,
 };
 
 export const gameSlice = createSlice({

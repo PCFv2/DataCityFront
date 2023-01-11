@@ -2,10 +2,10 @@ import React from "react";
 
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { ERRORS } from "../../../constants/errors";
+import { ERRORS } from "src/constants/";
 
-import { gameApi, usePutUserByGameIdMutation } from "../../../services";
-import OverlayLoader from "../../../UI-KIT/components/OverlayLoader";
+import { gameApi, usePutUserByGameIdMutation } from "src/services";
+import OverlayLoader from "src/UI-KIT/components/OverlayLoader";
 
 const GameJoin = () => {
   const navigate = useNavigate();

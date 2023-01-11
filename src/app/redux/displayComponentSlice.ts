@@ -1,11 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-type SocketCode = 21 | 22 | 23 | 24 | 25;
-
 type DisplayComponent = {
   displayComponent: string;
-  socketCode?: SocketCode;
+  socketCode?: string;
 };
 
 const initialState: DisplayComponent = {
@@ -20,13 +18,17 @@ export const displayComponentSlice = createSlice({
     setDisplayComponent: (state, action: PayloadAction<string>) => {
       state.displayComponent = action.payload;
     },
-    setSocketCode: (state, action: PayloadAction<SocketCode>) => {
+    setSocketCode: (state, action: PayloadAction<string>) => {
       state.socketCode = action.payload;
+    },
+    clear: (state) => {
+      state.displayComponent = "";
+      state.socketCode = undefined;
     },
   },
 });
 
-export const { setDisplayComponent, setSocketCode } =
+export const { setDisplayComponent, setSocketCode, clear } =
   displayComponentSlice.actions;
 
 export default displayComponentSlice.reducer;

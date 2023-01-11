@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../app/store";
-import { DISPLAY_COMPONENT } from "constants/";
+import { DISPLAY_COMPONENT } from "src/constants/others";
 
 const Morning = () => {
   const user = useSelector((state: RootState) => state.user);

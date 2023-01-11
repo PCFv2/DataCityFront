@@ -1,6 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { gameApi } from "../services";
-import HosterSlice from "../features/game/slice";
 import { configurationApi } from "../services";
 import { userApi } from "../services/queries/user";
 import userSlice from "./redux/userSlice";
@@ -12,7 +11,6 @@ export const store = configureStore({
     [gameApi.reducerPath]: gameApi.reducer,
     [configurationApi.reducerPath]: configurationApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
-    hoster: HosterSlice,
     user: userSlice,
     displayComponent: displayComponentSlice,
     gameSlice: gameSlice,

@@ -5,9 +5,11 @@ export const gameApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.REACT_APP_API_URL + "/game",
   }),
+  tagTypes: ["Game"],
   endpoints: (builder) => ({
     getGameById: builder.query<Game, number>({
       query: (id) => `/${id}`,
+      providesTags: ["Game"],
     }),
     getGames: builder.query<Game[], void>({
       query: () => "/",
@@ -32,12 +34,13 @@ export const gameApi = createApi({
         body: putData,
       }),
     }),
-    putGameById: builder.mutation<Game, HosterGameForm & { gameId: number }>({
+    putGameById: builder.mutation<Game, PartialGame & { gameId: number }>({
       query: ({ gameId, ...putData }) => ({
         url: `/${gameId}`,
         method: "PUT",
         body: putData,
       }),
+      invalidatesTags: ["Game"],
     }),
     putUserConfigurationByGameId: builder.mutation<
       UserConfiguration,
