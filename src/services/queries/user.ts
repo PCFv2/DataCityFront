@@ -9,7 +9,14 @@ export const userApi = createApi({
     getUserById: builder.query<FullUserData, string>({
       query: (id) => `/${id}`,
     }),
+    putUserById: builder.mutation<FullUserData, PutUser & { userId: string }>({
+      query: ({ userId, ...putData }) => ({
+        url: `/${userId}`,
+        method: "PUT",
+        body: putData,
+      }),
+    }),
   }),
 });
 
-export const { useGetUserByIdQuery } = userApi;
+export const { useGetUserByIdQuery, usePutUserByIdMutation } = userApi;

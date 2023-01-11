@@ -32,7 +32,7 @@ export const gameApi = createApi({
         body: putData,
       }),
     }),
-    putGameById: builder.mutation<Game, HosterGameForm & { gameId: number }>({
+    putGameById: builder.mutation<Game, PartialGame & { gameId: number }>({
       query: ({ gameId, ...putData }) => ({
         url: `/${gameId}`,
         method: "PUT",
@@ -57,7 +57,7 @@ export const gameApi = createApi({
         body: id,
       }),
     }),
-    postCreateGame: builder.mutation<void, void>({
+    postCreateGame: builder.mutation<number, void>({
       query: () => ({
         url: "/create",
         method: "POST",

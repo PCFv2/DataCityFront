@@ -10,9 +10,7 @@ import { setNbPoints } from "../../../../app/redux/userSlice";
 
 // TODO performance du composant !
 
-const ConfigProfil = (props: {
-  setDisplayComponent: React.Dispatch<React.SetStateAction<string>>;
-}) => {
+const ConfigProfil = () => {
   /* Queries */
   const { data: allConfiguration, isLoading } = useGetAllConfigurationQuery();
 

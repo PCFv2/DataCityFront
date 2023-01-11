@@ -1,9 +1,16 @@
 type Game = {
   gameId: number;
-  hostId: number;
+  hostId: string;
   maxPlayers: number;
   startNbPoints: number;
-  difficulty: string;
+  difficulty: number;
+};
+
+type PartialGame = {
+  hostId: string;
+  maxPlayers: number;
+  startNbPoints: number;
+  difficulty: number;
 };
 
 type Round = {
