@@ -5,11 +5,9 @@ export const gameApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.REACT_APP_API_URL + "/game",
   }),
-  tagTypes: ["Game"],
   endpoints: (builder) => ({
     getGameById: builder.query<Game, number>({
       query: (id) => `/${id}`,
-      providesTags: ["Game"],
     }),
     getGames: builder.query<Game[], void>({
       query: () => "/",
@@ -40,7 +38,6 @@ export const gameApi = createApi({
         method: "PUT",
         body: putData,
       }),
-      invalidatesTags: ["Game"],
     }),
     putUserConfigurationByGameId: builder.mutation<
       UserConfiguration,

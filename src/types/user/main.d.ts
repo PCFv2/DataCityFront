@@ -1,6 +1,6 @@
 type PutUser = {
-  userId: string;
-  username: string;
+  name: string;
+  nbPoints: number;
 };
 
 interface User {

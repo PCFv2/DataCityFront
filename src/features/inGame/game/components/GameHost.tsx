@@ -21,19 +21,26 @@ import { useNavigate } from "react-router-dom";
 import { SOCKET_CODE } from "src/constants";
 
 const GameHost = (props: { webSocket: WebSocket }) => {
-  const navigate = useNavigate();
-
   const { gameId } = useSelector((state: RootState) => state.gameSlice);
 
   //query
   const { data: gameInfos, isLoading } = useGetGameByIdQuery(gameId);
+  const { data: userInGame, refetch } = useGetAllUsersByGameIdQuery(
+    Number(gameId)
+  );
 
-  const { register, handleSubmit } = useForm<PartialGame>();
   /* mutation */
   const [updateConfig, result] = usePutGameByIdMutation();
 
-  /* query */
-  const { data: userInGame } = useGetAllUsersByGameIdQuery(Number(gameId));
+  const { register, handleSubmit } = useForm<PartialGame>();
+
+  useEffect(() => {
+    props.webSocket.addEventListener("message", (message) => {
+      if (message.data === SOCKET_CODE.serverValidate.modifyGame) {
+        refetch();
+      }
+    });
+  });
 
   const onSubmit = async (data: PartialGame) => {
     data.hostId = gameInfos?.hostId!;
@@ -46,6 +53,7 @@ const GameHost = (props: { webSocket: WebSocket }) => {
       }
     });
   };
+
   if (result.isLoading || isLoading) return <OverlayLoader />;
   return (
     <div>
@@ -54,6 +62,7 @@ const GameHost = (props: { webSocket: WebSocket }) => {
         {userInGame?.map((elm) => (
           <p key={elm.userId}>{elm.userId}</p>
         ))}
+        <button onClick={() => refetch()}>Refresh</button>
       </div>
       <div>
         <h2>Configuration de votre partie</h2>

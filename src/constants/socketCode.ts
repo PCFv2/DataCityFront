@@ -3,6 +3,7 @@ export const SOCKET_CODE = {
     ok: "00",
     modifyGame: "01",
     finishRound: "02",
+    getToken: "03",
   },
   serverError: {
     unknownError: "10",
