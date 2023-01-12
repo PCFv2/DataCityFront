@@ -21,48 +21,51 @@ import { useNavigate } from "react-router-dom";
 import { SOCKET_CODE } from "src/constants";
 
 const GameHost = (props: { webSocket: WebSocket }) => {
-  const { gameId } = useSelector((state: RootState) => state.gameSlice);
+  const game = useSelector((state: RootState) => state.gameSlice);
+  const user = useSelector((state: RootState) => state.userSlice);
+  const [modifyGame, setModifyGame] = useState<boolean>(false);
 
   //query
-  const { data: gameInfos, isLoading } = useGetGameByIdQuery(gameId);
-  const { data: userInGame, refetch } = useGetAllUsersByGameIdQuery(
-    Number(gameId)
-  );
+  const {
+    data: gameInfos,
+    isLoading,
+    refetch: refetchGame,
+  } = useGetGameByIdQuery(game.gameId);
+  const {
+    data: userInGame,
+    refetch: refetchUsers,
+    isLoading: userLoading,
+  } = useGetAllUsersByGameIdQuery(Number(game.gameId));
 
   /* mutation */
   const [updateConfig, result] = usePutGameByIdMutation();
 
-  const { register, handleSubmit } = useForm<PartialGame>();
-
-  useEffect(() => {
-    props.webSocket.addEventListener("message", (message) => {
-      if (message.data === SOCKET_CODE.serverValidate.modifyGame) {
-        refetch();
-      }
-    });
-  });
+  const { register, handleSubmit, reset } = useForm<PartialGame>();
 
   const onSubmit = async (data: PartialGame) => {
+    setModifyGame(true);
     data.hostId = gameInfos?.hostId!;
-    props.webSocket.send(`${SOCKET_CODE.client.modifyGame}${gameId}`);
-    await props.webSocket.addEventListener("message", (message) => {
-      if (message.data === SOCKET_CODE.serverValidate.modifyGame) {
-        updateConfig({ gameId: gameId, ...data }); //Envoie des données saisies au back
-        if (result.isError) console.log("message d'erreur");
-        /* Une fois la réponse du back, envoie des données au serveur */
+    props.webSocket.send(`${SOCKET_CODE.client.modifyGame}${game.gameId}`);
+    props.webSocket.addEventListener("message", (message) => {
+      if (
+        message.data === SOCKET_CODE.serverValidate.modifyGame &&
+        modifyGame
+      ) {
+        updateConfig({ gameId: game.gameId, ...data }).then(() =>
+          setModifyGame(false)
+        ); //Envoie des données saisies au back
       }
     });
   };
 
-  if (result.isLoading || isLoading) return <OverlayLoader />;
+  if (result.isLoading || isLoading || userLoading) return <OverlayLoader />;
   return (
     <div>
       <div>
         Joueur dans la partie :
         {userInGame?.map((elm) => (
-          <p key={elm.userId}>{elm.userId}</p>
+          <p key={elm.name}>{elm.name}</p>
         ))}
-        <button onClick={() => refetch()}>Refresh</button>
       </div>
       <div>
         <h2>Configuration de votre partie</h2>

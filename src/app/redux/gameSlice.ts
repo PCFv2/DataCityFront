@@ -16,9 +16,12 @@ export const gameSlice = createSlice({
     setGameId: (state, action: PayloadAction<number>) => {
       state.gameId = action.payload;
     },
+    setHostId: (state, action: PayloadAction<string>) => {
+      state.hostId = action.payload;
+    },
   },
 });
 
-export const { setGameId } = gameSlice.actions;
+export const { setGameId, setHostId } = gameSlice.actions;
 
 export default gameSlice.reducer;

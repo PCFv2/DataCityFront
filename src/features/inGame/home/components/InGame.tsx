@@ -15,6 +15,8 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { SOCKET_CODE } from "src/constants";
 import GameJoin from "../../game/components/GameJoin";
 import { setUserId } from "src/app/redux/userSlice";
+import { setHostId } from "src/app/redux/gameSlice";
+import GameWait from "../../game/components/GameWait";
 
 const InGame = () => {
   const { gameId } = useSelector((state: RootState) => state.gameSlice);
@@ -53,10 +55,7 @@ const InGame = () => {
         switch (displayComponentState.socketCode) {
           case SOCKET_CODE.client.gameCreate:
             setIsLoadingServer(false);
-            dispatch(setDisplayComponent(DISPLAY_COMPONENT.inGameHost));
-            break;
-          case SOCKET_CODE.client.joinGame:
-            dispatch(setDisplayComponent(DISPLAY_COMPONENT.inGameJoin));
+            dispatch(setDisplayComponent(DISPLAY_COMPONENT.hostComponent));
             break;
           default:
             break;
@@ -81,11 +80,12 @@ const InGame = () => {
       {displayComponentState.displayComponent ===
         DISPLAY_COMPONENT.inGameConfigProfil && <ConfigProfil />}
       {displayComponentState.displayComponent ===
-        DISPLAY_COMPONENT.inGameHost && <GameHost webSocket={ws} />}
+        DISPLAY_COMPONENT.hostComponent && <GameHost webSocket={ws} />}
       {displayComponentState.displayComponent ===
-        DISPLAY_COMPONENT.inGameJoin && <GameJoin webSocket={ws} />}
+        DISPLAY_COMPONENT.joinComponent && <GameJoin webSocket={ws} />}
       {displayComponentState.displayComponent === "erreur" && <p>rien</p>}
-      {}
+      {displayComponentState.displayComponent ===
+        DISPLAY_COMPONENT.inGameWait && <GameWait />}
     </>
   );
 };
