@@ -4,7 +4,7 @@ import { RootState } from "../../../../app/store";
 import { DISPLAY_COMPONENT } from "src/constants/others";
 
 const Morning = () => {
-  const user = useSelector((state: RootState) => state.user);
+  const user = useSelector((state: RootState) => state.userSlice);
   return (
     <div>
       <h2>Une nouvelle journée se lève</h2>

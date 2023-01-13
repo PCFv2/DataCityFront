@@ -1,6 +1,9 @@
 export const DISPLAY_COMPONENT = {
   inGameMorning: "Morning",
   inGameConfigProfil: "ConfigProfil",
-  inGameHost: "gameHost",
-  inGameJoin: "gameJoin",
+  hostComponent: "hostComponent",
+  joinComponent: "joinComponent",
+  inGameWait: "gameWait",
+  home: "home",
+  waitRoomComponent: "waitRoomComponent",
 };

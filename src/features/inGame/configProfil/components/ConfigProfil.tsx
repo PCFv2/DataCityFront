@@ -17,7 +17,7 @@ const ConfigProfil = () => {
   /* redux */
   const dispatch = useDispatch();
   const user = useSelector(
-    (state: RootState) => state.user
+    (state: RootState) => state.userSlice
   ); /* get user info */
 
   /* Hook */
