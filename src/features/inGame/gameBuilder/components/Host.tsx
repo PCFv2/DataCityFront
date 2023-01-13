@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { webSocketSlice } from "src/app/redux/websocketSlice";
 import { requestModifyGame } from "src/app/requestServer";
 import { RootState } from "src/app/store";
+import { SOCKET_CODE } from "src/constants";
 import {
   useGetAllUsersByGameIdQuery,
   useGetGameByIdQuery,
@@ -34,8 +35,11 @@ const Host = () => {
   /* mutation */
   const [updateConfig, result] = usePutGameByIdMutation();
 
-  const { data: userInGame, isLoading: userLoading } =
-    useGetAllUsersByGameIdQuery(Number(game.gameId)); /* API GET game/id/user */
+  const {
+    data: userInGame,
+    isLoading: userLoading,
+    refetch: userRefetch,
+  } = useGetAllUsersByGameIdQuery(game.gameId); /* API GET game/id/user */
 
   const { register, handleSubmit } =
     useForm<PartialGame>(); /* init du formulaire */
@@ -45,10 +49,20 @@ const Host = () => {
     requestModifyGame(webSocketState.webSocket!, game.gameId).then(() => {
       console.log("Vous avez bien modifier votre game");
       updateConfig({ gameId: game.gameId, ...data }).then(() =>
-        setProcessingServer(false)
+        requestModifyGame(webSocketState.webSocket!, game.gameId).then(() =>
+          setProcessingServer(false)
+        )
       );
     });
   }; /* traitement du formulaire */
+
+  useEffect(() => {
+    webSocketState.webSocket?.addEventListener("message", (message) => {
+      if (message.data === SOCKET_CODE.serverValidate.modifyGame) {
+        userRefetch();
+      }
+    });
+  }, []);
 
   if (gameInfosLoading || userLoading || processingServer)
     return <OverlayLoader />;

@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { setDisplayComponent } from "src/app/redux/displayComponentSlice";
+import {
+  setDisplayComponent,
+  setUpdateQuery,
+} from "src/app/redux/displayComponentSlice";
 import { setGameId } from "src/app/redux/gameSlice";
 import { requestJoinGame } from "src/app/requestServer";
 import { RootState } from "src/app/store";
@@ -31,9 +34,11 @@ const Join = () => {
   const { register, handleSubmit } =
     useForm<JoinGameForm>(); /* init formulaire */
 
-  const onSubmit = (data: JoinGameForm) => {
+  const onSubmit = async (data: JoinGameForm) => {
+    console.log(data);
     setProcessingServer(true);
-    joinGame(data.gameId).then(() => {
+    const isAvailable = await joinGame(data.gameId);
+    if (isAvailable.data) {
       requestJoinGame(webSocketState.webSocket!, data.gameId).then(() => {
         console.log("Vous avez bien rejoins la partie");
         dispatch(setGameId(data.gameId));
@@ -41,15 +46,23 @@ const Join = () => {
           userId: user.userId.split("/").join("-"),
           name: data.username,
           nbPoints: user.nbPoints,
-        }).then(() => {
-          dispatch(setDisplayComponent(DISPLAY_COMPONENT.waitRoomComponent));
-          setProcessingServer(false);
-        });
+        }) /* ENVOIE a l'API */
+          .then(() => {
+            requestJoinGame(webSocketState.webSocket!, data.gameId).then(() => {
+              dispatch(
+                setDisplayComponent(DISPLAY_COMPONENT.waitRoomComponent)
+              );
+              setProcessingServer(false); /* on arrete le chargement */
+            });
+          });
       });
-    });
+    } else {
+      console.log("erreur");
+    }
   }; /* traitement du formulaire */
 
-  if (processingServer) return <OverlayLoader />;
+  if (processingServer || result.isLoading) return <OverlayLoader />;
+
   return (
     <div>
       <h1>Rejoindre une partie</h1>

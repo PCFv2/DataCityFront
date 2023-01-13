@@ -1,13 +1,16 @@
+import { useDispatch } from "react-redux";
 import { SOCKET_CODE } from "src/constants";
+
+import { store } from "src/app/store";
+import displayComponentSlice from "../redux/displayComponentSlice";
 
 export const responseOfServer = (webSocket: WebSocket) =>
   new Promise<boolean>((resolve, reject) => {
     webSocket.addEventListener("message", (message) => {
-      if (
-        message.data === SOCKET_CODE.serverValidate.ok ||
-        message.data ===
-          SOCKET_CODE.serverValidate.modifyGame /* a voir avec marius */
-      ) {
+      if (message.data === SOCKET_CODE.serverValidate.ok) {
+        resolve(true);
+      }
+      if (message.data === SOCKET_CODE.serverValidate.modifyGame) {
         resolve(true);
       } else {
         reject(false);

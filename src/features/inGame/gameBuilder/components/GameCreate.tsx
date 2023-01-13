@@ -19,7 +19,6 @@ const GameCreate = () => {
     (state: RootState) => state.webSocket
   ); /* on récupére la webSocket */
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [createGame, { isLoading, isError }] = usePostCreateGameMutation();
 
   const handleClick = async () => {

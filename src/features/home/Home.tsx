@@ -1,21 +1,20 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { Suspense, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import OverlayLoader from "src/UI-KIT/components/OverlayLoader";
 import { DISPLAY_COMPONENT, ROUTES, SOCKET_CODE } from "../../constants";
-import GameCreate from "../inGame/game/components/GameCreate";
-import ConfigProfil from "../inGame/configProfil/components/ConfigProfil";
-import Morning from "../inGame/morning/components/Morning";
-import GameJoin from "../inGame/game/components/GameJoin";
+import GameCreate from "../inGame/gameBuilder/components/GameCreate";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  clear,
-  setDisplayComponent,
-} from "src/app/redux/displayComponentSlice";
+import { setDisplayComponent } from "src/app/redux/displayComponentSlice";
 import { setUserId } from "src/app/redux/userSlice";
 import { setWebSocket } from "src/app/redux/websocketSlice";
 import { RootState } from "src/app/store";
-import Host from "../inGame/game/components/Host";
-import Join from "../inGame/game/components/Join";
+
+/* COMPONENT */
+const Host = React.lazy(() => import("../inGame/gameBuilder/components/Host"));
+const Join = React.lazy(() => import("../inGame/gameBuilder/components/Join"));
+const WaitRoom = React.lazy(
+  () => import("../inGame/gameBuilder/components/WaitRoom")
+);
 
 const Home = () => {
   const [websocketIsAccess, setWebSocketIsAccess] = useState<boolean>(false);
@@ -75,20 +74,32 @@ const Home = () => {
   if (
     displayComponentState.displayComponent === DISPLAY_COMPONENT.hostComponent
   )
-    return <Host />;
+    return (
+      <Suspense fallback={<OverlayLoader />}>
+        <Host />
+      </Suspense>
+    );
 
   // join
   if (
     displayComponentState.displayComponent === DISPLAY_COMPONENT.joinComponent
   )
-    return <Join />;
+    return (
+      <Suspense fallback={<OverlayLoader />}>
+        <Join />
+      </Suspense>
+    );
 
   // waitRoom
   if (
     displayComponentState.displayComponent ===
     DISPLAY_COMPONENT.waitRoomComponent
   )
-    return <div>salle d'attente</div>;
+    return (
+      <Suspense fallback={<OverlayLoader />}>
+        <WaitRoom />
+      </Suspense>
+    );
 
   return <div>en jeu</div>;
 };
