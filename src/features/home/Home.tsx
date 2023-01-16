@@ -8,6 +8,7 @@ import { setDisplayComponent } from "src/app/redux/displayComponentSlice";
 import { setUserId } from "src/app/redux/userSlice";
 import { setWebSocket } from "src/app/redux/websocketSlice";
 import { RootState } from "src/app/store";
+import ConfigProfile from "../inGame/configProfile/components/ConfigProfile";
 
 /* COMPONENT */
 const Host = React.lazy(() => import("../inGame/gameBuilder/components/Host"));
@@ -90,6 +91,12 @@ const Home = () => {
         <Suspense fallback={<OverlayLoader />}>
           <WaitRoom />
         </Suspense>
+      );
+    case DISPLAY_COMPONENT.configProfile:
+      return (
+          <Suspense fallback={<OverlayLoader />}>
+            <ConfigProfile />
+          </Suspense>
       );
   }
   return <div>Le serveur ne réponds pas</div>;

@@ -19,9 +19,12 @@ export const gameSlice = createSlice({
     setHostId: (state, action: PayloadAction<string>) => {
       state.hostId = action.payload;
     },
+    setStartNbPoints: (state, action: PayloadAction<number>) => {
+      state.startNbPoints = action.payload;
+    }
   },
 });
 
-export const { setGameId, setHostId } = gameSlice.actions;
+export const { setGameId, setHostId, setStartNbPoints } = gameSlice.actions;
 
 export default gameSlice.reducer;

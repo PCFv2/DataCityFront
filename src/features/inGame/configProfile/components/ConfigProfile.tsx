@@ -10,7 +10,7 @@ import { setNbPoints } from "../../../../app/redux/userSlice";
 
 // TODO performance du composant !
 
-const ConfigProfil = () => {
+const ConfigProfile = () => {
   /* Queries */
   const { data: allConfiguration, isLoading } = useGetAllConfigurationQuery();
 
@@ -21,7 +21,9 @@ const ConfigProfil = () => {
   ); /* get user info */
 
   /* Hook */
-  const playerPoints: number = 9; /* TODO here get current points of user in the redux store */
+  const playerPoints: number = useSelector(
+      (state: RootState) => state.gameSlice.startNbPoints
+  );
   const [displayPlayerPoints, setDisplayPlayerPoints] =
     useState<number>(playerPoints); /* just to display point of player */
   const [playerSpentPoints, setPlayerSpentPoints] = useState<ChoiceOfUser[]>(
@@ -121,4 +123,4 @@ const ConfigProfil = () => {
   );
 };
 
-export default ConfigProfil;
+export default ConfigProfile;
