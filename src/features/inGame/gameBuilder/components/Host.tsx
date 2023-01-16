@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { webSocketSlice } from "src/app/redux/websocketSlice";
 import { requestModifyGame } from "src/app/requestServer";
 import { RootState } from "src/app/store";
-import { SOCKET_CODE } from "src/constants";
+import {DISPLAY_COMPONENT, SOCKET_CODE} from "src/constants";
 import {
   useGetAllUsersByGameIdQuery,
   useGetGameByIdQuery,
   usePutGameByIdMutation,
 } from "src/services";
 import OverlayLoader from "src/UI-KIT/components/OverlayLoader";
+import {setDisplayComponent} from "../../../../app/redux/displayComponentSlice";
+import {setStartNbPoints} from "../../../../app/redux/gameSlice";
 
 const Host = () => {
+  // dipatch
+  const dispatch = useDispatch();
   /* redux */
   const user = useSelector(
     (state: RootState) => state.userSlice
@@ -56,6 +60,12 @@ const Host = () => {
     });
   }; /* traitement du formulaire */
 
+  // Lancement de la partie
+  const handleStartGame = () => {
+    dispatch(setStartNbPoints(gameInfos?.startNbPoints!));
+    dispatch(setDisplayComponent(DISPLAY_COMPONENT.configProfile));
+  }
+
   useEffect(() => {
     webSocketState.webSocket?.addEventListener("message", (message) => {
       if (message.data === SOCKET_CODE.serverValidate.modifyGame) {
@@ -92,6 +102,7 @@ const Host = () => {
           />
           <button type="submit">Enregistrer</button>
         </form>
+        <button onClick={handleStartGame}>Lancer la partie</button>
       </div>
     </div>
   );
