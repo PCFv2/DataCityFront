@@ -69,8 +69,9 @@ export const gameApi = createApi({
       { gameId: number; roundId: number; userId: string }
     >({
       query: (data) => ({
-        url: `${data.gameId}/round/${data.roundId}/user/${data.userId}/`,
+        url: `${data.gameId}/round/${data.roundId}/user/${data.userId}`,
         method: "PUT",
+        body: data,
       }),
     }),
     //game/{gameId}/lastround

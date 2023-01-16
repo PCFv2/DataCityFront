@@ -44,15 +44,15 @@ const WaitRoom = () => {
     isFetching: roundIsFetching,
   } = useGetLastroundQuery(game.gameId);
 
-  const [setFinished, result] = useSetFinishedMutation();
-  console.log(userIsFetching, roundIsFetching);
+  const [setFinished, { isLoading: setFinishedIsLoading }] =
+    useSetFinishedMutation();
 
   useEffect(() => {
     if (!userIsFetching && !roundIsFetching)
       setFinished({
         gameId: game.gameId,
         roundId: currentRound?.roundId!,
-        userId: user.userId.split('/').join('-'),
+        userId: user.userId.split("/").join("-"),
       });
   }, [userIsFetching, roundIsFetching]);
 
@@ -65,7 +65,8 @@ const WaitRoom = () => {
     });
   }, [webSocketState.webSocket]);
 
-  if (userLoading || gameLoading || roundLoading) return <OverlayLoader />;
+  if (userLoading || gameLoading || roundLoading || setFinishedIsLoading)
+    return <OverlayLoader />;
 
   return (
     <div>

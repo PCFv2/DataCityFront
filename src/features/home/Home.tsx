@@ -1,7 +1,7 @@
 import React, { Suspense, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import OverlayLoader from "src/UI-KIT/components/OverlayLoader";
-import { DISPLAY_COMPONENT, ROUTES, SOCKET_CODE } from "../../constants";
+import { DISPLAY_COMPONENT, SOCKET_CODE } from "../../constants";
 import GameCreate from "../inGame/gameBuilder/components/GameCreate";
 import { useDispatch, useSelector } from "react-redux";
 import { setDisplayComponent } from "src/app/redux/displayComponentSlice";
@@ -38,16 +38,16 @@ const Home = () => {
     });
     ws.addEventListener("close", () => {
       console.log("Closed");
-      navigate(
-        "/"
-      ); /* si problème avec la connexion du websocket on redirige vers une page notFound */
-      //dispatch(clear());
     });
     ws.addEventListener("message", (message) => {
       if (message.data.slice(0, 2) === SOCKET_CODE.serverValidate.getToken) {
         dispatch(
           setUserId(message.data.slice(2))
         ); /* on set le userId dans le state */
+      }
+      if (message.data === SOCKET_CODE.serverError.unknownError) {
+        dispatch(setDisplayComponent(DISPLAY_COMPONENT.error));
+        ws.close();
       }
     });
   });
@@ -61,47 +61,38 @@ const Home = () => {
       <OverlayLoader />
     ); /* si le websocket n'est pas encore créer en loading */
 
+  if (displayComponentState.displayComponent === DISPLAY_COMPONENT.error)
+    navigate("/error"); /* en cas d'erreur on redirige vers /erreur */
+
   // Affichage
-  if (displayComponentState.displayComponent === DISPLAY_COMPONENT.home)
-    return (
-      <div>
-        <button onClick={handleClick}>Rejoindre la partie</button>
-        <GameCreate /> {/* Button create game */}
-      </div>
-    );
-
-  // host
-  if (
-    displayComponentState.displayComponent === DISPLAY_COMPONENT.hostComponent
-  )
-    return (
-      <Suspense fallback={<OverlayLoader />}>
-        <Host />
-      </Suspense>
-    );
-
-  // join
-  if (
-    displayComponentState.displayComponent === DISPLAY_COMPONENT.joinComponent
-  )
-    return (
-      <Suspense fallback={<OverlayLoader />}>
-        <Join />
-      </Suspense>
-    );
-
-  // waitRoom
-  if (
-    displayComponentState.displayComponent ===
-    DISPLAY_COMPONENT.waitRoomComponent
-  )
-    return (
-      <Suspense fallback={<OverlayLoader />}>
-        <WaitRoom />
-      </Suspense>
-    );
-
-  return <div>en jeu</div>;
+  switch (displayComponentState.displayComponent) {
+    case DISPLAY_COMPONENT.home:
+      return (
+        <div>
+          <button onClick={handleClick}>Rejoindre la partie</button>
+          <GameCreate /> {/* Button create game */}
+        </div>
+      );
+    case DISPLAY_COMPONENT.hostComponent:
+      return (
+        <Suspense fallback={<OverlayLoader />}>
+          <Host />
+        </Suspense>
+      );
+    case DISPLAY_COMPONENT.joinComponent:
+      return (
+        <Suspense fallback={<OverlayLoader />}>
+          <Join />
+        </Suspense>
+      );
+    case DISPLAY_COMPONENT.waitRoomComponent:
+      return (
+        <Suspense fallback={<OverlayLoader />}>
+          <WaitRoom />
+        </Suspense>
+      );
+  }
+  return <div>Le serveur ne réponds pas</div>;
 };
 
 export default Home;
