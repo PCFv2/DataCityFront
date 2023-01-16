@@ -6,4 +6,5 @@ export const DISPLAY_COMPONENT = {
   home: "home",
   waitRoomComponent: "waitRoomComponent",
   configProfile: "configProfile",
+  error: "error",
 };

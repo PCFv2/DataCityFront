@@ -35,7 +35,6 @@ const Join = () => {
     useForm<JoinGameForm>(); /* init formulaire */
 
   const onSubmit = async (data: JoinGameForm) => {
-    console.log(data);
     setProcessingServer(true);
     const isAvailable = await joinGame(data.gameId);
     if (isAvailable.data) {
