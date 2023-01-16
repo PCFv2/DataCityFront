@@ -6,4 +6,5 @@ export const DISPLAY_COMPONENT = {
   inGameWait: "gameWait",
   home: "home",
   waitRoomComponent: "waitRoomComponent",
+  error: "error",
 };
