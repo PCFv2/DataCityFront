@@ -9,6 +9,7 @@ import { setUserId } from "src/app/redux/userSlice";
 import { setWebSocket } from "src/app/redux/websocketSlice";
 import { RootState } from "src/app/store";
 import ConfigProfile from "../inGame/configProfile/components/ConfigProfile";
+import RenderStatusId from "../inGame/statusId/RenderStatusId";
 
 /* COMPONENT */
 const Host = React.lazy(() => import("../inGame/gameBuilder/components/Host"));
@@ -43,7 +44,7 @@ const Home = () => {
     ws.addEventListener("message", (message) => {
       if (message.data.slice(0, 2) === SOCKET_CODE.serverValidate.getToken) {
         dispatch(
-          setUserId(message.data.slice(2))
+          setUserId(message.data.slice(2).split("/").join("-"))
         ); /* on set le userId dans le state */
       }
       if (message.data === SOCKET_CODE.serverError.unknownError) {
@@ -57,7 +58,7 @@ const Home = () => {
     dispatch(setDisplayComponent(DISPLAY_COMPONENT.joinComponent));
   };
 
-  if (!websocketIsAccess)
+  if (!websocketIsAccess || displayComponentState.isLoading)
     return (
       <OverlayLoader />
     ); /* si le websocket n'est pas encore créer en loading */
@@ -94,9 +95,15 @@ const Home = () => {
       );
     case DISPLAY_COMPONENT.configProfile:
       return (
-          <Suspense fallback={<OverlayLoader />}>
-            <ConfigProfile />
-          </Suspense>
+        <Suspense fallback={<OverlayLoader />}>
+          <ConfigProfile />
+        </Suspense>
+      );
+    case DISPLAY_COMPONENT.renderStatusId:
+      return (
+        <Suspense fallback={<OverlayLoader />}>
+          <RenderStatusId />
+        </Suspense>
       );
   }
   return <div>Le serveur ne réponds pas</div>;

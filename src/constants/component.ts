@@ -7,4 +7,5 @@ export const DISPLAY_COMPONENT = {
   waitRoomComponent: "waitRoomComponent",
   configProfile: "configProfile",
   error: "error",
+  renderStatusId: "renderStatusId",
 };

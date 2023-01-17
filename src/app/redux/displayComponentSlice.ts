@@ -4,13 +4,13 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 type DisplayComponent = {
   displayComponent: string;
   socketCode?: string;
-  updateQuery?: boolean;
+  isLoading?: boolean;
 };
 
 const initialState: DisplayComponent = {
   displayComponent: "",
   socketCode: undefined,
-  updateQuery: false,
+  isLoading: false,
 };
 
 export const displayComponentSlice = createSlice({
@@ -23,8 +23,8 @@ export const displayComponentSlice = createSlice({
     setSocketCode: (state, action: PayloadAction<string>) => {
       state.socketCode = action.payload;
     },
-    setUpdateQuery: (state, action: PayloadAction<boolean>) => {
-      state.updateQuery = action.payload;
+    setIsLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
     },
     clear: (state) => {
       state.displayComponent = "";
@@ -33,7 +33,7 @@ export const displayComponentSlice = createSlice({
   },
 });
 
-export const { setDisplayComponent, setSocketCode, clear, setUpdateQuery } =
+export const { setDisplayComponent, setSocketCode, clear, setIsLoading } =
   displayComponentSlice.actions;
 
 export default displayComponentSlice.reducer;
