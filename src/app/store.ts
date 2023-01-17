@@ -6,6 +6,7 @@ import userSlice from "./redux/userSlice";
 import displayComponentSlice from "./redux/displayComponentSlice";
 import gameSlice from "./redux/gameSlice";
 import webSocketSlice from "./redux/websocketSlice";
+import roundSlice from "./redux/roundSlice";
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     displayComponent: displayComponentSlice,
     gameSlice: gameSlice,
     webSocket: webSocketSlice,
+    roundSlice: roundSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }).concat(

@@ -2,20 +2,19 @@ import React, { Suspense, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import OverlayLoader from "src/UI-KIT/components/OverlayLoader";
 import { DISPLAY_COMPONENT, SOCKET_CODE } from "../../constants";
-import GameCreate from "../inGame/gameBuilder/components/GameCreate";
+import GameCreate from "../inGame/gameBuilder/GameCreate";
 import { useDispatch, useSelector } from "react-redux";
 import { setDisplayComponent } from "src/app/redux/displayComponentSlice";
 import { setUserId } from "src/app/redux/userSlice";
 import { setWebSocket } from "src/app/redux/websocketSlice";
 import { RootState } from "src/app/store";
-import ConfigProfile from "../inGame/configProfile/components/ConfigProfile";
+import ConfigProfile from "../inGame/status/organisms/configProfile/ConfigProfile";
+import RenderStatusId from "../inGame/status/RenderStatusId";
 
 /* COMPONENT */
-const Host = React.lazy(() => import("../inGame/gameBuilder/components/Host"));
-const Join = React.lazy(() => import("../inGame/gameBuilder/components/Join"));
-const WaitRoom = React.lazy(
-  () => import("../inGame/gameBuilder/components/WaitRoom")
-);
+const Host = React.lazy(() => import("../inGame/gameBuilder/Host"));
+const Join = React.lazy(() => import("../inGame/gameBuilder/Join"));
+const WaitRoom = React.lazy(() => import("../inGame/gameBuilder/WaitRoom"));
 
 const Home = () => {
   const [websocketIsAccess, setWebSocketIsAccess] = useState<boolean>(false);
@@ -43,7 +42,7 @@ const Home = () => {
     ws.addEventListener("message", (message) => {
       if (message.data.slice(0, 2) === SOCKET_CODE.serverValidate.getToken) {
         dispatch(
-          setUserId(message.data.slice(2))
+          setUserId(message.data.slice(2).split("/").join("-"))
         ); /* on set le userId dans le state */
       }
       if (message.data === SOCKET_CODE.serverError.unknownError) {
@@ -57,7 +56,7 @@ const Home = () => {
     dispatch(setDisplayComponent(DISPLAY_COMPONENT.joinComponent));
   };
 
-  if (!websocketIsAccess)
+  if (!websocketIsAccess || displayComponentState.isLoading)
     return (
       <OverlayLoader />
     ); /* si le websocket n'est pas encore créer en loading */
@@ -94,9 +93,15 @@ const Home = () => {
       );
     case DISPLAY_COMPONENT.configProfile:
       return (
-          <Suspense fallback={<OverlayLoader />}>
-            <ConfigProfile />
-          </Suspense>
+        <Suspense fallback={<OverlayLoader />}>
+          <ConfigProfile />
+        </Suspense>
+      );
+    case DISPLAY_COMPONENT.renderStatusId:
+      return (
+        <Suspense fallback={<OverlayLoader />}>
+          <RenderStatusId />
+        </Suspense>
       );
   }
   return <div>Le serveur ne réponds pas</div>;

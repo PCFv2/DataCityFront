@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DISPLAY_COMPONENT, ROUTES } from "src/constants";
-import { usePostCreateGameMutation } from "src/services";
+import {
+  gameApi,
+  useGetLastroundQuery,
+  usePostCreateGameMutation,
+} from "src/services";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setDisplayComponent,
@@ -12,6 +16,7 @@ import OverlayLoader from "src/UI-KIT/components/OverlayLoader";
 import { SOCKET_CODE } from "src/constants";
 import { requestCreateGame } from "src/app/requestServer";
 import { RootState } from "src/app/store";
+import { setRound } from "src/app/redux/roundSlice";
 
 const GameCreate = () => {
   const [processingServer, setProcessingServer] = useState<boolean>(false);
@@ -20,6 +25,10 @@ const GameCreate = () => {
   ); /* on récupére la webSocket */
   const dispatch = useDispatch();
   const [createGame, { isLoading, isError }] = usePostCreateGameMutation();
+
+  //query
+  const [lastRound, { isLoading: roundIsLoading }] =
+    gameApi.endpoints.getLastround.useLazyQuery();
 
   const handleClick = async () => {
     setProcessingServer(true);
@@ -33,13 +42,15 @@ const GameCreate = () => {
         Object.values(Object.entries(result)[0][1])[0]
       ); /* on récupère le gameId */
 
-      requestCreateGame(webSocketState.webSocket!, gameId).then(() => {
+      requestCreateGame(webSocketState.webSocket!, gameId).then(async () => {
         console.log("création de la partie réussi");
         dispatch(setGameId(gameId)); /* on set le gameId dans redux */
         dispatch(
           setDisplayComponent(DISPLAY_COMPONENT.hostComponent)
         ); /* on affiche le composent host */
         setProcessingServer(false); /* on arrete le chargement */
+        const round = await lastRound(gameId);
+        dispatch(setRound(round.data!)); /* On rentre les infos du round dans le state */
       });
     }
   };

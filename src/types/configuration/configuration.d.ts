@@ -1,4 +1,5 @@
 type Configuration = {
+  configurationId: number;
   categoryId: number;
   value1: string;
   value2: string;
@@ -9,7 +10,7 @@ type Configuration = {
 
 type UserConfigurationForm = {
   configuration: {
-    name: string;
+    configurationId: number;
     value: string;
   }[];
 };

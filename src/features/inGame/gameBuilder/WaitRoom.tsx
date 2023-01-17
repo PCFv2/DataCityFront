@@ -1,8 +1,16 @@
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "src/app/store";
-import { SOCKET_CODE } from "src/constants";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { finishRound } from "src/app/finishedRound/finishRound";
 import {
+  setDisplayComponent,
+  setIsLoading,
+} from "src/app/redux/displayComponentSlice";
+import { setGameData } from "src/app/redux/gameSlice";
+import { requestFinishRound } from "src/app/requestServer";
+import { RootState } from "src/app/store";
+import { DISPLAY_COMPONENT, SOCKET_CODE } from "src/constants";
+import {
+  gameApi,
   useGetAllUsersByGameIdQuery,
   useGetGameByIdQuery,
   useGetLastroundQuery,
@@ -11,6 +19,8 @@ import {
 import OverlayLoader from "src/UI-KIT/components/OverlayLoader";
 
 const WaitRoom = () => {
+  const dispatch = useDispatch();
+
   /* redux */
   const game = useSelector(
     (state: RootState) => state.gameSlice
@@ -47,23 +57,36 @@ const WaitRoom = () => {
   const [setFinished, { isLoading: setFinishedIsLoading }] =
     useSetFinishedMutation();
 
-  useEffect(() => {
-    if (!userIsFetching && !roundIsFetching)
-      setFinished({
-        gameId: game.gameId,
-        roundId: currentRound?.roundId!,
-        userId: user.userId.split("/").join("-"),
-      });
-  }, [userIsFetching, roundIsFetching]);
+  const [lastround] = gameApi.endpoints.getLastround.useLazyQuery();
 
   useEffect(() => {
-    webSocketState.webSocket?.addEventListener("message", (message) => {
+    webSocketState.webSocket?.addEventListener("message", async (message) => {
       if (message.data === SOCKET_CODE.serverValidate.modifyGame) {
         refetchGame();
         userRefetch();
       }
+      if (message.data === SOCKET_CODE.serverValidate.finishRound) {
+        const roundApi = await lastround(game.gameId);
+        if (finishRound(roundApi.data!)) {
+          dispatch(setDisplayComponent(DISPLAY_COMPONENT.renderStatusId));
+          dispatch(setIsLoading(false));
+        }
+      }
     });
-  }, [webSocketState.webSocket]);
+  }, []);
+
+  const handleReady = () => {
+    setFinished({
+      gameId: game.gameId,
+      userId: user.userId,
+    }).then(() => {
+      requestFinishRound(webSocketState.webSocket!, game.gameId);
+
+      /* set all redux */
+      dispatch(setIsLoading(true));
+      dispatch(setGameData(gameInfos!));
+    });
+  };
 
   if (userLoading || gameLoading || roundLoading || setFinishedIsLoading)
     return <OverlayLoader />;
@@ -73,7 +96,7 @@ const WaitRoom = () => {
       <div>
         Joueur dans la partie :
         {userInGame?.map((elm) => (
-          <p key={elm.name}>{elm.name}</p>
+          <p key={elm.userId}>{elm.name}</p>
         ))}
       </div>
       <div>
@@ -84,6 +107,7 @@ const WaitRoom = () => {
           <input placeholder={gameInfos?.difficulty.toString()} />
         </form>
       </div>
+      <button onClick={handleReady}>Pret</button>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { getRandomWords } from "../services/phishing";
+import { getRandomWords } from "./services/phishing";
 
 const Phishing = () => {
   const WIN =

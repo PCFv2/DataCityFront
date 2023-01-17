@@ -66,12 +66,12 @@ export const gameApi = createApi({
     //game/{gameId}/round/{roundId}/user/{userId}/
     setFinished: builder.mutation<
       void,
-      { gameId: number; roundId: number; userId: string }
+      NextRound & { gameId: number; userId: string }
     >({
-      query: (data) => ({
-        url: `${data.gameId}/round/${data.roundId}/user/${data.userId}`,
+      query: ({ gameId, userId, ...nextRound }) => ({
+        url: `${gameId}/user/${userId}`,
         method: "PUT",
-        body: data,
+        body: nextRound,
       }),
     }),
     //game/{gameId}/lastround

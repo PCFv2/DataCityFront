@@ -1,8 +1,10 @@
 import { useDispatch } from "react-redux";
-import { SOCKET_CODE } from "src/constants";
+import { DISPLAY_COMPONENT, SOCKET_CODE } from "src/constants";
 
-import { store } from "src/app/store";
-import displayComponentSlice from "../redux/displayComponentSlice";
+import { finishRound } from "../finishedRound/finishRound";
+
+import { store } from "../store";
+import { displayComponentSlice } from "../redux/displayComponentSlice";
 
 export const responseOfServer = (webSocket: WebSocket) =>
   new Promise<boolean>((resolve, reject) => {
@@ -41,3 +43,10 @@ export const requestModifyGame = (webSocket: WebSocket, gameId: number) =>
       .then(() => resolve(true))
       .catch(() => reject(false));
   });
+
+export const requestFinishRound = (webSocket: WebSocket, gameId: number) => {
+  new Promise<boolean>((resolve, reject) => {
+    webSocket.send(`${SOCKET_CODE.client.finishRound}${gameId}`);
+    resolve(true);
+  });
+};

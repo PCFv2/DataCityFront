@@ -3,9 +3,9 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setDisplayComponent,
-  setUpdateQuery,
 } from "src/app/redux/displayComponentSlice";
 import { setGameId } from "src/app/redux/gameSlice";
+import { setRound } from "src/app/redux/roundSlice";
 import { requestJoinGame } from "src/app/requestServer";
 import { RootState } from "src/app/store";
 import { DISPLAY_COMPONENT } from "src/constants";
@@ -28,6 +28,9 @@ const Join = () => {
   const [joinGame, { isLoading: gameLoading }] =
     gameApi.endpoints.getJoinGameById.useLazyQuery();
 
+  const [lastRound, { isLoading: roundIsLoading }] =
+    gameApi.endpoints.getLastround.useLazyQuery();
+
   //mutation
   const [updateUser, result] = usePutUserByIdMutation();
 
@@ -44,15 +47,20 @@ const Join = () => {
         updateUser({
           userId: user.userId.split("/").join("-"),
           name: data.username,
-          nbPoints: user.nbPoints,
         }) /* ENVOIE a l'API */
           .then(() => {
-            requestJoinGame(webSocketState.webSocket!, data.gameId).then(() => {
-              dispatch(
-                setDisplayComponent(DISPLAY_COMPONENT.waitRoomComponent)
-              );
-              setProcessingServer(false); /* on arrete le chargement */
-            });
+            requestJoinGame(webSocketState.webSocket!, data.gameId).then(
+              async () => {
+                dispatch(
+                  setDisplayComponent(DISPLAY_COMPONENT.waitRoomComponent)
+                );
+                setProcessingServer(false); /* on arrete le chargement */
+                const round = await lastRound(data.gameId);
+                dispatch(
+                  setRound(round.data!)
+                ); /* On rentre les infos du round dans le state */
+              }
+            );
           });
       });
     } else {
@@ -60,7 +68,8 @@ const Join = () => {
     }
   }; /* traitement du formulaire */
 
-  if (processingServer || result.isLoading) return <OverlayLoader />;
+  if (processingServer || result.isLoading || gameLoading)
+    return <OverlayLoader />;
 
   return (
     <div>
