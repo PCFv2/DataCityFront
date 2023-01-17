@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import React, { useEffect, useMemo, useState } from "react";
-import { generateFiles, verifyWin } from "../services/eavesDropping";
+import { generateFiles, verifyWin } from "./services/eavesDropping";
 
 const Container = styled.span<{
   coordinatesTop: number;

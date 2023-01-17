@@ -5,6 +5,7 @@ import {
   setDisplayComponent,
   setIsLoading,
 } from "src/app/redux/displayComponentSlice";
+import { setGameData } from "src/app/redux/gameSlice";
 import { requestFinishRound } from "src/app/requestServer";
 import { RootState } from "src/app/store";
 import { DISPLAY_COMPONENT, SOCKET_CODE } from "src/constants";
@@ -80,7 +81,10 @@ const WaitRoom = () => {
       userId: user.userId,
     }).then(() => {
       requestFinishRound(webSocketState.webSocket!, game.gameId);
+
+      /* set all redux */
       dispatch(setIsLoading(true));
+      dispatch(setGameData(gameInfos!));
     });
   };
 

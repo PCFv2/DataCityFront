@@ -11,6 +11,7 @@ import { RootState } from "src/app/store";
 import { DISPLAY_COMPONENT, SOCKET_CODE } from "src/constants";
 import { gameApi, useSetFinishedMutation } from "src/services";
 import OverlayLoader from "src/UI-KIT/components/OverlayLoader";
+import { ConfigProfile } from "./organisms";
 
 const RenderStatusId = () => {
   const dispatch = useDispatch();
@@ -96,7 +97,7 @@ const RenderStatusId = () => {
       return (
         <div>
           <button onClick={() => handleClick(round.statusId)}>Suivant</button>
-          Configuration de joueur
+          <ConfigProfile />
         </div>
       );
     case 3:

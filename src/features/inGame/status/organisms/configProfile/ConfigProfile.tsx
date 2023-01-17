@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useGetAllConfigurationQuery } from "../../../../services";
-import OverlayLoader from "../../../../UI-KIT/components/OverlayLoader";
+import { useGetAllConfigurationQuery } from "../../../../../services";
+import OverlayLoader from "../../../../../UI-KIT/components/OverlayLoader";
 
 import { useForm } from "react-hook-form";
-import { getSumOfPoints } from "../service";
+import { getSumOfPoints } from "./service";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../../app/store";
-import { setNbPoints } from "../../../../app/redux/userSlice";
+import { RootState } from "../../../../../app/store";
+import { setNbPoints } from "../../../../../app/redux/userSlice";
 
 // TODO performance du composant !
 

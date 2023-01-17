@@ -21,10 +21,16 @@ export const gameSlice = createSlice({
     },
     setStartNbPoints: (state, action: PayloadAction<number>) => {
       state.startNbPoints = action.payload;
-    }
+    },
+    setGameData: (state, action: PayloadAction<Game>) => {
+      return {
+        ...action.payload,
+      };
+    },
   },
 });
 
-export const { setGameId, setHostId, setStartNbPoints } = gameSlice.actions;
+export const { setGameId, setHostId, setStartNbPoints, setGameData } =
+  gameSlice.actions;
 
 export default gameSlice.reducer;

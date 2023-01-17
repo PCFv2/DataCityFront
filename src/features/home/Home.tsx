@@ -2,21 +2,19 @@ import React, { Suspense, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import OverlayLoader from "src/UI-KIT/components/OverlayLoader";
 import { DISPLAY_COMPONENT, SOCKET_CODE } from "../../constants";
-import GameCreate from "../inGame/gameBuilder/components/GameCreate";
+import GameCreate from "../inGame/gameBuilder/GameCreate";
 import { useDispatch, useSelector } from "react-redux";
 import { setDisplayComponent } from "src/app/redux/displayComponentSlice";
 import { setUserId } from "src/app/redux/userSlice";
 import { setWebSocket } from "src/app/redux/websocketSlice";
 import { RootState } from "src/app/store";
-import ConfigProfile from "../inGame/configProfile/components/ConfigProfile";
-import RenderStatusId from "../inGame/statusId/RenderStatusId";
+import ConfigProfile from "../inGame/status/organisms/configProfile/ConfigProfile";
+import RenderStatusId from "../inGame/status/RenderStatusId";
 
 /* COMPONENT */
-const Host = React.lazy(() => import("../inGame/gameBuilder/components/Host"));
-const Join = React.lazy(() => import("../inGame/gameBuilder/components/Join"));
-const WaitRoom = React.lazy(
-  () => import("../inGame/gameBuilder/components/WaitRoom")
-);
+const Host = React.lazy(() => import("../inGame/gameBuilder/Host"));
+const Join = React.lazy(() => import("../inGame/gameBuilder/Join"));
+const WaitRoom = React.lazy(() => import("../inGame/gameBuilder/WaitRoom"));
 
 const Home = () => {
   const [websocketIsAccess, setWebSocketIsAccess] = useState<boolean>(false);

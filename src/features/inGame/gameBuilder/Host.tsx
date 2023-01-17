@@ -18,8 +18,8 @@ import OverlayLoader from "src/UI-KIT/components/OverlayLoader";
 import {
   setDisplayComponent,
   setIsLoading,
-} from "../../../../app/redux/displayComponentSlice";
-import { setStartNbPoints } from "../../../../app/redux/gameSlice";
+} from "src/app/redux/displayComponentSlice";
+import { setStartNbPoints } from "src/app/redux/gameSlice";
 
 const Host = () => {
   // dipatch
