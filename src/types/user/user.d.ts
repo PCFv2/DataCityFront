@@ -1,5 +1,5 @@
 type PutUser = {
-  name: string;
+  name?: string;
   nbPoints?: number;
 };
 

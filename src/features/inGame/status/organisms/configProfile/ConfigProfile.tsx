@@ -1,29 +1,36 @@
 import React, { useEffect, useState } from "react";
-import { useGetAllConfigurationQuery } from "../../../../../services";
-import OverlayLoader from "../../../../../UI-KIT/components/OverlayLoader";
+import { useGetAllConfigurationQuery } from "src/services";
+import OverlayLoader from "src/UI-KIT/components/OverlayLoader";
 
 import { useForm } from "react-hook-form";
 import { getSumOfPoints } from "./service";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../../../app/store";
-import { setNbPoints } from "../../../../../app/redux/userSlice";
+import { RootState } from "src/app/store";
+import { setNbPoints } from "src/app/redux/userSlice";
 import userApi, {
   useGetUserConfigurationQuery,
+  usePutUserConfigurationMutation,
+  useUpdateUserByIdMutation,
 } from "src/services/queries/user";
 
-// TODO performance du composant !
+type ConfigProfileProps = {
+  handleClick?: (
+    round: number,
+    userConfiguration: UserConfigurationForm
+  ) => void;
+};
 
-const ConfigProfile = () => {
+const ConfigProfile = (props: ConfigProfileProps) => {
   /* redux */
   const dispatch = useDispatch();
-  const user = useSelector(
-    (state: RootState) => state.userSlice
-  ); /* get user info */
+  const user = useSelector((state: RootState) => state.userSlice);
+  const round = useSelector((state: RootState) => state.roundSlice);
 
-  /* Hook */
   const playerPoints: number = useSelector(
     (state: RootState) => state.gameSlice.startNbPoints
   );
+
+  /* Hook */
   const [displayPlayerPoints, setDisplayPlayerPoints] =
     useState<number>(playerPoints); /* just to display point of player */
   const [playerSpentPoints, setPlayerSpentPoints] = useState<ChoiceOfUser[]>(
@@ -31,30 +38,39 @@ const ConfigProfile = () => {
   ); /* list of points spent of each category by the player */
 
   /* Queries */
-  const { data: allConfiguration, isLoading } = useGetAllConfigurationQuery();
-
+  const { data: allConfiguration, isLoading } = useGetAllConfigurationQuery(); // API /configuration
   const { data: userConfiguration, isLoading: isLoadingUserConfiguration } =
-    useGetUserConfigurationQuery(user.userId);
+    useGetUserConfigurationQuery(user.userId); // API /user/{id}/configuration
+
+  /* Mutations */
+  const [updateUserConfiguration, { isLoading: userConfigurationIsLoading }] =
+    usePutUserConfigurationMutation(); // API user/{userId}/configuration
+  const [updateUser, { isLoading: userLoading }] = useUpdateUserByIdMutation(); // API user/{userId}
 
   /* React hook form */
   const { register, handleSubmit, setValue, reset } =
-    useForm<UserConfigurationForm>({});
+    useForm<UserConfigurationForm>();
 
+  /* Rendering condition useEffect */
   useEffect(() => {
-    reset({ configuration: userConfiguration });
+    reset({ configuration: userConfiguration }); // set default value when fetch of userConfiguration is success
   }, [userConfiguration]);
-
-  const onSubmit = (data: UserConfigurationForm) => {
-    console.log({ ...data });
-    dispatch(setNbPoints(displayPlayerPoints)); /* set nbPoints of user */
-    /* Envoie les informations au back */
-  };
 
   useEffect(() => {
     setDisplayPlayerPoints(
       playerPoints - getSumOfPoints(playerSpentPoints)
     ); /* Manage display of point */
   }, [playerSpentPoints]);
+
+  const onSubmit = (data: UserConfigurationForm) => {
+    /* Envoie les informations au back */
+
+    props.handleClick!(round.statusId, data); /* set Finished round */
+
+    // updateUserConfiguration({ userId: user.userId, ...data }); // send to API userConfiguration
+    // updateUser({ userId: user.userId, nbPoints: displayPlayerPoints }); // send to API user
+    dispatch(setNbPoints(displayPlayerPoints)); /* set nbPoints of user */
+  };
 
   const handleClick = (
     index: number,
@@ -75,7 +91,13 @@ const ConfigProfile = () => {
     setValue(`configuration.${index}.configurationId`, configurationId);
   };
 
-  if (isLoading || isLoadingUserConfiguration) return <OverlayLoader />;
+  if (
+    isLoading ||
+    isLoadingUserConfiguration ||
+    userConfigurationIsLoading ||
+    userLoading
+  )
+    return <OverlayLoader />;
 
   return (
     <div>

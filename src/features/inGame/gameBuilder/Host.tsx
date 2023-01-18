@@ -91,7 +91,6 @@ const Host = () => {
 
   useEffect(() => {
     webSocketState.webSocket?.addEventListener("message", async (message) => {
-      console.log(message);
       if (message.data === SOCKET_CODE.serverValidate.modifyGame) {
         userRefetch();
         gameRefetch();
