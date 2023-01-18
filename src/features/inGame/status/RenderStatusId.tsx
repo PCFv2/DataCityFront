@@ -26,10 +26,10 @@ const RenderStatusId = () => {
     (state: RootState) => state.webSocket
   ); /* on récupére la webSocket */
 
-  /* fake value */
-  const userConfigaration: UserConfigurationForm = {
-    configuration: [{ configurationId: 1, value: "1" }],
-  };
+  // /* fake value */
+  // const userConfigaration: UserConfigurationForm = {
+  //   configuration: [{ configurationId: 1, value: "1" }],
+  // };
 
   //query
   const [lastround] = gameApi.endpoints.getLastround.useLazyQuery();
@@ -52,7 +52,6 @@ const RenderStatusId = () => {
         setFinished({
           gameId: game.gameId,
           userId: user.userId,
-          ...userConfigaration,
         }).then(() => {
           requestFinishRound(webSocketState.webSocket!, game.gameId);
           dispatch(setIsLoading(true));
@@ -63,7 +62,6 @@ const RenderStatusId = () => {
         setFinished({
           gameId: game.gameId,
           userId: user.userId,
-          ...userConfigaration,
         }).then(() => {
           requestFinishRound(webSocketState.webSocket!, game.gameId);
           dispatch(setIsLoading(true));
@@ -74,7 +72,6 @@ const RenderStatusId = () => {
         setFinished({
           gameId: game.gameId,
           userId: user.userId,
-          ...userConfigaration,
         }).then(() => {
           requestFinishRound(webSocketState.webSocket!, game.gameId);
           dispatch(setIsLoading(true));

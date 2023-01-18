@@ -19,7 +19,7 @@ import {
   setDisplayComponent,
   setIsLoading,
 } from "src/app/redux/displayComponentSlice";
-import { setStartNbPoints } from "src/app/redux/gameSlice";
+import { setGameData, setStartNbPoints } from "src/app/redux/gameSlice";
 
 const Host = () => {
   // dipatch
@@ -42,9 +42,11 @@ const Host = () => {
   const [processingServer, setProcessingServer] = useState<boolean>(false);
 
   /* query */
-  const { data: gameInfos, isLoading: gameInfosLoading } = useGetGameByIdQuery(
-    game.gameId
-  ); /* API GET game/id */
+  const {
+    data: gameInfos,
+    isLoading: gameInfosLoading,
+    refetch: gameRefetch,
+  } = useGetGameByIdQuery(game.gameId); /* API GET game/id */
 
   //query
   const [lastround] = gameApi.endpoints.getLastround.useLazyQuery();
@@ -92,6 +94,7 @@ const Host = () => {
       console.log(message);
       if (message.data === SOCKET_CODE.serverValidate.modifyGame) {
         userRefetch();
+        gameRefetch();
       }
       /* on check si tout le monde a fini */
       if (message.data === SOCKET_CODE.serverValidate.finishRound) {
