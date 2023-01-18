@@ -1,20 +1,26 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { gameApi } from "../services";
-import HosterSlice from "../features/game/slice";
 import { configurationApi } from "../services";
 import { userApi } from "../services/queries/user";
 import userSlice from "./redux/userSlice";
+import displayComponentSlice from "./redux/displayComponentSlice";
+import gameSlice from "./redux/gameSlice";
+import webSocketSlice from "./redux/websocketSlice";
+import roundSlice from "./redux/roundSlice";
 
 export const store = configureStore({
   reducer: {
     [gameApi.reducerPath]: gameApi.reducer,
     [configurationApi.reducerPath]: configurationApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
-    hoster: HosterSlice,
-    user: userSlice,
+    userSlice: userSlice,
+    displayComponent: displayComponentSlice,
+    gameSlice: gameSlice,
+    webSocket: webSocketSlice,
+    roundSlice: roundSlice,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(
+    getDefaultMiddleware({ serializableCheck: false }).concat(
       gameApi.middleware,
       configurationApi.middleware,
       userApi.middleware
