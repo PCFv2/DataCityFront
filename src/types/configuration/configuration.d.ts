@@ -10,7 +10,7 @@ type Configuration = {
 
 type UserConfigurationForm = {
   configuration: {
-    configurationId?: number;
+    configurationId: number;
     nom?: string;
     value: string;
   }[];
