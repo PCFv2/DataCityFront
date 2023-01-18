@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
 import { finishRound } from "src/app/finishedRound/finishRound";
 import {
   setDisplayComponent,
@@ -12,6 +11,7 @@ import { DISPLAY_COMPONENT, SOCKET_CODE } from "src/constants";
 import { gameApi, useSetFinishedMutation } from "src/services";
 import OverlayLoader from "src/UI-KIT/components/OverlayLoader";
 import { ConfigProfile } from "./organisms";
+import Attack from "./organisms/attack/Attack";
 
 const RenderStatusId = () => {
   const dispatch = useDispatch();
@@ -125,7 +125,7 @@ const RenderStatusId = () => {
       return (
         <div>
           <button onClick={() => handleClick(round.statusId)}>Suivant</button>
-          nuit
+          <Attack/>
         </div>
       );
     default:
