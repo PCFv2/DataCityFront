@@ -16,7 +16,15 @@ export const userApi = createApi({
         body: putData,
       }),
     }),
+    getUserConfiguration: builder.query<UserConfiguration[], string>({
+      query: (id) => `/${id}/configuration`,
+    }),
   }),
 });
 
-export const { useGetUserByIdQuery, usePutUserByIdMutation } = userApi;
+export const {
+  useGetUserByIdQuery,
+  usePutUserByIdMutation,
+  useGetUserConfigurationQuery,
+} = userApi;
+export default userApi;
