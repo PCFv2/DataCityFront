@@ -30,6 +30,12 @@ const RenderStatusId = () => {
   const userConfigaration: UserConfigurationForm = {
     configuration: [{ configurationId: 1, value: "1" }],
   };
+  const night: Night = {
+    night: {
+      attackId: 1,
+      effectiveness: 50
+    }
+  }
 
   //query
   const [lastround] = gameApi.endpoints.getLastround.useLazyQuery();
@@ -85,7 +91,14 @@ const RenderStatusId = () => {
         //TODO Soirée
         break;
       case 6:
-        //TODO Nuit
+        setFinished({
+          gameId: game.gameId,
+          userId: user.userId,
+          ...night,
+        }).then(() => {
+          requestFinishRound(webSocketState.webSocket!, game.gameId);
+          dispatch(setIsLoading(true));
+        });
         break;
     }
   };
