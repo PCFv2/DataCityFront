@@ -25,7 +25,7 @@ const Attack = (props: AttackProps) => {
       return (
         <Suspense fallback={<OverlayLoader />}>
           {/* <Eavesdropping /> */}
-          <Phishing handleFinishRoud={props.handleFinishRoud} />
+          <Eavesdropping handleFinishRoud={props.handleFinishRoud} />
         </Suspense>
       );
     case ATTACK.attacks.phishing:
