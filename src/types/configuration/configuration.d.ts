@@ -11,12 +11,13 @@ type Configuration = {
 type UserConfigurationForm = {
   configuration: {
     configurationId: number;
+    nom?: string;
     value: string;
   }[];
 };
 
 type UserConfiguration = {
-  category: string;
-  nom: string;
+  configurationId?: number;
+  nom?: string;
   value: string;
 };

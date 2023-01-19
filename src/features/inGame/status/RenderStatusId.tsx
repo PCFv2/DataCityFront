@@ -27,9 +27,6 @@ const RenderStatusId = () => {
   ); /* on récupére la webSocket */
 
   /* fake value */
-  const userConfigaration: UserConfigurationForm = {
-    configuration: [{ configurationId: 1, value: "1" }],
-  };
   const night: Night = {
     night: {
       attackId: 1,
@@ -52,13 +49,16 @@ const RenderStatusId = () => {
     });
   });
 
-  const handleClick = (round: number) => {
+  const handleClick = (
+    round: number,
+    userConfiguration?: UserConfigurationForm
+  ) => {
     switch (round) {
       case 2:
         setFinished({
           gameId: game.gameId,
           userId: user.userId,
-          ...userConfigaration,
+          ...userConfiguration,
         }).then(() => {
           requestFinishRound(webSocketState.webSocket!, game.gameId);
           dispatch(setIsLoading(true));
@@ -69,7 +69,6 @@ const RenderStatusId = () => {
         setFinished({
           gameId: game.gameId,
           userId: user.userId,
-          ...userConfigaration,
         }).then(() => {
           requestFinishRound(webSocketState.webSocket!, game.gameId);
           dispatch(setIsLoading(true));
@@ -80,7 +79,6 @@ const RenderStatusId = () => {
         setFinished({
           gameId: game.gameId,
           userId: user.userId,
-          ...userConfigaration,
         }).then(() => {
           requestFinishRound(webSocketState.webSocket!, game.gameId);
           dispatch(setIsLoading(true));
@@ -110,7 +108,7 @@ const RenderStatusId = () => {
       return (
         <div>
           <button onClick={() => handleClick(round.statusId)}>Suivant</button>
-          <ConfigProfile />
+          <ConfigProfile handleClick={handleClick} />
         </div>
       );
     case 3:
@@ -138,7 +136,7 @@ const RenderStatusId = () => {
       return (
         <div>
           <button onClick={() => handleClick(round.statusId)}>Suivant</button>
-          <Attack/>
+          <Attack />
         </div>
       );
     default:
