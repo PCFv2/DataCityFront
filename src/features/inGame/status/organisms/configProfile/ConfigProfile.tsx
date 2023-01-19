@@ -125,22 +125,26 @@ const ConfigProfile = (props: ConfigProfileProps) => {
             />
             <label htmlFor={elm.value3}>{elm.value3}</label>
             <input
-              id={elm.name}
+              id={elm.value3}
               value={"value3"}
               disabled={displayPlayerPoints - 2 < 0 && true}
               type="radio"
               onClick={() => handleClick(index, elm.configurationId, 2)}
               {...register(`configuration.${index}.value`)}
             />
-            <label htmlFor={elm.value3}>{elm.value3}</label>
-            <input
-              id={elm.name}
-              value={"value4"}
-              disabled={displayPlayerPoints - 3 < 0 && true}
-              type="radio"
-              onClick={() => handleClick(index, elm.configurationId, 3)}
-              {...register(`configuration.${index}.value`)}
-            />
+            {elm.value4 && (
+              <>
+                <label htmlFor={elm.value4}>{elm.value4}</label>
+                <input
+                  id={elm.value4}
+                  value={"value4"}
+                  disabled={displayPlayerPoints - 3 < 0 && true}
+                  type="radio"
+                  onClick={() => handleClick(index, elm.configurationId, 3)}
+                  {...register(`configuration.${index}.value`)}
+                />
+              </>
+            )}
           </div>
         ))}
         <button type="submit">Enregistrer</button>
