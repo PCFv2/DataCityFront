@@ -12,6 +12,7 @@ import { gameApi, useSetFinishedMutation } from "src/services";
 import OverlayLoader from "src/UI-KIT/components/OverlayLoader";
 import { ConfigProfile } from "./organisms";
 import Attack from "./organisms/attack/Attack";
+import Day from "./organisms/day/Day";
 
 const RenderStatusId = () => {
   const dispatch = useDispatch();
@@ -115,7 +116,7 @@ const RenderStatusId = () => {
       return (
         <div>
           <button onClick={() => handleClick(round.statusId)}>Suivant</button>
-          jour
+          <Day />
         </div>
       );
     case 5:

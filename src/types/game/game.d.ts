@@ -37,3 +37,10 @@ type HosterGameForm = {
   startNbPoints: number;
   difficulty: string;
 };
+
+type UserAttacks = {
+  userId: string,
+  attackId: number,
+  effectiveness: number,
+  category: string
+}
