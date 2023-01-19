@@ -1,5 +1,7 @@
 import styled from "@emotion/styled";
 import React, { useEffect, useMemo, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "src/app/store";
 import { generateFiles, verifyWin } from "./services/eavesDropping";
 
 const Container = styled.span<{
@@ -12,6 +14,7 @@ const Container = styled.span<{
   left: ${(props) => `${props.coordinatesLeft}%`};
   padding: 50px;
 `;
+
 
 const EavesDropping = () => {
   const NUMBER_FILES = 6;

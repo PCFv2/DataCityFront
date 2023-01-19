@@ -27,14 +27,6 @@ const RenderStatusId = () => {
     (state: RootState) => state.webSocket
   ); /* on récupére la webSocket */
 
-  /* fake value */
-  const night: Night = {
-    night: {
-      attackId: 1,
-      effectiveness: 50
-    }
-  }
-
   //query
   const [lastround] = gameApi.endpoints.getLastround.useLazyQuery();
 
@@ -52,7 +44,8 @@ const RenderStatusId = () => {
 
   const handleClick = (
     round: number,
-    userConfiguration?: UserConfigurationForm
+    userConfiguration?: UserConfigurationForm,
+    night?: Night
   ) => {
     switch (round) {
       case 2:
@@ -109,7 +102,7 @@ const RenderStatusId = () => {
       return (
         <div>
           <button onClick={() => handleClick(round.statusId)}>Suivant</button>
-          <ConfigProfile handleClick={handleClick} />
+          <ConfigProfile handleFinishRoud={handleClick} />
         </div>
       );
     case 3:
@@ -137,7 +130,7 @@ const RenderStatusId = () => {
       return (
         <div>
           <button onClick={() => handleClick(round.statusId)}>Suivant</button>
-          <Attack />
+          <Attack handleFinishRoud={handleClick} />
         </div>
       );
     default:

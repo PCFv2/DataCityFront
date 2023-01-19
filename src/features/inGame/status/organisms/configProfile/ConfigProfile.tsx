@@ -14,9 +14,10 @@ import userApi, {
 } from "src/services/queries/user";
 
 type ConfigProfileProps = {
-  handleClick?: (
+  handleFinishRoud?: (
     round: number,
-    userConfiguration: UserConfigurationForm
+    userConfiguration?: UserConfigurationForm,
+    night?: Night
   ) => void;
 };
 
@@ -43,8 +44,6 @@ const ConfigProfile = (props: ConfigProfileProps) => {
     useGetUserConfigurationQuery(user.userId); // API /user/{id}/configuration
 
   /* Mutations */
-  const [updateUserConfiguration, { isLoading: userConfigurationIsLoading }] =
-    usePutUserConfigurationMutation(); // API user/{userId}/configuration
   const [updateUser, { isLoading: userLoading }] = useUpdateUserByIdMutation(); // API user/{userId}
 
   /* React hook form */
@@ -65,10 +64,9 @@ const ConfigProfile = (props: ConfigProfileProps) => {
   const onSubmit = (data: UserConfigurationForm) => {
     /* Envoie les informations au back */
 
-    props.handleClick!(round.statusId, data); /* set Finished round */
+    props.handleFinishRoud!(round.statusId, data); /* set Finished round */
 
-    // updateUserConfiguration({ userId: user.userId, ...data }); // send to API userConfiguration
-    // updateUser({ userId: user.userId, nbPoints: displayPlayerPoints }); // send to API user
+    updateUser({ userId: user.userId, nbPoints: displayPlayerPoints }); // send to API user
     dispatch(setNbPoints(displayPlayerPoints)); /* set nbPoints of user */
   };
 
@@ -91,12 +89,7 @@ const ConfigProfile = (props: ConfigProfileProps) => {
     setValue(`configuration.${index}.configurationId`, configurationId);
   };
 
-  if (
-    isLoading ||
-    isLoadingUserConfiguration ||
-    userConfigurationIsLoading ||
-    userLoading
-  )
+  if (isLoading || isLoadingUserConfiguration || userLoading)
     return <OverlayLoader />;
 
   return (
