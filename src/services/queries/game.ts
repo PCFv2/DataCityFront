@@ -68,6 +68,9 @@ export const gameApi = createApi({
     getLastround: builder.query<Round, number>({
       query: (id) => `/${id}/lastround`,
     }),
+    getUserAttacks: builder.query<UserAttacks[], {gameId: number, roundId:number, userId: string}>({
+      query: ({gameId, roundId, userId}) => `/${gameId}/round/${roundId}/user/${userId}/attacks`,
+    }),
   }),
 });
 
@@ -83,4 +86,5 @@ export const {
   useGetAllUsersByGameIdQuery,
   useSetFinishedMutation,
   useGetLastroundQuery,
+  useGetUserAttacksQuery,
 } = gameApi;
