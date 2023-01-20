@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useMemo } from "react";
 import { ATTACK } from "src/constants";
 import OverlayLoader from "../../../../../UI-KIT/components/OverlayLoader";
 import ErrorPage from "src/app/pages/main/ErrorPage";
@@ -19,7 +19,11 @@ type AttackProps = {
 };
 
 const Attack = (props: AttackProps) => {
-  const attackNb = Math.floor(Math.random() * ATTACK.nbAttacks);
+  const attackNb = useMemo(
+    () => Math.floor(Math.random() * ATTACK.nbAttacks),
+    []
+  );
+  
   switch (attackNb) {
     case ATTACK.attacks.eavesdropping:
       return (
@@ -31,7 +35,7 @@ const Attack = (props: AttackProps) => {
     case ATTACK.attacks.phishing:
       return (
         <Suspense fallback={<OverlayLoader />}>
-          <Phishing handleFinishRoud={props.handleFinishRoud} />
+          <Eavesdropping handleFinishRoud={props.handleFinishRoud} />
         </Suspense>
       );
     default:
@@ -39,4 +43,4 @@ const Attack = (props: AttackProps) => {
   }
 };
 
-export default Attack;
+export default React.memo(Attack);

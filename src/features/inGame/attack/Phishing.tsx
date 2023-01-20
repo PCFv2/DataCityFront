@@ -60,7 +60,7 @@ const Phishing = (props: AttackProps) => {
       setWordsFind(oldWords);
     }
   };
-  
+
   /* a gagné */
   if (hasWon)
     return (
@@ -86,4 +86,4 @@ const Phishing = (props: AttackProps) => {
   );
 };
 
-export default Phishing;
+export default React.memo(Phishing);
