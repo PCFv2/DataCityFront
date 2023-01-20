@@ -1,5 +1,7 @@
 import styled from "@emotion/styled";
 import React, { useEffect, useMemo, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "src/app/store";
 import { generateFiles, verifyWin } from "./services/eavesDropping";
 
 const Container = styled.span<{
@@ -13,7 +15,15 @@ const Container = styled.span<{
   padding: 50px;
 `;
 
-const EavesDropping = () => {
+type AttackProps = {
+  handleFinishRoud?: (
+      round: number,
+      userConfiguration?: UserConfigurationForm,
+      night?: Night
+  ) => void;
+};
+
+const EavesDropping = (props: AttackProps) => {
   const NUMBER_FILES = 6;
   /* hook */
   const [isWon, setIsWon] = useState<boolean>(false);

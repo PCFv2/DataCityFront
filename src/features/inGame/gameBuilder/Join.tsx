@@ -10,7 +10,7 @@ import { requestJoinGame } from "src/app/requestServer";
 import { RootState } from "src/app/store";
 import { DISPLAY_COMPONENT } from "src/constants";
 import { gameApi } from "src/services";
-import { usePutUserByIdMutation } from "src/services/queries/user";
+import { useUpdateUserByIdMutation } from "src/services/queries/user";
 import OverlayLoader from "src/UI-KIT/components/OverlayLoader";
 
 const Join = () => {
@@ -32,7 +32,7 @@ const Join = () => {
     gameApi.endpoints.getLastround.useLazyQuery();
 
   //mutation
-  const [updateUser, result] = usePutUserByIdMutation();
+  const [updateUser, result] = useUpdateUserByIdMutation();
 
   const { register, handleSubmit } =
     useForm<JoinGameForm>(); /* init formulaire */
