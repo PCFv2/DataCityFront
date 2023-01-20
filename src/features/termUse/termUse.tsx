@@ -1,6 +1,6 @@
 import React from "react";
 
-const ConditionUtil = () => {
+const TermUse = () => {
     return (
         <div>
             <h1>Condition Utilisateur</h1>
@@ -107,4 +107,4 @@ const ConditionUtil = () => {
     );
 };
 
-export default ConditionUtil;
+export default TermUse;
