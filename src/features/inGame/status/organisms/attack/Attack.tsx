@@ -11,7 +11,7 @@ const Phishing = React.lazy(
 );
 
 type AttackProps = {
-  handleFinishRoud?: (
+  handleFinishRound?: (
     round: number,
     userConfiguration?: UserConfigurationForm,
     night?: Night
@@ -29,13 +29,13 @@ const Attack = (props: AttackProps) => {
       return (
         <Suspense fallback={<OverlayLoader />}>
           {/* <Eavesdropping /> */}
-          <Eavesdropping handleFinishRoud={props.handleFinishRoud} />
+          <Eavesdropping handleFinishRound={props.handleFinishRound} />
         </Suspense>
       );
     case ATTACK.attacks.phishing:
       return (
         <Suspense fallback={<OverlayLoader />}>
-          <Eavesdropping handleFinishRoud={props.handleFinishRoud} />
+          <Phishing handleFinishRound={props.handleFinishRound} />
         </Suspense>
       );
     default:

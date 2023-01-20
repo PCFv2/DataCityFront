@@ -15,7 +15,7 @@ export const gameApi = createApi({
     getRoundsByGameId: builder.query<Round[], number>({
       query: (id) => `/${id}/round`,
     }),
-    getRoudByGameId: builder.query<Round, GameIdAndRoundId>({
+    getRoundByGameId: builder.query<Round, GameIdAndRoundId>({
       query: (GameIdAndRoundId) =>
         `/${GameIdAndRoundId.gameId}/round/${GameIdAndRoundId.roundId}`,
     }),

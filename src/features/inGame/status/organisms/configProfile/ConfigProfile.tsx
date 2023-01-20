@@ -14,7 +14,7 @@ import userApi, {
 } from "src/services/queries/user";
 
 type ConfigProfileProps = {
-  handleFinishRoud?: (
+  handleFinishRound?: (
     round: number,
     userConfiguration?: UserConfigurationForm,
     night?: Night
@@ -64,7 +64,7 @@ const ConfigProfile = (props: ConfigProfileProps) => {
   const onSubmit = (data: UserConfigurationForm) => {
     /* Envoie les informations au back */
 
-    props.handleFinishRoud!(round.statusId, data); /* set Finished round */
+    props.handleFinishRound!(round.statusId, data); /* set Finished round */
 
     updateUser({ userId: user.userId, nbPoints: displayPlayerPoints }); // send to API user
     dispatch(setNbPoints(displayPlayerPoints)); /* set nbPoints of user */

@@ -4,7 +4,7 @@ import { RootState } from "src/app/store";
 import { getRandomWords } from "./services/phishing";
 
 type AttackProps = {
-  handleFinishRoud?: (
+  handleFinishRound?: (
     round: number,
     userConfiguration?: UserConfigurationForm,
     night?: Night
@@ -47,7 +47,7 @@ const Phishing = (props: AttackProps) => {
         effectiveness: hasWon ? 100 : 0,
       },
     };
-    props.handleFinishRoud!(round.statusId, undefined, resultAttack);
+    props.handleFinishRound!(round.statusId, undefined, resultAttack);
   };
 
   const handleClick = (word: string) => {

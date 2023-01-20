@@ -16,7 +16,7 @@ const Container = styled.span<{
 `;
 
 type AttackProps = {
-  handleFinishRoud?: (
+  handleFinishRound?: (
     round: number,
     userConfiguration?: UserConfigurationForm,
     night?: Night
@@ -56,7 +56,7 @@ const EavesDropping = (props: AttackProps) => {
         effectiveness: hasWon ? 100 : 0,
       },
     };
-    props.handleFinishRoud!(round.statusId, undefined, resultAttack);
+    props.handleFinishRound!(round.statusId, undefined, resultAttack);
   };
 
   /* a gagné */

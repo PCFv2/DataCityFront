@@ -102,7 +102,7 @@ const RenderStatusId = () => {
       return (
         <div>
           <button onClick={() => handleClick(round.statusId)}>Suivant</button>
-          <ConfigProfile handleFinishRoud={handleClick} />
+          <ConfigProfile handleFinishRound={handleClick} />
         </div>
       );
     case 3:
@@ -130,7 +130,7 @@ const RenderStatusId = () => {
       return (
         <div>
           <button onClick={() => handleClick(round.statusId)}>Suivant</button>
-          <Attack handleFinishRoud={handleClick} />
+          <Attack handleFinishRound={handleClick} />
         </div>
       );
     default:
