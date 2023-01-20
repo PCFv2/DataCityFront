@@ -10,6 +10,7 @@ import { setWebSocket } from "src/app/redux/websocketSlice";
 import { RootState } from "src/app/store";
 import ConfigProfile from "../inGame/status/organisms/configProfile/ConfigProfile";
 import RenderStatusId from "../inGame/status/RenderStatusId";
+import Homepage from "./Homepage";
 
 /* COMPONENT */
 const Host = React.lazy(() => import("../inGame/gameBuilder/Host"));
@@ -52,10 +53,6 @@ const Home = () => {
     });
   });
 
-  const handleClick = (): void => {
-    dispatch(setDisplayComponent(DISPLAY_COMPONENT.joinComponent));
-  };
-
   if (!websocketIsAccess || displayComponentState.isLoading)
     return (
       <OverlayLoader />
@@ -68,10 +65,9 @@ const Home = () => {
   switch (displayComponentState.displayComponent) {
     case DISPLAY_COMPONENT.home:
       return (
-        <div>
-          <button onClick={handleClick}>Rejoindre la partie</button>
-          <GameCreate /> {/* Button create game */}
-        </div>
+        <Suspense fallback={<OverlayLoader />}>
+          <Homepage />
+        </Suspense>
       );
     case DISPLAY_COMPONENT.hostComponent:
       return (

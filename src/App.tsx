@@ -6,6 +6,7 @@ import { store } from "./app/store";
 import { Provider } from "react-redux";
 import { ThemeProvider } from "@emotion/react";
 import { theme } from "./theme";
+import 'src/assets/styles/font.css';
 
 const App = () => {
   return (
