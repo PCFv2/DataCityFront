@@ -3,7 +3,12 @@ export const generateFiles = (number: number): FileType[] => {
   for (let i = 0; i < number; ++i) {
     const randomNumber: number = Math.round(Math.random() * 50);
     const isWrong: boolean = randomNumber % 2 ? true : false;
-    const file: FileType = { isWrong: isWrong, id: i };
+    const file: FileType = {
+      isWrong: isWrong,
+      id: i,
+      cordinateX: Math.random() * 80,
+      cordinateY: Math.random() * 80,
+    };
     prevFiles.push(file);
   }
   return prevFiles;
