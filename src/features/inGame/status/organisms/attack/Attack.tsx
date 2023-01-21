@@ -9,26 +9,20 @@ const Eavesdropping = React.lazy(
 const Phishing = React.lazy(
   () => import("src/features/inGame/attack/Phishing")
 );
-
-type AttackProps = {
-  handleFinishRound?: (
-    round: number,
-    userConfiguration?: UserConfigurationForm,
-    night?: Night
-  ) => void;
-};
+const StealthDowload = React.lazy(
+  () => import("src/features/inGame/attack/StealthDownload")
+);
 
 const Attack = (props: AttackProps) => {
   const attackNb = useMemo(
     () => Math.floor(Math.random() * ATTACK.nbAttacks),
     []
   );
-  
+
   switch (attackNb) {
     case ATTACK.attacks.eavesdropping:
       return (
         <Suspense fallback={<OverlayLoader />}>
-          {/* <Eavesdropping /> */}
           <Eavesdropping handleFinishRound={props.handleFinishRound} />
         </Suspense>
       );
@@ -36,6 +30,12 @@ const Attack = (props: AttackProps) => {
       return (
         <Suspense fallback={<OverlayLoader />}>
           <Phishing handleFinishRound={props.handleFinishRound} />
+        </Suspense>
+      );
+    case ATTACK.attacks.stealthDownload:
+      return (
+        <Suspense fallback={<OverlayLoader />}>
+          <StealthDowload handleFinishRound={props.handleFinishRound} />
         </Suspense>
       );
     default:

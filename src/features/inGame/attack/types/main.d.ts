@@ -4,3 +4,16 @@ type FileType = {
   cordinateX: number;
   cordinateY: number;
 };
+
+/* for maze */
+type Position = {
+  x: number;
+  y: number;
+};
+
+type Wall = {
+  type: "verticale" | "horizontale";
+  position: Position;
+  width?: number;
+  height?: number;
+};
