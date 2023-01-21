@@ -9,6 +9,7 @@ import { setWebSocket } from "src/app/redux/websocketSlice";
 import { RootState } from "src/app/store";
 import ConfigProfile from "../inGame/status/organisms/configProfile/ConfigProfile";
 import RenderStatusId from "../inGame/status/RenderStatusId";
+import { MESSAGE_LOADER } from "src/constants/messageLoader";
 
 /* COMPONENT */
 const Host = React.lazy(() => import("../inGame/gameBuilder/Host"));
@@ -54,7 +55,7 @@ const Home = () => {
 
   if (!websocketIsAccess || displayComponentState.isLoading)
     return (
-      <OverlayLoader />
+      <OverlayLoader message={MESSAGE_LOADER.loading} />
     ); /* si le websocket n'est pas encore créer en loading */
 
   if (displayComponentState.displayComponent === DISPLAY_COMPONENT.error)

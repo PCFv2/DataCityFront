@@ -113,7 +113,7 @@ const Host = () => {
     processingServer ||
     setFinishedIsLoading
   )
-    return <OverlayLoader message={MESSAGE_LOADER.gameHost} />;
+    return <OverlayLoader message={MESSAGE_LOADER.partyLoading} />;
 
   return (
     <div>

@@ -19,7 +19,6 @@ const defaultButtonStyle = css`
   border: none;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out , transform 0.2s, color 0.2s ease-in-out;
-  
   &:hover {
     transform: scale(1.1);
   }
