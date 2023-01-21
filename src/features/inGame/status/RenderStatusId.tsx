@@ -8,6 +8,7 @@ import {
 import { requestFinishRound } from "src/app/requestServer";
 import { RootState } from "src/app/store";
 import { DISPLAY_COMPONENT, SOCKET_CODE } from "src/constants";
+import { MESSAGE_LOADER } from "src/constants/messageLoader";
 import { gameApi, useSetFinishedMutation } from "src/services";
 import OverlayLoader from "src/UI-KIT/components/OverlayLoader";
 import { ConfigProfile } from "./organisms";
@@ -95,7 +96,8 @@ const RenderStatusId = () => {
     }
   };
 
-  if (setFinishedIsLoading) return <OverlayLoader />;
+  if (setFinishedIsLoading)
+    return <OverlayLoader />;
 
   switch (round.statusId) {
     case 2:
