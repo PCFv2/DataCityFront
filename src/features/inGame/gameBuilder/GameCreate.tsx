@@ -17,6 +17,7 @@ import { SOCKET_CODE } from "src/constants";
 import { requestCreateGame } from "src/app/requestServer";
 import { RootState } from "src/app/store";
 import { setRound } from "src/app/redux/roundSlice";
+import {SecondaryButton} from "../../../UI-KIT/components/Button";
 
 const GameCreate = () => {
   const [processingServer, setProcessingServer] = useState<boolean>(false);
@@ -55,7 +56,7 @@ const GameCreate = () => {
     }
   };
   if (isLoading || processingServer) return <OverlayLoader />;
-  return <button onClick={handleClick}>Créer une partie</button>;
+  return <SecondaryButton onClick={handleClick} content={"Créer une partie"}></SecondaryButton>;
 };
 
 export default GameCreate;
