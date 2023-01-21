@@ -1,31 +1,46 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "src/app/store";
 import { getRandomWords } from "./services/phishing";
 
-const Phishing = () => {
+const Phishing = (props: AttackProps) => {
   const WIN =
-    "Mettre sens pouvoir dans un mail le bon pour les mots malveillant créer"; // FAKE
+    "Mettre sens pouvoir dans un mail le bon pour les mots malveillant créer "; // FAKE
   /* HOOK */
   const [wordsFind, setWordsFind] = useState<string[]>([]);
-  const [isWon, setIsWon] = useState<boolean>(false);
+  const [hasWon, setHasWon] = useState<boolean>(false);
+
+  /* redux */
+  const round = useSelector((state: RootState) => state.roundSlice);
 
   const wordsList: string[] = [
-    "Mettre",
-    "sens",
-    "pouvoir",
-    "dans",
-    "un mail",
-    "le bon",
-    "pour",
-    "les mots",
-    "malveillant",
-    "créer",
+    "Mettre ",
+    "sens ",
+    "pouvoir ",
+    "dans ",
+    "un mail ",
+    "le bon ",
+    "pour ",
+    "les mots ",
+    "malveillant ",
+    "créer ",
   ];
 
   const words: string[] = useMemo(() => getRandomWords(wordsList), []);
 
   useEffect(() => {
-    if (wordsFind.join(" ") === WIN) setIsWon(true);
+    if (wordsFind.join("") === WIN) setHasWon(true);
   }, [wordsFind]);
+
+  const handleFinish = (): void => {
+    const resultAttack: Night = {
+      night: {
+        attackId: 1, //hameconnage
+        effectiveness: hasWon ? 100 : 0,
+      },
+    };
+    props.handleFinishRound!(round.statusId, undefined, resultAttack);
+  };
 
   const handleClick = (word: string) => {
     let oldWords = [...wordsFind];
@@ -38,6 +53,15 @@ const Phishing = () => {
     }
   };
 
+  /* a gagné */
+  if (hasWon)
+    return (
+      <div>
+        <button onClick={handleFinish}>Enregistrer</button>Vous avez trouvé la
+        bonne phrase bravo !
+      </div>
+    );
+
   return (
     <div>
       <h2>Attaque: Phishing</h2>
@@ -49,9 +73,9 @@ const Phishing = () => {
           </div>
         ))}
       </div>
-      <p>Gagné : {isWon ? "true" : "false"}</p>
+      <button onClick={handleFinish}>Enregistrer</button>
     </div>
   );
 };
 
-export default Phishing;
+export default React.memo(Phishing);

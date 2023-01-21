@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
 import { finishRound } from "src/app/finishedRound/finishRound";
 import {
   setDisplayComponent,
@@ -12,6 +11,8 @@ import { DISPLAY_COMPONENT, SOCKET_CODE } from "src/constants";
 import { gameApi, useSetFinishedMutation } from "src/services";
 import OverlayLoader from "src/UI-KIT/components/OverlayLoader";
 import { ConfigProfile } from "./organisms";
+import Attack from "./organisms/attack/Attack";
+import Day from "./organisms/day/Day";
 
 const RenderStatusId = () => {
   const dispatch = useDispatch();
@@ -25,11 +26,6 @@ const RenderStatusId = () => {
   const webSocketState = useSelector(
     (state: RootState) => state.webSocket
   ); /* on récupére la webSocket */
-
-  /* fake value */
-  const userConfigaration: UserConfigurationForm = {
-    configuration: [{ configurationId: 1, value: "1" }],
-  };
 
   //query
   const [lastround] = gameApi.endpoints.getLastround.useLazyQuery();
@@ -46,13 +42,17 @@ const RenderStatusId = () => {
     });
   });
 
-  const handleClick = (round: number) => {
+  const handleClick = (
+    round: number,
+    userConfiguration?: UserConfigurationForm,
+    night?: Night
+  ) => {
     switch (round) {
       case 2:
         setFinished({
           gameId: game.gameId,
           userId: user.userId,
-          ...userConfigaration,
+          ...userConfiguration,
         }).then(() => {
           requestFinishRound(webSocketState.webSocket!, game.gameId);
           dispatch(setIsLoading(true));
@@ -63,7 +63,6 @@ const RenderStatusId = () => {
         setFinished({
           gameId: game.gameId,
           userId: user.userId,
-          ...userConfigaration,
         }).then(() => {
           requestFinishRound(webSocketState.webSocket!, game.gameId);
           dispatch(setIsLoading(true));
@@ -74,7 +73,6 @@ const RenderStatusId = () => {
         setFinished({
           gameId: game.gameId,
           userId: user.userId,
-          ...userConfigaration,
         }).then(() => {
           requestFinishRound(webSocketState.webSocket!, game.gameId);
           dispatch(setIsLoading(true));
@@ -85,7 +83,14 @@ const RenderStatusId = () => {
         //TODO Soirée
         break;
       case 6:
-        //TODO Nuit
+        setFinished({
+          gameId: game.gameId,
+          userId: user.userId,
+          ...night,
+        }).then(() => {
+          requestFinishRound(webSocketState.webSocket!, game.gameId);
+          dispatch(setIsLoading(true));
+        });
         break;
     }
   };
@@ -97,7 +102,7 @@ const RenderStatusId = () => {
       return (
         <div>
           <button onClick={() => handleClick(round.statusId)}>Suivant</button>
-          <ConfigProfile />
+          <ConfigProfile handleFinishRound={handleClick} />
         </div>
       );
     case 3:
@@ -111,7 +116,7 @@ const RenderStatusId = () => {
       return (
         <div>
           <button onClick={() => handleClick(round.statusId)}>Suivant</button>
-          jour
+          <Day />
         </div>
       );
     case 5:
@@ -124,8 +129,7 @@ const RenderStatusId = () => {
     case 6:
       return (
         <div>
-          <button onClick={() => handleClick(round.statusId)}>Suivant</button>
-          nuit
+          <Attack handleFinishRound={handleClick} />
         </div>
       );
     default:

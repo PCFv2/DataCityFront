@@ -1,43 +1,59 @@
 import React, { useEffect, useState } from "react";
-import { useGetAllConfigurationQuery } from "../../../../../services";
-import OverlayLoader from "../../../../../UI-KIT/components/OverlayLoader";
+import { useGetAllConfigurationQuery } from "src/services";
+import OverlayLoader from "src/UI-KIT/components/OverlayLoader";
 
 import { useForm } from "react-hook-form";
 import { getSumOfPoints } from "./service";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../../../app/store";
-import { setNbPoints } from "../../../../../app/redux/userSlice";
+import { RootState } from "src/app/store";
+import { setNbPoints } from "src/app/redux/userSlice";
+import userApi, {
+  useGetUserConfigurationQuery,
+  usePutUserConfigurationMutation,
+  useUpdateUserByIdMutation,
+} from "src/services/queries/user";
 
-// TODO performance du composant !
+type ConfigProfileProps = {
+  handleFinishRound?: (
+    round: number,
+    userConfiguration?: UserConfigurationForm,
+    night?: Night
+  ) => void;
+};
 
-const ConfigProfile = () => {
-  /* Queries */
-  const { data: allConfiguration, isLoading } = useGetAllConfigurationQuery();
-
+const ConfigProfile = (props: ConfigProfileProps) => {
   /* redux */
   const dispatch = useDispatch();
-  const user = useSelector(
-    (state: RootState) => state.userSlice
-  ); /* get user info */
+  const user = useSelector((state: RootState) => state.userSlice);
+  const round = useSelector((state: RootState) => state.roundSlice);
 
-  /* Hook */
   const playerPoints: number = useSelector(
     (state: RootState) => state.gameSlice.startNbPoints
   );
+
+  /* Hook */
   const [displayPlayerPoints, setDisplayPlayerPoints] =
     useState<number>(playerPoints); /* just to display point of player */
   const [playerSpentPoints, setPlayerSpentPoints] = useState<ChoiceOfUser[]>(
     []
   ); /* list of points spent of each category by the player */
 
-  /* React hook form */
-  const { register, handleSubmit, setValue } = useForm<UserConfigurationForm>();
+  /* Queries */
+  const { data: allConfiguration, isLoading } = useGetAllConfigurationQuery(); // API /configuration
+  const { data: userConfiguration, isLoading: isLoadingUserConfiguration } =
+    useGetUserConfigurationQuery(user.userId); // API /user/{id}/configuration
 
-  const onSubmit = (data: UserConfigurationForm) => {
-    console.log({ ...data });
-    dispatch(setNbPoints(displayPlayerPoints)); /* set nbPoints of user */
-    /* Envoie les informations au back */
-  };
+  /* Mutations */
+  const [updateUser, { isLoading: userLoading }] = useUpdateUserByIdMutation(); // API user/{userId}
+
+  /* React hook form */
+  const { register, handleSubmit, setValue, reset } =
+    useForm<UserConfigurationForm>();
+
+  /* Rendering condition useEffect */
+  useEffect(() => {
+    reset({ configuration: userConfiguration }); // set default value when fetch of userConfiguration is success
+  }, [userConfiguration]);
 
   useEffect(() => {
     setDisplayPlayerPoints(
@@ -45,8 +61,16 @@ const ConfigProfile = () => {
     ); /* Manage display of point */
   }, [playerSpentPoints]);
 
+  const onSubmit = (data: UserConfigurationForm) => {
+    /* Envoie les informations au back */
+
+    props.handleFinishRound!(round.statusId, data); /* set Finished round */
+
+    updateUser({ userId: user.userId, nbPoints: displayPlayerPoints }); // send to API user
+    dispatch(setNbPoints(displayPlayerPoints)); /* set nbPoints of user */
+  };
+
   const handleClick = (
-    e: any,
     index: number,
     configurationId: number,
     nbPoint: number
@@ -65,28 +89,8 @@ const ConfigProfile = () => {
     setValue(`configuration.${index}.configurationId`, configurationId);
   };
 
-  const generateInput = (
-    value: string,
-    index: number,
-    configurationId: number,
-    nbPoint: number
-  ) => {
-    return (
-      <React.Fragment key={configurationId + value}>
-        <label htmlFor={value}>{value}</label>
-        <input
-          id={value}
-          value={nbPoint}
-          disabled={displayPlayerPoints - nbPoint < 0 && true}
-          type="radio"
-          onClick={(e) => handleClick(e, index, configurationId, nbPoint)}
-          {...register(`configuration.${index}.value`)}
-        />
-      </React.Fragment>
-    );
-  };
-
-  if (isLoading) return <OverlayLoader />;
+  if (isLoading || isLoadingUserConfiguration || userLoading)
+    return <OverlayLoader />;
 
   return (
     <div>
@@ -94,19 +98,46 @@ const ConfigProfile = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         {Object.values(allConfiguration!).map((elm: Configuration, index) => (
           <div key={elm.configurationId}>
-            {Object.values(elm)
-              .slice(2, 6)
-              .map((value, nbPoint) => (
-                <React.Fragment key={`${value} + ${nbPoint}`}>
-                  {value &&
-                    generateInput(
-                      value.toString(),
-                      index,
-                      elm.configurationId,
-                      nbPoint
-                    )}
-                </React.Fragment>
-              ))}
+            <label htmlFor={elm.value1}>{elm.value1}</label>
+            <input
+              id={elm.value1}
+              value={"value1"}
+              disabled={displayPlayerPoints < 0 && true}
+              type="radio"
+              onClick={() => handleClick(index, elm.configurationId, 0)}
+              {...register(`configuration.${index}.value`)}
+            />
+            <label htmlFor={elm.value2}>{elm.value2}</label>
+            <input
+              id={elm.value2}
+              value={"value2"}
+              disabled={displayPlayerPoints - 1 < 0 && true}
+              type="radio"
+              onClick={() => handleClick(index, elm.configurationId, 1)}
+              {...register(`configuration.${index}.value`)}
+            />
+            <label htmlFor={elm.value3}>{elm.value3}</label>
+            <input
+              id={elm.value3}
+              value={"value3"}
+              disabled={displayPlayerPoints - 2 < 0 && true}
+              type="radio"
+              onClick={() => handleClick(index, elm.configurationId, 2)}
+              {...register(`configuration.${index}.value`)}
+            />
+            {elm.value4 && (
+              <>
+                <label htmlFor={elm.value4}>{elm.value4}</label>
+                <input
+                  id={elm.value4}
+                  value={"value4"}
+                  disabled={displayPlayerPoints - 3 < 0 && true}
+                  type="radio"
+                  onClick={() => handleClick(index, elm.configurationId, 3)}
+                  {...register(`configuration.${index}.value`)}
+                />
+              </>
+            )}
           </div>
         ))}
         <button type="submit">Enregistrer</button>

@@ -15,7 +15,7 @@ export const gameApi = createApi({
     getRoundsByGameId: builder.query<Round[], number>({
       query: (id) => `/${id}/round`,
     }),
-    getRoudByGameId: builder.query<Round, GameIdAndRoundId>({
+    getRoundByGameId: builder.query<Round, GameIdAndRoundId>({
       query: (GameIdAndRoundId) =>
         `/${GameIdAndRoundId.gameId}/round/${GameIdAndRoundId.roundId}`,
     }),
@@ -35,16 +35,6 @@ export const gameApi = createApi({
     putGameById: builder.mutation<Game, PartialGame & { gameId: number }>({
       query: ({ gameId, ...putData }) => ({
         url: `/${gameId}`,
-        method: "PUT",
-        body: putData,
-      }),
-    }),
-    putUserConfigurationByGameId: builder.mutation<
-      UserConfiguration,
-      UserConfiguration & { gameId: number; userId: string }
-    >({
-      query: ({ gameId, userId, ...putData }) => ({
-        url: `/${gameId}/user/${userId}/configuration`,
         method: "PUT",
         body: putData,
       }),
@@ -78,6 +68,9 @@ export const gameApi = createApi({
     getLastround: builder.query<Round, number>({
       query: (id) => `/${id}/lastround`,
     }),
+    getUserAttacks: builder.query<UserAttacks[], {gameId: number, roundId:number, userId: string}>({
+      query: ({gameId, roundId, userId}) => `/${gameId}/round/${roundId}/user/${userId}/attacks`,
+    }),
   }),
 });
 
@@ -91,7 +84,7 @@ export const {
   usePostCreateGameMutation,
   usePutGameByIdMutation,
   useGetAllUsersByGameIdQuery,
-  usePutUserConfigurationByGameIdMutation,
   useSetFinishedMutation,
   useGetLastroundQuery,
+  useGetUserAttacksQuery,
 } = gameApi;
