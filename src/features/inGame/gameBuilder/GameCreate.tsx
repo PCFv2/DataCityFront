@@ -17,7 +17,8 @@ import { SOCKET_CODE } from "src/constants";
 import { requestCreateGame } from "src/app/requestServer";
 import { RootState } from "src/app/store";
 import { setRound } from "src/app/redux/roundSlice";
-import {SecondaryButton} from "../../../UI-KIT/components/Button";
+import { SecondaryButton } from "../../../UI-KIT/components/Button";
+import { MESSAGE_LOADER } from "src/constants/messageLoader";
 
 const GameCreate = () => {
   const [processingServer, setProcessingServer] = useState<boolean>(false);
@@ -51,12 +52,20 @@ const GameCreate = () => {
         ); /* on affiche le composent host */
         setProcessingServer(false); /* on arrete le chargement */
         const round = await lastRound(gameId);
-        dispatch(setRound(round.data!)); /* On rentre les infos du round dans le state */
+        dispatch(
+          setRound(round.data!)
+        ); /* On rentre les infos du round dans le state */
       });
     }
   };
-  if (isLoading || processingServer) return <OverlayLoader />;
-  return <SecondaryButton onClick={handleClick} content={"Créer une partie"}></SecondaryButton>;
+  if (isLoading || processingServer)
+    return <OverlayLoader message={MESSAGE_LOADER.gameCreate} />;
+  return (
+    <SecondaryButton
+      onClick={handleClick}
+      content={"Créer une partie"}
+    ></SecondaryButton>
+  );
 };
 
 export default GameCreate;

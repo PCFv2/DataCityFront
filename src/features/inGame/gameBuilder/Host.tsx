@@ -20,6 +20,7 @@ import {
   setIsLoading,
 } from "src/app/redux/displayComponentSlice";
 import { setGameData, setStartNbPoints } from "src/app/redux/gameSlice";
+import { MESSAGE_LOADER } from "src/constants/messageLoader";
 
 const Host = () => {
   // dipatch
@@ -112,7 +113,7 @@ const Host = () => {
     processingServer ||
     setFinishedIsLoading
   )
-    return <OverlayLoader />;
+    return <OverlayLoader message={MESSAGE_LOADER.gameHost} />;
 
   return (
     <div>
