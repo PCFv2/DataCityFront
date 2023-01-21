@@ -15,3 +15,11 @@ interface FullUserData extends User {
   configuration: UserConfiguration[];
   opponents: string[];
 }
+
+type UserOpponent = {
+  opponent: {
+    1: number;
+    2: number;
+    3: number;
+  };
+};

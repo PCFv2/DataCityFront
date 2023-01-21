@@ -9,7 +9,10 @@ export const userApi = createApi({
     getUserById: builder.query<FullUserData, string>({
       query: (id) => `/${id}`,
     }),
-    updateUserById: builder.mutation<FullUserData, PutUser & { userId: string }>({
+    updateUserById: builder.mutation<
+      FullUserData,
+      PutUser & { userId: string }
+    >({
       query: ({ userId, ...putData }) => ({
         url: `/${userId}`,
         method: "PUT",
@@ -29,6 +32,9 @@ export const userApi = createApi({
         body: userConfiguration,
       }),
     }),
+    getUserOpponent: builder.query<UserOpponent[], string>({
+      query: (id) => `/${id}/opponent`,
+    }),
   }),
 });
 
@@ -37,5 +43,6 @@ export const {
   useUpdateUserByIdMutation,
   useGetUserConfigurationQuery,
   usePutUserConfigurationMutation,
+  useGetUserOpponentQuery,
 } = userApi;
 export default userApi;

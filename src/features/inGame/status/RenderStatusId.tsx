@@ -13,6 +13,7 @@ import OverlayLoader from "src/UI-KIT/components/OverlayLoader";
 import { ConfigProfile } from "./organisms";
 import Attack from "./organisms/attack/Attack";
 import Day from "./organisms/day/Day";
+import Evening from "./organisms/evening/Evening";
 
 const RenderStatusId = () => {
   const dispatch = useDispatch();
@@ -123,7 +124,7 @@ const RenderStatusId = () => {
       return (
         <div>
           <button onClick={() => handleClick(round.statusId)}>Suivant</button>
-          soirée
+          <Evening />
         </div>
       );
     case 6:

@@ -10,7 +10,6 @@ import { setWebSocket } from "src/app/redux/websocketSlice";
 import { RootState } from "src/app/store";
 import ConfigProfile from "../inGame/status/organisms/configProfile/ConfigProfile";
 import RenderStatusId from "../inGame/status/RenderStatusId";
-import Maze from "../inGame/attack/maze/Maze";
 
 /* COMPONENT */
 const Host = React.lazy(() => import("../inGame/gameBuilder/Host"));
