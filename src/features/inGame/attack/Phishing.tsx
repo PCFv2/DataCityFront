@@ -3,14 +3,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "src/app/store";
 import { getRandomWords } from "./services/phishing";
 
-type AttackProps = {
-  handleFinishRound?: (
-    round: number,
-    userConfiguration?: UserConfigurationForm,
-    night?: Night
-  ) => void;
-};
-
 const Phishing = (props: AttackProps) => {
   const WIN =
     "Mettre sens pouvoir dans un mail le bon pour les mots malveillant créer "; // FAKE

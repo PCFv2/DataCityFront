@@ -129,7 +129,6 @@ const RenderStatusId = () => {
     case 6:
       return (
         <div>
-          <button onClick={() => handleClick(round.statusId)}>Suivant</button>
           <Attack handleFinishRound={handleClick} />
         </div>
       );

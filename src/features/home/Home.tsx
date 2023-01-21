@@ -10,6 +10,7 @@ import { setWebSocket } from "src/app/redux/websocketSlice";
 import { RootState } from "src/app/store";
 import ConfigProfile from "../inGame/status/organisms/configProfile/ConfigProfile";
 import RenderStatusId from "../inGame/status/RenderStatusId";
+import Maze from "../inGame/attack/maze/Maze";
 
 /* COMPONENT */
 const Host = React.lazy(() => import("../inGame/gameBuilder/Host"));
@@ -19,7 +20,7 @@ const WaitRoom = React.lazy(() => import("../inGame/gameBuilder/WaitRoom"));
 const Home = () => {
   const [websocketIsAccess, setWebSocketIsAccess] = useState<boolean>(false);
   /* Create websocket */
-  const ws = useMemo(() => new WebSocket("wss://data-city.alwaysdata.net/server"), []); //ws://localhost:6969
+  const ws = useMemo(() => new WebSocket("ws://localhost:6969"), []); //ws://localhost:6969
 
   const dispatch = useDispatch(); // pousser des données dans redux
   const displayComponentState = useSelector(

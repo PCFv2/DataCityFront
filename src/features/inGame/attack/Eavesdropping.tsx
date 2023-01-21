@@ -15,14 +15,6 @@ const Container = styled.span<{
   padding: 50px;
 `;
 
-type AttackProps = {
-  handleFinishRound?: (
-    round: number,
-    userConfiguration?: UserConfigurationForm,
-    night?: Night
-  ) => void;
-};
-
 const EavesDropping = (props: AttackProps) => {
   const NUMBER_FILES = 6;
   /* hook */
