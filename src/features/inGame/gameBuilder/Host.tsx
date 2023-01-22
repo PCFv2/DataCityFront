@@ -87,6 +87,7 @@ const Host = () => {
     }).then(() => {
       requestFinishRound(webSocketState.webSocket!, game.gameId);
       dispatch(setIsLoading(true));
+      dispatch(setGameData(gameInfos!));
     });
   };
 

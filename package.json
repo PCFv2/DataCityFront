@@ -55,6 +55,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-gauge-chart": "^0.4.0",
     "gh-pages": "^4.0.0",
     "semantic-release": "^19.0.5"
   },
