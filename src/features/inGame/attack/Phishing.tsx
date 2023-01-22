@@ -1,13 +1,89 @@
+import styled from "@emotion/styled";
 import React, { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "src/app/store";
 import { getRandomWords } from "./services/phishing";
+import background from "src/assets/img/phishing/background.jpg";
+import { SecondaryButton } from "src/UI-KIT/components/Button";
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  background: url(${background}) no-repeat center center fixed;
+  background-size: cover;
+  & p {
+    margin: 0;
+  }
+  & button {
+    margin: 50px auto;
+  }
+`;
+
+const WordsContainer = styled.div`
+  margin: 50px 10%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  font-size: 1.1rem;
+`;
+
+const Box = styled.div<{ isSelected?: boolean }>`
+  position: relative;
+  background-color: ${(props) => props.theme.colors.primary.blue};
+  border-radius: ${(props) => props.theme.radius.medium};
+  border: 1px solid ${(props) => (props.isSelected ? "grey" : "white")};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: ${(props) => props.theme.colors.primary.white};
+  cursor: pointer;
+  height: 300px;
+  width: 250px;
+  -webkit-box-shadow: 1px 1px 10px 1px #000000;
+  box-shadow: 1px 1px 10px 1px #000000;
+  transition: 0.3s;
+  opacity: ${(props) => props.isSelected && "0.55"};
+`;
+
+const Rule = styled.p`
+  font-size: 1.1rem;
+  padding: 10px;
+  border-radius: ${(props) => props.theme.radius.small};
+  background-color: ${(props) => `${props.theme.colors.primary.white}A6`};
+  font-weight: bold;
+`;
+
+const AttackType = styled.span`
+  position: absolute;
+  top: 10%;
+  background-color: ${(props) => props.theme.colors.primary.lightBlue};
+  color: black;
+  width: 100%;
+  text-align: center;
+`;
+
+const RuleContainer = styled.div`
+  margin: 50px 10% 0 10%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+`;
+
+const Words = styled.p`
+  font-style: italic;
+  color: white;
+  letter-spacing: 1.2px;
+`;
 
 const Phishing = (props: AttackProps) => {
   const WIN =
-    "Mettre sens pouvoir dans un mail le bon pour les mots malveillant créer "; // FAKE
+    "Mettre les mots dans le bon sens pour pouvoir créer un mail malveillant ";
   /* HOOK */
-  const [wordsFind, setWordsFind] = useState<string[]>([]);
+  const [wordsFind, setWordsFind] = useState<string[]>([]); /* words list */
   const [hasWon, setHasWon] = useState<boolean>(false);
 
   /* redux */
@@ -53,28 +129,30 @@ const Phishing = (props: AttackProps) => {
     }
   };
 
-  /* a gagné */
-  if (hasWon)
-    return (
-      <div>
-        <button onClick={handleFinish}>Enregistrer</button>Vous avez trouvé la
-        bonne phrase bravo !
-      </div>
-    );
-
   return (
-    <div>
-      <h2>Attaque: Phishing</h2>
-      <p>Votre réponse : {wordsFind}</p>
-      <div>
+    <Container>
+      <RuleContainer>
+        <Rule>
+          {!hasWon
+            ? "Mettez les mots dans l'ordre pour générer un mail malveillant"
+            : "Vous avez trouvé la bonne phrase bravo ! Vous pouvez maintenant lancer votre attaque !"}
+        </Rule>
+        <Words>{wordsFind}.</Words>
+      </RuleContainer>
+      <WordsContainer>
         {words.map((elm, index) => (
-          <div key={index} onClick={() => handleClick(elm)}>
+          <Box
+            key={index}
+            onClick={() => handleClick(elm)}
+            isSelected={wordsFind.includes(elm)}
+          >
+            <AttackType>Hameçonnage</AttackType>
             {elm}
-          </div>
+          </Box>
         ))}
-      </div>
-      <button onClick={handleFinish}>Enregistrer</button>
-    </div>
+      </WordsContainer>
+      <SecondaryButton onClick={handleFinish} content={"Enregistrer"} />
+    </Container>
   );
 };
 

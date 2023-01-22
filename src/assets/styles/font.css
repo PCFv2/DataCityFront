@@ -1,0 +1,15 @@
+@font-face {
+    font-family: 'Aquire';
+    src: url("../fonts/Aquire.otf") format('opentype'),
+        url("../fonts/AquireBold.otf") format('opentype');
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    height: 100%;
+    font-family: "Poppins", "Roboto", sans-serif;
+}

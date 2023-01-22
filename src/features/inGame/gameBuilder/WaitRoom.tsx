@@ -9,6 +9,7 @@ import { setGameData } from "src/app/redux/gameSlice";
 import { requestFinishRound } from "src/app/requestServer";
 import { RootState } from "src/app/store";
 import { DISPLAY_COMPONENT, SOCKET_CODE } from "src/constants";
+import { MESSAGE_LOADER } from "src/constants/messageLoader";
 import {
   gameApi,
   useGetAllUsersByGameIdQuery,
@@ -89,7 +90,7 @@ const WaitRoom = () => {
   };
 
   if (userLoading || gameLoading || roundLoading || setFinishedIsLoading)
-    return <OverlayLoader />;
+    return <OverlayLoader message={MESSAGE_LOADER.partyLoading} />;
 
   return (
     <div>

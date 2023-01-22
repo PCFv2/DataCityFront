@@ -2,7 +2,6 @@ import React, { Suspense, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import OverlayLoader from "src/UI-KIT/components/OverlayLoader";
 import { DISPLAY_COMPONENT, SOCKET_CODE } from "../../constants";
-import GameCreate from "../inGame/gameBuilder/GameCreate";
 import { useDispatch, useSelector } from "react-redux";
 import { setDisplayComponent } from "src/app/redux/displayComponentSlice";
 import { setUserId } from "src/app/redux/userSlice";
@@ -10,11 +9,13 @@ import { setWebSocket } from "src/app/redux/websocketSlice";
 import { RootState } from "src/app/store";
 import ConfigProfile from "../inGame/status/organisms/configProfile/ConfigProfile";
 import RenderStatusId from "../inGame/status/RenderStatusId";
+import { MESSAGE_LOADER } from "src/constants/messageLoader";
 
 /* COMPONENT */
 const Host = React.lazy(() => import("../inGame/gameBuilder/Host"));
 const Join = React.lazy(() => import("../inGame/gameBuilder/Join"));
 const WaitRoom = React.lazy(() => import("../inGame/gameBuilder/WaitRoom"));
+const Homepage = React.lazy(() => import("./Homepage"));
 
 const Home = () => {
   const [websocketIsAccess, setWebSocketIsAccess] = useState<boolean>(false);
@@ -52,13 +53,9 @@ const Home = () => {
     });
   });
 
-  const handleClick = (): void => {
-    dispatch(setDisplayComponent(DISPLAY_COMPONENT.joinComponent));
-  };
-
   if (!websocketIsAccess || displayComponentState.isLoading)
     return (
-      <OverlayLoader />
+      <OverlayLoader message={MESSAGE_LOADER.loading} />
     ); /* si le websocket n'est pas encore créer en loading */
 
   if (displayComponentState.displayComponent === DISPLAY_COMPONENT.error)
@@ -68,10 +65,9 @@ const Home = () => {
   switch (displayComponentState.displayComponent) {
     case DISPLAY_COMPONENT.home:
       return (
-        <div>
-          <button onClick={handleClick}>Rejoindre la partie</button>
-          <GameCreate /> {/* Button create game */}
-        </div>
+        <Suspense fallback={<OverlayLoader />}>
+          <Homepage />
+        </Suspense>
       );
     case DISPLAY_COMPONENT.hostComponent:
       return (
