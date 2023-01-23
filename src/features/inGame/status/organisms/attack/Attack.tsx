@@ -14,12 +14,12 @@ const StealthDowload = React.lazy(
 );
 
 const Attack = (props: AttackProps) => {
-  // const attackNb = useMemo(
-  //   () => Math.floor(Math.random() * ATTACK.nbAttacks),
-  //   []
-  // );
+  const attackNb = useMemo(
+    () => Math.floor(Math.random() * ATTACK.nbAttacks),
+    []
+  );
 
-  const attackNb: number = 0;
+  // const attackNb: number = 0;
 
   switch (attackNb) {
     case ATTACK.attacks.eavesdropping:

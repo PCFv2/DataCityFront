@@ -20,7 +20,7 @@ const Homepage = React.lazy(() => import("./Homepage"));
 const Home = () => {
   const [websocketIsAccess, setWebSocketIsAccess] = useState<boolean>(false);
   /* Create websocket */
-  const ws = useMemo(() => new WebSocket("ws://localhost:6969"), []); //ws://localhost:6969
+  const ws = useMemo(() => new WebSocket("ws://localhost:6969"), []); //ws://localhost:6969 wss://data-city.alwaysdata.net/server
 
   const dispatch = useDispatch(); // pousser des données dans redux
   const displayComponentState = useSelector(
