@@ -19,6 +19,7 @@ const WaitRoom = React.lazy(() => import("../inGame/gameBuilder/WaitRoom"));
 const Homepage = React.lazy(() => import("./Homepage"));
 
 const Home = () => {
+  const navigate = useNavigate();
   const [websocketIsAccess, setWebSocketIsAccess] = useState<boolean>(false);
   /* Create websocket */
   const ws = useMemo(() => new WebSocket("ws://localhost:6969"), []); //ws://localhost:6969
@@ -28,18 +29,20 @@ const Home = () => {
     (state: RootState) => state.displayComponent
   ); // on récupère les infos du slice displayComponent redux
 
-  const navigate = useNavigate();
-
   useEffect(() => {
     ws.addEventListener("open", () => {
-      console.log("Connected");
+      console.log("open");
       setWebSocketIsAccess(true);
       /* connection ok */
       dispatch(setWebSocket(ws)); /* on définit le websocket dans redux */
       dispatch(setDisplayComponent(DISPLAY_COMPONENT.home));
     });
     ws.addEventListener("close", () => {
-      console.log("Closed");
+      console.log("closed");
+    });
+    ws.addEventListener("error", () => {
+      navigate("/error:server");
+      ws.close();
     });
     ws.addEventListener("message", (message) => {
       if (message.data.slice(0, 2) === SOCKET_CODE.serverValidate.getToken) {
@@ -48,26 +51,21 @@ const Home = () => {
         ); /* on set le userId dans le state */
       }
       if (message.data === SOCKET_CODE.serverError.unknownError) {
-        dispatch(setDisplayComponent(DISPLAY_COMPONENT.error));
+        navigate("/error");
         ws.close();
       }
     });
   });
 
   if (!websocketIsAccess || displayComponentState.isLoading)
-    return (
-      <OverlayLoader message={MESSAGE_LOADER.loading} />
-    ); /* si le websocket n'est pas encore créer en loading */
-
-  if (displayComponentState.displayComponent === DISPLAY_COMPONENT.error)
-    navigate("/error"); /* en cas d'erreur on redirige vers /erreur */
+    return <OverlayLoader message={MESSAGE_LOADER.loading} />;
 
   // Affichage
   switch (displayComponentState.displayComponent) {
     case DISPLAY_COMPONENT.home:
       return (
         <Suspense fallback={<OverlayLoader />}>
-          <Evening />
+          <Homepage />
         </Suspense>
       );
     case DISPLAY_COMPONENT.hostComponent:
