@@ -50,7 +50,7 @@ const OppenentStatus = styled.div`
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 80px;
+  gap: 5em;
 `;
 const Status = styled.div`
   display: flex;
@@ -79,44 +79,45 @@ const Evening = (props: AttackProps) => {
       <Opponent>
         <Title>Résumer de l'avancée</Title>
         <OppenentStatus>
-          {Object.entries(oppenent!).map((elm) => {
-            if (elm)
-              return (
-                <React.Fragment key={elm[0]}>
-                  <Profil>
-                    <Face />
-                    <span>{elm[0]}</span>
-                  </Profil>
-                  <Status>
-                    <h2>Physique</h2>
-                    <div style={{ width: 109, height: 109 }}>
-                      <CircularProgressbar
-                        value={Object.values(elm[1][0])[0]}
-                        text={`${Object.values(elm[1][0])[0].toString()}%`}
-                      />
-                    </div>
-                  </Status>
-                  <Status>
-                    <h2>Social</h2>
-                    <div style={{ width: 109, height: 109 }}>
-                      <CircularProgressbar
-                        value={Object.values(elm[1][1])[0]}
-                        text={`${Object.values(elm[1][1])[0].toString()}%`}
-                      />
-                    </div>
-                  </Status>
-                  <Status>
-                    <h2>Internet</h2>
-                    <div style={{ width: 109, height: 109 }}>
-                      <CircularProgressbar
-                        value={Object.values(elm[1][2])[0]}
-                        text={`${Object.values(elm[1][2])[0].toString()}%`}
-                      />
-                    </div>
-                  </Status>
-                </React.Fragment>
-              );
-          })}
+          {Object.entries(oppenent!).length ? (
+            Object.entries(oppenent!).map((elm) => (
+              <React.Fragment key={elm[0]}>
+                <Profil>
+                  <Face />
+                  <span>{elm[0]}</span>
+                </Profil>
+                <Status>
+                  <h2>Physique</h2>
+                  <div style={{ width: 109, height: 109 }}>
+                    <CircularProgressbar
+                      value={Object.values(elm[1][0])[0]}
+                      text={`${Object.values(elm[1][0])[0].toString()}%`}
+                    />
+                  </div>
+                </Status>
+                <Status>
+                  <h2>Social</h2>
+                  <div style={{ width: 109, height: 109 }}>
+                    <CircularProgressbar
+                      value={Object.values(elm[1][1])[0]}
+                      text={`${Object.values(elm[1][1])[0].toString()}%`}
+                    />
+                  </div>
+                </Status>
+                <Status>
+                  <h2>Internet</h2>
+                  <div style={{ width: 109, height: 109 }}>
+                    <CircularProgressbar
+                      value={Object.values(elm[1][2])[0]}
+                      text={`${Object.values(elm[1][2])[0].toString()}%`}
+                    />
+                  </div>
+                </Status>
+              </React.Fragment>
+            ))
+          ) : (
+            <div>Pas d'information</div>
+          )}
         </OppenentStatus>
       </Opponent>
       <PrimaryButton content="Continuer" onClick={handleFinish} />

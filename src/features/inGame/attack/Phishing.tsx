@@ -39,8 +39,8 @@ const Box = styled.div<{ isSelected?: boolean }>`
   flex-direction: column;
   color: ${(props) => props.theme.colors.primary.white};
   cursor: pointer;
-  height: 300px;
-  width: 250px;
+  height: 16em;
+  width: 14em;
   -webkit-box-shadow: 1px 1px 10px 1px #000000;
   box-shadow: 1px 1px 10px 1px #000000;
   transition: 0.3s;
