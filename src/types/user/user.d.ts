@@ -17,9 +17,7 @@ interface FullUserData extends User {
 }
 
 type UserOpponent = {
-  opponent: {
-    1: number;
-    2: number;
-    3: number;
-  };
+  0: number;
+  1: number;
+  2: number;
 };
