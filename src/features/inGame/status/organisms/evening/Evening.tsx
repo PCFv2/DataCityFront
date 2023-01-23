@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/app/store";
 import { MESSAGE_LOADER } from "src/constants/messageLoader";
 import userApi, { useGetUserOpponentQuery } from "src/services/queries/user";
@@ -12,6 +12,7 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import styled from "@emotion/styled";
 import { PrimaryButton } from "src/UI-KIT/components/Button";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   background: url(${background}) no-repeat center center fixed;
@@ -62,13 +63,24 @@ const Evening = (props: AttackProps) => {
   /* redux */
   const round = useSelector((state: RootState) => state.roundSlice);
   const user = useSelector((state: RootState) => state.userSlice);
+  const webSocketState = useSelector((state: RootState) => state.webSocket);
+
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   const { data: oppenent, isLoading } = useGetUserOpponentQuery(user.userId);
 
-  const [getUsername, { isLoading: getNameOfUserIsLoading }] =
+  const [getUser, { isLoading: getNameOfUserIsLoading }] =
     userApi.endpoints.getUserById.useLazyQuery();
 
-  const handleFinish = (): void => {
+  const handleFinish = async (): Promise<void> => {
+    const { data } = await getUser(user.userId);
+    /* si le joueur est mort */
+    if (!data?.isAlive) {
+      webSocketState.webSocket?.close();
+      navigate("/end-game"); /* on envoie sur la page fin du jeu */
+    }
     props.handleFinishRound!(round.statusId);
   };
 

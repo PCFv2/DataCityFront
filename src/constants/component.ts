@@ -8,4 +8,5 @@ export const DISPLAY_COMPONENT = {
   configProfile: "configProfile",
   error: "error",
   renderStatusId: "renderStatusId",
+  finishGame: "finishGame",
 };
