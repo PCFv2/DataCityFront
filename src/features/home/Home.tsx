@@ -10,6 +10,7 @@ import { RootState } from "src/app/store";
 import ConfigProfile from "../inGame/status/organisms/configProfile/ConfigProfile";
 import RenderStatusId from "../inGame/status/RenderStatusId";
 import { MESSAGE_LOADER } from "src/constants/messageLoader";
+import Evening from "../inGame/status/organisms/evening/Evening";
 
 /* COMPONENT */
 const Host = React.lazy(() => import("../inGame/gameBuilder/Host"));

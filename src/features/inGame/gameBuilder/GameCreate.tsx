@@ -58,7 +58,7 @@ const GameCreate = () => {
       });
     }
   };
-  if (isLoading || processingServer)
+  if (isLoading || processingServer || roundIsLoading)
     return <OverlayLoader message={MESSAGE_LOADER.gameCreate} />;
   return (
     <SecondaryButton
