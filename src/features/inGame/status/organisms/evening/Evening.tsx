@@ -25,7 +25,7 @@ const Container = styled.div`
   gap: 50px;
 `;
 
-const Opponent = styled.div`
+const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -48,6 +48,7 @@ const Title = styled.h2`
 
 const OppenentStatus = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
@@ -57,6 +58,11 @@ const Status = styled.div`
   display: flex;
   align-items: center;
   gap: 20px;
+`;
+
+const Opponent = styled.div`
+  display: flex;
+  gap: 30px;
 `;
 
 const Evening = (props: AttackProps) => {
@@ -88,12 +94,12 @@ const Evening = (props: AttackProps) => {
     return <OverlayLoader message={MESSAGE_LOADER.loading} />;
   return (
     <Container>
-      <Opponent>
+      <Content>
         <Title>Résumer de l'avancée</Title>
         <OppenentStatus>
           {Object.entries(oppenent!).length ? (
             Object.entries(oppenent!).map((elm) => (
-              <React.Fragment key={elm[0]}>
+              <Opponent key={elm[0]}>
                 <Profil>
                   <Face />
                   <span>{elm[0]}</span>
@@ -125,13 +131,13 @@ const Evening = (props: AttackProps) => {
                     />
                   </div>
                 </Status>
-              </React.Fragment>
+              </Opponent>
             ))
           ) : (
             <div>Pas d'information</div>
           )}
         </OppenentStatus>
-      </Opponent>
+      </Content>
       <PrimaryButton content="Continuer" onClick={handleFinish} />
     </Container>
   );
