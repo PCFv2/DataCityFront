@@ -6,21 +6,19 @@ const Question = (props: {question: Question, choices?: Day[], setChoices: Dispa
     let state = 0;
     const onSubmit = () => {
         const day:Day = {
-            day: {
-                userId: props.question.userId!,
-                result: false,
-            }
+            userId: props.question.userId!,
+            result: false,
         }
 
         switch (state) {
             case 0:
-                day.day.result = props.question.choices.choice1.isTrue
+                day.result = props.question.choices.choice1.isTrue
                 break;
             case 1:
-                day.day.result = props.question.choices.choice2.isTrue
+                day.result = props.question.choices.choice2.isTrue
                 break;
             case 2:
-                day.day.result = props.question.choices.choice3.isTrue
+                day.result = props.question.choices.choice3.isTrue
                 break;
         }
 
