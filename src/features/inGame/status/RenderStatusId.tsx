@@ -8,12 +8,12 @@ import {
 import { requestFinishRound } from "src/app/requestServer";
 import { RootState } from "src/app/store";
 import { DISPLAY_COMPONENT, SOCKET_CODE } from "src/constants";
-import { MESSAGE_LOADER } from "src/constants/messageLoader";
 import { gameApi, useSetFinishedMutation } from "src/services";
 import OverlayLoader from "src/UI-KIT/components/OverlayLoader";
 import { ConfigProfile } from "./organisms";
 import Attack from "./organisms/attack/Attack";
 import Day from "./organisms/day/Day";
+import Evening from "./organisms/evening/Evening";
 
 const RenderStatusId = () => {
   const dispatch = useDispatch();
@@ -82,7 +82,14 @@ const RenderStatusId = () => {
         });
         break;
       case 5:
-        //TODO Soirée
+        setFinished({
+          gameId: game.gameId,
+          userId: user.userId,
+        }).then(() => {
+          requestFinishRound(webSocketState.webSocket!, game.gameId);
+          dispatch(setIsLoading(true));
+        });
+        //TODO soirée
         break;
       case 6:
         setFinished({
@@ -97,8 +104,7 @@ const RenderStatusId = () => {
     }
   };
 
-  if (setFinishedIsLoading)
-    return <OverlayLoader />;
+  if (setFinishedIsLoading) return <OverlayLoader />;
 
   switch (round.statusId) {
     case 2:
@@ -125,8 +131,7 @@ const RenderStatusId = () => {
     case 5:
       return (
         <div>
-          <button onClick={() => handleClick(round.statusId)}>Suivant</button>
-          soirée
+          <Evening handleFinishRound={handleClick} />
         </div>
       );
     case 6:

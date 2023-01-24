@@ -19,8 +19,6 @@ const Attack = (props: AttackProps) => {
     []
   );
 
-  // const attackNb: number = 0;
-
   switch (attackNb) {
     case ATTACK.attacks.eavesdropping:
       return (

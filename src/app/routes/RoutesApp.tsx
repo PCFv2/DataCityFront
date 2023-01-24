@@ -8,7 +8,7 @@ const RoutesApp = () => {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/*" element={<HomePage />} />
-      <Route path="/error" element={<ErrorPage />} />
+      <Route path="/error:type" element={<ErrorPage />} /> {/* Error page */}
     </Routes>
   );
 };
