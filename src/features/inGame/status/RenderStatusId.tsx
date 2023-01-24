@@ -46,7 +46,8 @@ const RenderStatusId = () => {
   const handleClick = (
     round: number,
     userConfiguration?: UserConfigurationForm,
-    night?: Night
+    night?: Night,
+    day? : DayForm
   ) => {
     switch (round) {
       case 2:
@@ -74,11 +75,11 @@ const RenderStatusId = () => {
         setFinished({
           gameId: game.gameId,
           userId: user.userId,
+          ...day,
         }).then(() => {
           requestFinishRound(webSocketState.webSocket!, game.gameId);
           dispatch(setIsLoading(true));
         });
-        //TODO Journée
         break;
       case 5:
         setFinished({
@@ -124,7 +125,7 @@ const RenderStatusId = () => {
       return (
         <div>
           <button onClick={() => handleClick(round.statusId)}>Suivant</button>
-          <Day />
+          <Day handleFinishRound={handleClick}/>
         </div>
       );
     case 5:
