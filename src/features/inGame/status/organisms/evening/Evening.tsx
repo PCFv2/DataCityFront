@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/app/store";
 import { MESSAGE_LOADER } from "src/constants/messageLoader";
 import userApi, { useGetUserOpponentQuery } from "src/services/queries/user";
@@ -12,6 +12,7 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import styled from "@emotion/styled";
 import { PrimaryButton } from "src/UI-KIT/components/Button";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   background: url(${background}) no-repeat center center fixed;
@@ -24,7 +25,7 @@ const Container = styled.div`
   gap: 50px;
 `;
 
-const Opponent = styled.div`
+const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -47,6 +48,7 @@ const Title = styled.h2`
 
 const OppenentStatus = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
@@ -58,17 +60,33 @@ const Status = styled.div`
   gap: 20px;
 `;
 
+const Opponent = styled.div`
+  display: flex;
+  gap: 30px;
+`;
+
 const Evening = (props: AttackProps) => {
   /* redux */
   const round = useSelector((state: RootState) => state.roundSlice);
   const user = useSelector((state: RootState) => state.userSlice);
+  const webSocketState = useSelector((state: RootState) => state.webSocket);
+
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   const { data: oppenent, isLoading } = useGetUserOpponentQuery(user.userId);
 
-  const [getUsername, { isLoading: getNameOfUserIsLoading }] =
+  const [getUser, { isLoading: getNameOfUserIsLoading }] =
     userApi.endpoints.getUserById.useLazyQuery();
 
-  const handleFinish = (): void => {
+  const handleFinish = async (): Promise<void> => {
+    const { data } = await getUser(user.userId);
+    /* si le joueur est mort */
+    if (!data?.isAlive) {
+      webSocketState.webSocket?.close();
+      navigate("/end-game"); /* on envoie sur la page fin du jeu */
+    }
     props.handleFinishRound!(round.statusId);
   };
 
@@ -76,12 +94,12 @@ const Evening = (props: AttackProps) => {
     return <OverlayLoader message={MESSAGE_LOADER.loading} />;
   return (
     <Container>
-      <Opponent>
+      <Content>
         <Title>Résumer de l'avancée</Title>
         <OppenentStatus>
           {Object.entries(oppenent!).length ? (
             Object.entries(oppenent!).map((elm) => (
-              <React.Fragment key={elm[0]}>
+              <Opponent key={elm[0]}>
                 <Profil>
                   <Face />
                   <span>{elm[0]}</span>
@@ -113,13 +131,13 @@ const Evening = (props: AttackProps) => {
                     />
                   </div>
                 </Status>
-              </React.Fragment>
+              </Opponent>
             ))
           ) : (
             <div>Pas d'information</div>
           )}
         </OppenentStatus>
-      </Opponent>
+      </Content>
       <PrimaryButton content="Continuer" onClick={handleFinish} />
     </Container>
   );

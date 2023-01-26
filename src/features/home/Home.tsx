@@ -51,7 +51,7 @@ const Home = () => {
         ); /* on set le userId dans le state */
       }
       if (message.data === SOCKET_CODE.serverError.unknownError) {
-        navigate("/error");
+        navigate("/error:test");
         ws.close();
       }
     });

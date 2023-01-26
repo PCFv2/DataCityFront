@@ -17,12 +17,12 @@ import {
     setDisplayComponent,
     setIsLoading,
 } from "src/app/redux/displayComponentSlice";
+import { setNbPoints } from "src/app/redux/userSlice";
 import {setGameData, setStartNbPoints} from "src/app/redux/gameSlice";
 import {MESSAGE_LOADER} from "src/constants/messageLoader";
 import styled from "@emotion/styled";
 import background from "../../../assets/img/beforeGame/background.webp";
 import {Primary2Button, PrimaryButton, SecondaryButton} from "../../../UI-KIT/components/Button";
-
 
 const Host = () => {
     // dipatch
@@ -80,17 +80,19 @@ const Host = () => {
         });
     }; /* traitement du formulaire */
 
-    // Lancement de la partie, set finished for player
-    const handleStartGame = () => {
-        dispatch(setStartNbPoints(gameInfos?.startNbPoints!));
-        setFinished({
-            gameId: game.gameId,
-            userId: user.userId,
-        }).then(() => {
-            requestFinishRound(webSocketState.webSocket!, game.gameId);
-            dispatch(setIsLoading(true));
-        });
-    };
+  // Lancement de la partie, set finished for player
+  const handleStartGame = () => {
+    dispatch(setStartNbPoints(gameInfos?.startNbPoints!));
+    setFinished({
+      gameId: game.gameId,
+      userId: user.userId,
+    }).then(() => {
+      requestFinishRound(webSocketState.webSocket!, game.gameId);
+      dispatch(setIsLoading(true));
+      dispatch(setGameData(gameInfos!));
+      dispatch(setNbPoints(gameInfos!.startNbPoints));
+    });
+  };
 
     useEffect(() => {
         webSocketState.webSocket?.addEventListener("message", async (message) => {

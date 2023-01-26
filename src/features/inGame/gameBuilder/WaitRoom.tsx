@@ -6,6 +6,7 @@ import {
   setIsLoading,
 } from "src/app/redux/displayComponentSlice";
 import { setGameData } from "src/app/redux/gameSlice";
+import { setNbPoints } from "src/app/redux/userSlice";
 import { requestFinishRound } from "src/app/requestServer";
 import { RootState } from "src/app/store";
 import { DISPLAY_COMPONENT, SOCKET_CODE } from "src/constants";
@@ -86,6 +87,7 @@ const WaitRoom = () => {
       /* set all redux */
       dispatch(setIsLoading(true));
       dispatch(setGameData(gameInfos!));
+      dispatch(setNbPoints(gameInfos!.startNbPoints));
     });
   };
 
