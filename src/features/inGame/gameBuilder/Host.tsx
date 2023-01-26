@@ -21,6 +21,7 @@ import {
 } from "src/app/redux/displayComponentSlice";
 import { setGameData, setStartNbPoints } from "src/app/redux/gameSlice";
 import { MESSAGE_LOADER } from "src/constants/messageLoader";
+import { setNbPoints } from "src/app/redux/userSlice";
 
 const Host = () => {
   // dipatch
@@ -88,6 +89,7 @@ const Host = () => {
       requestFinishRound(webSocketState.webSocket!, game.gameId);
       dispatch(setIsLoading(true));
       dispatch(setGameData(gameInfos!));
+      dispatch(setNbPoints(gameInfos!.startNbPoints));
     });
   };
 

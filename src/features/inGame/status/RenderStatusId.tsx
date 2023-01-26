@@ -47,7 +47,7 @@ const RenderStatusId = () => {
     round: number,
     userConfiguration?: UserConfigurationForm,
     night?: Night,
-    day? : DayForm
+    day?: DayForm
   ) => {
     switch (round) {
       case 2:
@@ -110,22 +110,19 @@ const RenderStatusId = () => {
     case 2:
       return (
         <div>
-          <button onClick={() => handleClick(round.statusId)}>Suivant</button>
           <ConfigProfile handleFinishRound={handleClick} />
         </div>
       );
     case 3:
       return (
         <div>
-          <button onClick={() => handleClick(round.statusId)}>Suivant</button>
-          matinée
+          <ConfigProfile handleFinishRound={handleClick} />
         </div>
       );
     case 4:
       return (
         <div>
-          <button onClick={() => handleClick(round.statusId)}>Suivant</button>
-          <Day handleFinishRound={handleClick}/>
+          <Day handleFinishRound={handleClick} />
         </div>
       );
     case 5:

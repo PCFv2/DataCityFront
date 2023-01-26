@@ -5,9 +5,11 @@ export const userApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.REACT_APP_API_URL + "/user",
   }),
+  tagTypes: ["user"],
   endpoints: (builder) => ({
     getUserById: builder.query<FullUserData, string>({
       query: (id) => `/${id}`,
+      providesTags: ["user"],
     }),
     updateUserById: builder.mutation<
       FullUserData,
@@ -18,9 +20,11 @@ export const userApi = createApi({
         method: "PUT",
         body: putData,
       }),
+      invalidatesTags: ["user"],
     }),
     getUserConfiguration: builder.query<UserConfiguration[], string>({
       query: (id) => `/${id}/configuration`,
+      providesTags: ["user"],
     }),
     putUserConfiguration: builder.mutation<
       UserConfigurationForm,
@@ -31,9 +35,11 @@ export const userApi = createApi({
         method: "PUT",
         body: userConfiguration,
       }),
+      invalidatesTags: ["user"],
     }),
     getUserOpponent: builder.query<UserOpponent[], string>({
       query: (id) => `/${id}/opponent`,
+      providesTags: ["user"],
     }),
   }),
 });
