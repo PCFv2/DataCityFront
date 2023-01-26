@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import React, { Suspense, useRef, useState } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
@@ -79,18 +79,28 @@ const EndGame = () => {
 
   const [display, setDisplay] = useState<string>();
 
-  const { data: oppenent, isLoading } = useGetUserOpponentQuery(user.userId);
+  const {
+    data: oppenent,
+    isLoading,
+    isError: oponnentIsError,
+  } = useGetUserOpponentQuery(user.userId);
 
-  const { data: endGameUser, isLoading: endGameIsLoading } = useGetEndGameQuery(
-    {
-      gameId: game.gameId,
-      userId: user.userId,
-    }
-  );
+  const {
+    data: endGameUser,
+    isLoading: endGameIsLoading,
+    isError: endGameUserIsError,
+  } = useGetEndGameQuery({
+    gameId: game.gameId,
+    userId: user.userId,
+  });
+
+  useEffect(() => {
+    if (oponnentIsError || endGameUserIsError) navigate("/error:api");
+  }, [oponnentIsError, endGameUserIsError]);
 
   const handleClick = (value: string) => {
     if (display === value) {
-      setDisplay("");
+      setDisplay(undefined);
     } else {
       setDisplay(value);
     }

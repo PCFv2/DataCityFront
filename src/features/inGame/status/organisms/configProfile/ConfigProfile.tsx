@@ -1,18 +1,17 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { gameApi, useGetAllConfigurationQuery } from "src/services";
+import React, { useEffect, useState } from "react";
+import { useGetAllConfigurationQuery } from "src/services";
 import OverlayLoader from "src/UI-KIT/components/OverlayLoader";
 
 import { useForm } from "react-hook-form";
-import { getSumOfPoints, initPlayerPoints } from "./service";
-import { useDispatch, useSelector } from "react-redux";
+import { initPlayerPoints } from "./service";
+import { useSelector } from "react-redux";
 import { RootState } from "src/app/store";
-import { setNbPoints } from "src/app/redux/userSlice";
 import userApi, {
   useGetUserByIdQuery,
   useGetUserConfigurationQuery,
-  usePutUserConfigurationMutation,
   useUpdateUserByIdMutation,
 } from "src/services/queries/user";
+import { useNavigate } from "react-router-dom";
 
 type ConfigProfileProps = {
   handleFinishRound?: (
@@ -23,17 +22,33 @@ type ConfigProfileProps = {
 };
 
 const ConfigProfile = (props: ConfigProfileProps) => {
+  const navigate = useNavigate();
   /* redux */
   const user = useSelector((state: RootState) => state.userSlice);
   const round = useSelector((state: RootState) => state.roundSlice);
 
   /* Queries */
-  const { data: allConfiguration, isLoading } = useGetAllConfigurationQuery(); // API /configuration
-  const { data: userConfiguration, isLoading: isLoadingUserConfiguration } =
-    useGetUserConfigurationQuery(user.userId); // API /user/{id}/configuration
-  const { data: userAPI, isLoading: userApiIsLoading } = useGetUserByIdQuery(
-    user.userId
-  );
+  const {
+    data: allConfiguration,
+    isLoading,
+    isError: allConfigurationIsError,
+  } = useGetAllConfigurationQuery(); // API /configuration
+  const {
+    data: userConfiguration,
+    isLoading: isLoadingUserConfiguration,
+    isError: userConfigurationIsError,
+  } = useGetUserConfigurationQuery(user.userId); // API /user/{id}/configuration
+  const {
+    data: userAPI,
+    isLoading: userApiIsLoading,
+    isError: userAPIIsError,
+  } = useGetUserByIdQuery(user.userId);
+
+  /* manage error */
+  useEffect(() => {
+    if (allConfigurationIsError || userConfigurationIsError || userAPIIsError)
+      navigate("/error:api");
+  }, [allConfigurationIsError, userAPIIsError, userConfigurationIsError]);
 
   /* Mutations */
   const [updateUser, { isLoading: userLoading }] = useUpdateUserByIdMutation(); // API user/{userId}
@@ -49,7 +64,6 @@ const ConfigProfile = (props: ConfigProfileProps) => {
   const { register, handleSubmit, setValue, reset } =
     useForm<UserConfigurationForm>();
 
-    
   /* Rendering condition useEffect */
   useEffect(() => {
     reset({ configuration: userConfiguration }); // set default value when fetch of userConfiguration is success
@@ -64,17 +78,11 @@ const ConfigProfile = (props: ConfigProfileProps) => {
   ) => {
     const data = [...playerSpentPoints];
     if (nbPoint > data[index].point) {
-      console.log(">");
-      setPlayerPoints(
-        playerPoints - (nbPoint - data[index].point)
-      );
+      setPlayerPoints(playerPoints - (nbPoint - data[index].point));
       data[index].point = nbPoint;
       setPlayerSpentPoints(data);
     } else if (nbPoint < data[index].point) {
-      console.log("<");
-      setPlayerPoints(
-        playerPoints + (data[index].point - nbPoint)
-      );
+      setPlayerPoints(playerPoints + (data[index].point - nbPoint));
       data[index].point = nbPoint;
       setPlayerSpentPoints(data);
     }
@@ -85,7 +93,9 @@ const ConfigProfile = (props: ConfigProfileProps) => {
   const onSubmit = (data: UserConfigurationForm) => {
     /* Envoie les informations au back */
     props.handleFinishRound!(round.statusId, data); /* set Finished round */
-    updateUser({ userId: user.userId, nbPoints: playerPoints }); // send to API user
+    updateUser({ userId: user.userId, nbPoints: playerPoints })
+      .unwrap()
+      .catch(() => navigate("/error:api")); // send to API user
   };
 
   if (

@@ -1,7 +1,7 @@
 import React, { Suspense, useMemo } from "react";
 import { ATTACK } from "src/constants";
 import OverlayLoader from "../../../../../UI-KIT/components/OverlayLoader";
-import ErrorPage from "src/app/pages/main/ErrorPage";
+import ErrorPage from "src/app/pages/ErrorPage";
 
 const Eavesdropping = React.lazy(
   () => import("src/features/inGame/attack/Eavesdropping")
