@@ -11,7 +11,8 @@ declare module "@emotion/react" {
         lightBlue_pressed: "#92C2F2",
         red: "#A31621";
         black: "#141201";
-        white: "#FFFFFF"
+        white: "#FFFFFF";
+        grey: "#F4F6F6";
       };
       secondary: {
         brown: "#2A0800";
@@ -27,6 +28,7 @@ declare module "@emotion/react" {
       },
       size: {
         title: "6rem";
+        page_title: "4rem";
         text: "2rem";
       };
     };
