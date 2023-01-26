@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { setDisplayComponent } from "src/app/redux/displayComponentSlice";
 import { setGameId } from "src/app/redux/gameSlice";
 import { setRound } from "src/app/redux/roundSlice";
-import { setName } from "src/app/redux/userSlice";
 import { requestJoinGame } from "src/app/requestServer";
 import { RootState } from "src/app/store";
 import { DISPLAY_COMPONENT } from "src/constants";
@@ -13,10 +13,12 @@ import { gameApi } from "src/services";
 import { useUpdateUserByIdMutation } from "src/services/queries/user";
 import OverlayLoader from "src/UI-KIT/components/OverlayLoader";
 
-const Join = () => {
+const Join = (): JSX.Element => {
+  const navigate = useNavigate();
+
   /* redux */
   const dispatch = useDispatch();
-  const user = useSelector(
+  const user: User = useSelector(
     (state: RootState) => state.userSlice
   ); /* user info */
 
@@ -24,6 +26,7 @@ const Join = () => {
   const webSocketState = useSelector(
     (state: RootState) => state.webSocket
   ); /* on récupére la webSocket */
+
   //query
   const [joinGame, { isLoading: gameLoading }] =
     gameApi.endpoints.getJoinGameById.useLazyQuery();
@@ -32,43 +35,50 @@ const Join = () => {
     gameApi.endpoints.getLastround.useLazyQuery();
 
   //mutation
-  const [updateUser, result] = useUpdateUserByIdMutation();
+  const [updateUser, { isLoading: isLoadingUser, isError: isErrorUpdateUser }] =
+    useUpdateUserByIdMutation();
 
   const { register, handleSubmit } =
     useForm<JoinGameForm>(); /* init formulaire */
 
   const onSubmit = async (data: JoinGameForm) => {
     setProcessingServer(true);
-    const isAvailable = await joinGame(data.gameId);
-    if (isAvailable.data) {
-      requestJoinGame(webSocketState.webSocket!, data.gameId).then(() => {
-        console.log("Vous avez bien rejoins la partie");
-        dispatch(setGameId(Number(data.gameId)));
-        updateUser({
-          userId: user.userId.split("/").join("-"),
-          name: data.username,
-        }) /* ENVOIE a l'API */
-          .then(() => {
-            requestJoinGame(webSocketState.webSocket!, data.gameId).then(
-              async () => {
-                dispatch(
-                  setDisplayComponent(DISPLAY_COMPONENT.waitRoomComponent)
-                );
-                setProcessingServer(false); /* on arrete le chargement */
-                const round = await lastRound(data.gameId);
-                dispatch(
-                  setRound(round.data!)
-                ); /* On rentre les infos du round dans le state */
-              }
-            );
-          });
-      });
-    } else {
-      console.log("erreur");
-    }
+
+    joinGame(data.gameId)
+      .unwrap()
+      .then((isAvailable) => {
+        if (isAvailable) {
+          requestJoinGame(webSocketState.webSocket!, data.gameId)
+            .then(() => {
+              dispatch(setGameId(Number(data.gameId)));
+              updateUser({
+                userId: user.userId.split("/").join("-"),
+                name: data.username,
+              })
+                .unwrap()
+                .then(() => {
+                  requestJoinGame(webSocketState.webSocket!, data.gameId)
+                    .then(() => {
+                      dispatch(
+                        setDisplayComponent(DISPLAY_COMPONENT.waitRoomComponent)
+                      );
+                      setProcessingServer(false); /* on arrete le chargement */
+                      lastRound(data.gameId)
+                        .unwrap()
+                        .then((round) => dispatch(setRound(round)))
+                        .catch(() => navigate("/error:api")); // error
+                    })
+                    .catch(() => navigate("/error:server")); // error
+                })
+                .catch(() => navigate("/error:api")); // error
+            })
+            .catch(() => navigate("/error:server")); // error
+        }
+      })
+      .catch(() => navigate("/error:api")); // error
   }; /* traitement du formulaire */
 
-  if (processingServer || result.isLoading || gameLoading)
+  if (processingServer || isLoadingUser || gameLoading || roundIsLoading)
     return <OverlayLoader message={MESSAGE_LOADER.partyLoading} />;
 
   return (

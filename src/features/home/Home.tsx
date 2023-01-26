@@ -10,7 +10,6 @@ import { RootState } from "src/app/store";
 import ConfigProfile from "../inGame/status/organisms/configProfile/ConfigProfile";
 import RenderStatusId from "../inGame/status/RenderStatusId";
 import { MESSAGE_LOADER } from "src/constants/messageLoader";
-import Evening from "../inGame/status/organisms/evening/Evening";
 
 /* COMPONENT */
 const Host = React.lazy(() => import("../inGame/gameBuilder/Host"));
@@ -18,12 +17,16 @@ const Join = React.lazy(() => import("../inGame/gameBuilder/Join"));
 const WaitRoom = React.lazy(() => import("../inGame/gameBuilder/WaitRoom"));
 const Homepage = React.lazy(() => import("./Homepage"));
 
-const Home = () => {
+const Home = (props: { serverUrl: string }) => {
   const navigate = useNavigate();
-  const [websocketIsAccess, setWebSocketIsAccess] = useState<boolean>(false);
-  /* Create websocket */
-  const ws = useMemo(() => new WebSocket("ws://localhost:6969"), []); //ws://localhost:6969 wss://data-city.alwaysdata.net/server
 
+  /* hook */
+  const [websocketIsAccess, setWebSocketIsAccess] = useState<boolean>(false);
+
+  /* Create websocket */
+  const ws = useMemo(() => new WebSocket(props.serverUrl), []);
+
+  /* redux */
   const dispatch = useDispatch(); // pousser des données dans redux
   const displayComponentState = useSelector(
     (state: RootState) => state.displayComponent
@@ -31,14 +34,10 @@ const Home = () => {
 
   useEffect(() => {
     ws.addEventListener("open", () => {
-      console.log("open");
       setWebSocketIsAccess(true);
       /* connection ok */
       dispatch(setWebSocket(ws)); /* on définit le websocket dans redux */
       dispatch(setDisplayComponent(DISPLAY_COMPONENT.home));
-    });
-    ws.addEventListener("close", () => {
-      console.log("closed");
     });
     ws.addEventListener("error", () => {
       navigate("/error:server");
@@ -51,7 +50,7 @@ const Home = () => {
         ); /* on set le userId dans le state */
       }
       if (message.data === SOCKET_CODE.serverError.unknownError) {
-        navigate("/error:test");
+        navigate("/error:server"); /* error page */
         ws.close();
       }
     });

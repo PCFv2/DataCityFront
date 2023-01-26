@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { finishRound } from "src/app/finishedRound/finishRound";
 import {
   setDisplayComponent,
@@ -15,12 +16,13 @@ import {
   gameApi,
   useGetAllUsersByGameIdQuery,
   useGetGameByIdQuery,
-  useGetLastroundQuery,
   useSetFinishedMutation,
 } from "src/services";
 import OverlayLoader from "src/UI-KIT/components/OverlayLoader";
 
-const WaitRoom = () => {
+const WaitRoom = (): JSX.Element => {
+  const navigate = useNavigate();
+
   const dispatch = useDispatch();
 
   /* redux */
@@ -41,38 +43,48 @@ const WaitRoom = () => {
     data: userInGame,
     isLoading: userLoading,
     refetch: userRefetch,
-    isFetching: userIsFetching,
+    isError: userInGameIsError,
+    isUninitialized,
   } = useGetAllUsersByGameIdQuery(game.gameId); /* API GET game/id/user */
 
   const {
     data: gameInfos,
     isLoading: gameLoading,
     refetch: refetchGame,
+    isError: gameInfosIsError,
   } = useGetGameByIdQuery(game.gameId);
-
-  const {
-    data: currentRound,
-    isLoading: roundLoading,
-    isFetching: roundIsFetching,
-  } = useGetLastroundQuery(game.gameId);
 
   const [setFinished, { isLoading: setFinishedIsLoading }] =
     useSetFinishedMutation();
 
-  const [lastround] = gameApi.endpoints.getLastround.useLazyQuery();
+  const [lastround, { isLoading: isLoadingLastround }] =
+    gameApi.endpoints.getLastround.useLazyQuery();
+
+  /* manage error */
+  useEffect(() => {
+    if (userInGameIsError || gameInfosIsError) navigate("/error:api");
+  }, [gameInfosIsError, userInGameIsError]);
 
   useEffect(() => {
     webSocketState.webSocket?.addEventListener("message", async (message) => {
       if (message.data === SOCKET_CODE.serverValidate.modifyGame) {
-        refetchGame();
-        userRefetch();
+        refetchGame()
+          .unwrap()
+          .catch(() => navigate("/error:api")); // error
+        userRefetch()
+          .unwrap()
+          .catch(() => navigate("/error:api")); // error
       }
       if (message.data === SOCKET_CODE.serverValidate.finishRound) {
-        const roundApi = await lastround(game.gameId);
-        if (finishRound(roundApi.data!)) {
-          dispatch(setDisplayComponent(DISPLAY_COMPONENT.renderStatusId));
-          dispatch(setIsLoading(false));
-        }
+        lastround(game.gameId)
+          .unwrap()
+          .then((round) => {
+            if (finishRound(round)) {
+              dispatch(setDisplayComponent(DISPLAY_COMPONENT.renderStatusId));
+              dispatch(setIsLoading(false));
+            }
+          })
+          .catch(() => navigate("/error:api")); // error
       }
     });
   }, []);
@@ -81,17 +93,20 @@ const WaitRoom = () => {
     setFinished({
       gameId: game.gameId,
       userId: user.userId,
-    }).then(() => {
-      requestFinishRound(webSocketState.webSocket!, game.gameId);
+    })
+      .unwrap()
+      .then(() => {
+        requestFinishRound(webSocketState.webSocket!, game.gameId);
 
-      /* set all redux */
-      dispatch(setIsLoading(true));
-      dispatch(setGameData(gameInfos!));
-      dispatch(setNbPoints(gameInfos!.startNbPoints));
-    });
+        /* set all redux */
+        dispatch(setIsLoading(true));
+        dispatch(setGameData(gameInfos!));
+        dispatch(setNbPoints(gameInfos!.startNbPoints));
+      })
+      .catch(() => navigate("/error:api")); // error
   };
 
-  if (userLoading || gameLoading || roundLoading || setFinishedIsLoading)
+  if (userLoading || gameLoading || isLoadingLastround || setFinishedIsLoading)
     return <OverlayLoader message={MESSAGE_LOADER.partyLoading} />;
 
   return (

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/app/store";
 import { MESSAGE_LOADER } from "src/constants/messageLoader";
@@ -69,25 +69,35 @@ const Evening = (props: AttackProps) => {
   /* redux */
   const round = useSelector((state: RootState) => state.roundSlice);
   const user = useSelector((state: RootState) => state.userSlice);
-  const webSocketState = useSelector((state: RootState) => state.webSocket);
-
-  const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
-  const { data: oppenent, isLoading } = useGetUserOpponentQuery(user.userId);
+  const {
+    data: oppenent,
+    isLoading,
+    isError: oppenentIsError,
+  } = useGetUserOpponentQuery(user.userId);
 
   const [getUser, { isLoading: getNameOfUserIsLoading }] =
     userApi.endpoints.getUserById.useLazyQuery();
 
+  /* manage error */
+  useEffect(() => {
+    if (oppenentIsError) navigate("/error:api");
+  }, [oppenentIsError]);
+
   const handleFinish = async (): Promise<void> => {
-    const { data } = await getUser(user.userId);
-    /* si le joueur est mort */
-    if (!data?.isAlive) {
-      webSocketState.webSocket?.close();
-      navigate("/end-game"); /* on envoie sur la page fin du jeu */
-    }
-    props.handleFinishRound!(round.statusId);
+    getUser(user.userId)
+      .unwrap()
+      .then((data) => {
+        if (!data?.isAlive) {
+          /* dead ? */
+          navigate("/end-game"); /* on envoie sur la page fin du jeu */
+          return;
+        }
+        props.handleFinishRound!(round.statusId);
+      })
+      .catch(() => navigate("/error:api"));
   };
 
   if (isLoading || getNameOfUserIsLoading)

@@ -1,12 +1,15 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useGetUserAttacksQuery } from "src/services";
 import { useSelector } from "react-redux";
 import { RootState } from "src/app/store";
 import OverlayLoader from "../../../../../UI-KIT/components/OverlayLoader";
 import Question from "./question/Question";
 import { QUESTIONS } from "../../../../../constants/question";
+import { useNavigate } from "react-router-dom";
 
 const Day = (props: AttackProps) => {
+  const navigate = useNavigate();
+
   // Get all redux needed information
   const user = useSelector((state: RootState) => state.userSlice);
   const game = useSelector((state: RootState) => state.gameSlice);
@@ -16,12 +19,21 @@ const Day = (props: AttackProps) => {
   const [choices, setChoices] = useState<Day[]>();
   const [questionNb, setQuestionNb] = useState<number>(0);
 
-  const { data: userAttacks, isLoading } = useGetUserAttacksQuery({
+  const {
+    data: userAttacks,
+    isLoading,
+    isError: userAttacksIsError,
+  } = useGetUserAttacksQuery({
     gameId: game.gameId,
     // To get attacks of previous round
     roundId: round.roundId - 1,
     userId: user.userId,
   });
+
+  /* manage error */
+  useEffect(() => {
+    if (userAttacksIsError) navigate("/error:api");
+  }, [userAttacksIsError]);
 
   // Send to API
   const handleClick = (): void => {
@@ -33,13 +45,13 @@ const Day = (props: AttackProps) => {
     }
   };
 
+  const randQuestion = useMemo(() => Math.floor(Math.random() * 3), []);
+
   if (isLoading) {
     return <OverlayLoader />;
   } else {
     if (userAttacks) {
       while (questionNb < userAttacks.length) {
-        const randQuestion = Math.floor(Math.random() * 3);
-
         const category: string = userAttacks[questionNb].category;
         let question: Question;
 
