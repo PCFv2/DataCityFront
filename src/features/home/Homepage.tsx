@@ -192,7 +192,7 @@ const Homepage = () => {
                     <RulesLineIcon className="material-icons">manage_accounts</RulesLineIcon>
                     <RulesLineText>
                         <RulesLineTextTitle>Au début du jeu</RulesLineTextTitle>
-                        <RulesLineTextText>Vous devez configurer votre profil en attribuant vos points dans les options de sécurité. Il faut être stratégique pour choisir soigneusement vos options. Ainsi à chaque fois que vous éliminez un joueur en atteignant 100% du hacking vous gagnez des points qui vous permettrons d’améliorer votre sécurité.
+                        <RulesLineTextText>Vous devez configurer votre profil en attribuant vos points dans les options de sécurité par catégorie comme Physique, Social et Internet. Il faut être stratégique pour choisir soigneusement vos options. Ainsi à chaque fois que vous éliminez un joueur en atteignant 100% du hacking vous gagnez des points qui vous permettrons d’améliorer votre sécurité.
                         </RulesLineTextText>
                     </RulesLineText>
                 </RulesLine>
