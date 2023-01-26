@@ -202,7 +202,6 @@ const Host = () => {
 
       button {
         height: 100%;
-      }
     `
 
     const Input = styled.input`

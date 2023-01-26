@@ -10,6 +10,7 @@ import { RootState } from "src/app/store";
 import ConfigProfile from "../inGame/status/organisms/configProfile/ConfigProfile";
 import RenderStatusId from "../inGame/status/RenderStatusId";
 import { MESSAGE_LOADER } from "src/constants/messageLoader";
+import Evening from "../inGame/status/organisms/evening/Evening";
 
 /* COMPONENT */
 const Host = React.lazy(() => import("../inGame/gameBuilder/Host"));
@@ -18,27 +19,30 @@ const WaitRoom = React.lazy(() => import("../inGame/gameBuilder/WaitRoom"));
 const Homepage = React.lazy(() => import("./Homepage"));
 
 const Home = () => {
+  const navigate = useNavigate();
   const [websocketIsAccess, setWebSocketIsAccess] = useState<boolean>(false);
   /* Create websocket */
-  const ws = useMemo(() => new WebSocket("ws://localhost:6969"), []); //ws://localhost:6969
+  const ws = useMemo(() => new WebSocket("ws://localhost:6969"), []); //ws://localhost:6969 wss://data-city.alwaysdata.net/server
 
   const dispatch = useDispatch(); // pousser des données dans redux
   const displayComponentState = useSelector(
     (state: RootState) => state.displayComponent
   ); // on récupère les infos du slice displayComponent redux
 
-  const navigate = useNavigate();
-
   useEffect(() => {
     ws.addEventListener("open", () => {
-      console.log("Connected");
+      console.log("open");
       setWebSocketIsAccess(true);
       /* connection ok */
       dispatch(setWebSocket(ws)); /* on définit le websocket dans redux */
       dispatch(setDisplayComponent(DISPLAY_COMPONENT.home));
     });
     ws.addEventListener("close", () => {
-      console.log("Closed");
+      console.log("closed");
+    });
+    ws.addEventListener("error", () => {
+      navigate("/error:server");
+      ws.close();
     });
     ws.addEventListener("message", (message) => {
       if (message.data.slice(0, 2) === SOCKET_CODE.serverValidate.getToken) {
@@ -47,19 +51,14 @@ const Home = () => {
         ); /* on set le userId dans le state */
       }
       if (message.data === SOCKET_CODE.serverError.unknownError) {
-        dispatch(setDisplayComponent(DISPLAY_COMPONENT.error));
+        navigate("/error");
         ws.close();
       }
     });
   });
 
   if (!websocketIsAccess || displayComponentState.isLoading)
-    return (
-      <OverlayLoader message={MESSAGE_LOADER.loading} />
-    ); /* si le websocket n'est pas encore créer en loading */
-
-  if (displayComponentState.displayComponent === DISPLAY_COMPONENT.error)
-    navigate("/error"); /* en cas d'erreur on redirige vers /erreur */
+    return <OverlayLoader message={MESSAGE_LOADER.loading} />;
 
   // Affichage
   switch (displayComponentState.displayComponent) {

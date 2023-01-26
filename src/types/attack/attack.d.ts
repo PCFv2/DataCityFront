@@ -2,6 +2,7 @@ type AttackProps = {
   handleFinishRound?: (
     round: number,
     userConfiguration?: UserConfigurationForm,
-    night?: Night
+    night?: Night,
+    day?: DayForm,
   ) => void;
 };
