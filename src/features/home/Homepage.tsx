@@ -104,7 +104,7 @@ const RulesLineReverse = styled.div`
 
 const RulesLineIcon = styled.span`
   color: ${(props) => props.theme.colors.primary.lightBlue};
-  font-size: 36px;
+  font-size: 48px;
 `;
 
 const RulesLineText = styled.div`
@@ -199,29 +199,29 @@ const Homepage = () => {
                 <RulesLineReverse>
                     <RulesLineTextReverse>
                         <RulesLineTextTitle>Pendant la journée</RulesLineTextTitle>
-                        <RulesLineTextText>vous avez des activités à risques. C’est-à-dire, vous avez des évènements et des choix à faire et en fonction de vos choix vous prenez des risques de vous faire hacker ou non. A la fin de la journée, pendant la soirée vous verrez le résultat de votre journée et votre taux de réussite ou non.
+                        <RulesLineTextText>Vous avez des activités à risques. C’est-à-dire, vous avez des évènements et des choix à faire et en fonction de vos choix vous prenez des risques de vous faire hacker ou non. A la fin de la journée, pendant la soirée vous verrez le résultat de votre journée et votre taux de réussite ou non.
                         </RulesLineTextText>
                     </RulesLineTextReverse>
-                    <RulesLineIcon className="material-icons">clear_day</RulesLineIcon>
+                    <RulesLineIcon className="material-icons">light_mode</RulesLineIcon>
                 </RulesLineReverse>
                 <RulesLine>
-                    <RulesLineIcon className="material-icons">clear_night</RulesLineIcon>
+                    <RulesLineIcon className="material-icons">dark_mode</RulesLineIcon>
                     <RulesLineText>
                         <RulesLineTextTitle>Pendant la nuit</RulesLineTextTitle>
-                        <RulesLineTextText>les activités de hacking commence pour tous les joueurs. C’est sous forme de mini jeux, si vous réussissez les mini-jeux proposés le pourcentage de hacking augmente jusqu’à 100% pour éliminer un joueur bien sûr le pourcentage sera en fonction de la réussite du hacking, du résultat de la journée ainsi que les choix de protections des joueurs.
+                        <RulesLineTextText>Les activités de hacking commence pour tous les joueurs. C’est sous forme de mini jeux, si vous réussissez les mini-jeux proposés le pourcentage de hacking augmente jusqu’à 100% pour éliminer un joueur bien sûr le pourcentage sera en fonction de la réussite du hacking, du résultat de la journée ainsi que les choix de protections des joueurs.
                         </RulesLineTextText>
                     </RulesLineText>
                 </RulesLine>
                 <RulesLineReverse>
                     <RulesLineTextReverse>
                         <RulesLineTextTitle>Les résultats de la journée</RulesLineTextTitle>
-                        <RulesLineTextText>ils vous seront donc présenté. Si vous avez fait des erreurs sur les activités dans la journée en fonction de celle-ci une explication sur vos échecs vous sera présenté.
+                        <RulesLineTextText>Ils vous seront donc présenté. Si vous avez fait des erreurs sur les activités dans la journée en fonction de celle-ci une explication sur vos échecs vous sera présenté.
                         </RulesLineTextText>
                     </RulesLineTextReverse>
                     <RulesLineIcon className="material-icons">description</RulesLineIcon>
                 </RulesLineReverse>
                 <RulesLine>
-                    <RulesLineIcon className="material-icons">skull</RulesLineIcon>
+                    <RulesLineIcon className="material-icons">highlight_off</RulesLineIcon>
                     <RulesLineText>
                         <RulesLineTextTitle>Élimination</RulesLineTextTitle>
                         <RulesLineTextText>Pour éliminer une joueur il faut atteindre 100% de son hacking. Et une fois les avoir atteint, le joueur sera éliminé et pourra donc quitter la partie et en recommencera une autre. Les autres joueurs en verront leurs points augmenté.
