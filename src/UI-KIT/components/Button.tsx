@@ -6,7 +6,8 @@ import {theme} from "../../theme";
 
 type ButtonProps = {
     content: string;
-    onClick: () => void;
+    onClick?: () => void;
+    type?: 'submit';
 }
 
 const defaultButtonStyle = css`
@@ -65,19 +66,19 @@ const Primary2ButtonStyle = styled.button`
 
 export const PrimaryButton = React.memo((props: ButtonProps) => {
     return (
-        <PrimaryButtonStyle onClick={props.onClick}>{props.content}</PrimaryButtonStyle>
+        <PrimaryButtonStyle onClick={props.onClick} type={props.type}>{props.content}</PrimaryButtonStyle>
     )
 });
 
 export const SecondaryButton = React.memo((props: ButtonProps) => {
     return (
-        <SecondaryButtonStyle onClick={props.onClick}>{props.content}</SecondaryButtonStyle>
+        <SecondaryButtonStyle onClick={props.onClick} type={props.type}>{props.content}</SecondaryButtonStyle>
     )
 });
 
 export const Primary2Button = React.memo((props: ButtonProps) => {
     return (
-        <Primary2ButtonStyle onClick={props.onClick}>{props.content}</Primary2ButtonStyle>
+        <Primary2ButtonStyle onClick={props.onClick} type={props.type}>{props.content}</Primary2ButtonStyle>
     )
 });
 
