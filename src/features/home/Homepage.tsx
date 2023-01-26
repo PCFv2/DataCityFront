@@ -1,17 +1,17 @@
-import React from 'react'
+import React from "react";
 import GameCreate from "../inGame/gameBuilder/GameCreate";
-import {setDisplayComponent} from "../../app/redux/displayComponentSlice";
-import {DISPLAY_COMPONENT} from "../../constants";
-import {useDispatch} from "react-redux";
+import { setDisplayComponent } from "../../app/redux/displayComponentSlice";
+import { DISPLAY_COMPONENT } from "../../constants";
+import { useDispatch } from "react-redux";
 import styled from "@emotion/styled";
-import {PrimaryButton} from "../../UI-KIT/components/Button";
+import { PrimaryButton } from "../../UI-KIT/components/Button";
 import background from "../../assets/img/homepage/background.webp";
-import {css} from "@emotion/react";
+import { css } from "@emotion/react";
 
 const HomePageStyle = styled.main`
   background: url(${background}) no-repeat center center fixed;
   background-size: cover;
-`
+`;
 
 const Home = styled.div`
   display: flex;
@@ -21,7 +21,7 @@ const Home = styled.div`
   margin: 0 20%;
   padding-bottom: 2.5%;
   height: 100vh;
-`
+`;
 
 const Description = styled.p`
   text-align: center;
@@ -30,22 +30,21 @@ const Description = styled.p`
   border-radius: ${(props) => props.theme.radius.medium};
   padding: 2.5% 7.5%;
   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
-`
+`;
 
 const MainTitle = styled.h1`
   color: ${(props) => props.theme.colors.primary.white};
   font-family: ${(props) => props.theme.font.family.title};
   font-size: ${(props) => props.theme.font.size.title};
   text-align: center;
-`
+`;
 
 const ButtonLine = styled.div`
   display: flex;
   justify-content: space-evenly;
   margin-top: auto;
   padding: 0 10%;
-`
-
+`;
 
 // Rules
 
@@ -59,7 +58,7 @@ const Rules = styled.div`
   flex-direction: column;
 
   row-gap: 2rem;
-`
+`;
 
 const RulesTitle = styled.h1`
   margin: 1.2rem 0;
@@ -68,16 +67,16 @@ const RulesTitle = styled.h1`
   align-items: center;
   column-gap: 1.5rem;
   justify-content: center;
-`
+`;
 
 const RulesTitleText = styled.span`
   font-weight: bold;
-`
+`;
 
 const RulesTitleIcon = styled.span`
   font-size: 48px;
   color: ${(props) => props.theme.colors.primary.lightBlue};
-`
+`;
 
 // Rules Line
 
@@ -86,45 +85,44 @@ const defaultRuleLine = css`
   justify-content: space-between;
   align-items: center;
   column-gap: 3rem;
-`
+`;
 
 const defaultRuleLineText = css`
   width: 80%;
   margin-right: auto;
   display: flex;
   flex-direction: column;
-`
+`;
 
 const RulesLine = styled.div`
   ${defaultRuleLine};
-`
+`;
 
 const RulesLineReverse = styled.div`
   ${defaultRuleLine};
-
-`
+`;
 
 const RulesLineIcon = styled.span`
   color: ${(props) => props.theme.colors.primary.lightBlue};
   font-size: 36px;
-`
+`;
 
 const RulesLineText = styled.div`
   ${defaultRuleLineText};
-`
+`;
 
 const RulesLineTextReverse = styled.div`
   ${defaultRuleLineText};
   margin: 0 0 0 auto;
   text-align: right;
-`
+`;
 
-const RulesLineTextTitle = styled.h3`
-`
+const RulesLineTextTitle = styled.h3``;
 
-const RulesLineTextText = styled.text`
+const RulesLineTextText = styled.p`
+  margin: 0;
   font-size: 1.1rem;
-`
+`;
 
 // Footer (qui est bien collé au bas de la page
 
@@ -136,7 +134,7 @@ const Footer = styled.footer`
   justify-content: space-between;
   padding: 1.1rem 10%;
   color: ${(props) => props.theme.colors.primary.lightBlue};
-`
+`;
 
 const Link = styled.a`
   color: ${(props) => props.theme.colors.primary.lightBlue};
@@ -145,12 +143,12 @@ const Link = styled.a`
   &:hover {
     text-decoration: underline;
   }
-`
+`;
 
 const FooterIcon = styled.span`
   font-size: 24px;
   color: ${(props) => props.theme.colors.primary.lightBlue};
-`
+`;
 
 const Contact = styled.a`
   display: flex;
@@ -164,13 +162,13 @@ const Contact = styled.a`
   &:hover {
     text-decoration: underline;
   }
-`
+`;
 
 const Homepage = () => {
-    const dispatch = useDispatch();
-    const handleClick = (): void => {
-        dispatch(setDisplayComponent(DISPLAY_COMPONENT.joinComponent));
-    };
+  const dispatch = useDispatch();
+  const handleClick = (): void => {
+    dispatch(setDisplayComponent(DISPLAY_COMPONENT.joinComponent));
+  };
 
     return (
         <HomePageStyle>
@@ -243,5 +241,4 @@ const Homepage = () => {
         </HomePageStyle>
     );
 }
-
 export default Homepage;

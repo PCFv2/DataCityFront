@@ -1,5 +1,5 @@
 export const ATTACK = {
-    nbAttacks: 2,
+    nbAttacks: 3,
     attacks: {
         phishing: 0,
         eavesdropping: 1,

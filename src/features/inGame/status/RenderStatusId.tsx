@@ -13,6 +13,7 @@ import OverlayLoader from "src/UI-KIT/components/OverlayLoader";
 import { ConfigProfile } from "./organisms";
 import Attack from "./organisms/attack/Attack";
 import Day from "./organisms/day/Day";
+import Evening from "./organisms/evening/Evening";
 
 const RenderStatusId = () => {
   const dispatch = useDispatch();
@@ -45,7 +46,8 @@ const RenderStatusId = () => {
   const handleClick = (
     round: number,
     userConfiguration?: UserConfigurationForm,
-    night?: Night
+    night?: Night,
+    day?: DayForm
   ) => {
     switch (round) {
       case 2:
@@ -73,14 +75,21 @@ const RenderStatusId = () => {
         setFinished({
           gameId: game.gameId,
           userId: user.userId,
+          ...day,
         }).then(() => {
           requestFinishRound(webSocketState.webSocket!, game.gameId);
           dispatch(setIsLoading(true));
         });
-        //TODO Journée
         break;
       case 5:
-        //TODO Soirée
+        setFinished({
+          gameId: game.gameId,
+          userId: user.userId,
+        }).then(() => {
+          requestFinishRound(webSocketState.webSocket!, game.gameId);
+          dispatch(setIsLoading(true));
+        });
+        //TODO soirée
         break;
       case 6:
         setFinished({
@@ -101,36 +110,31 @@ const RenderStatusId = () => {
     case 2:
       return (
         <div>
-          <button onClick={() => handleClick(round.statusId)}>Suivant</button>
-          <ConfigProfile handleFinishRoud={handleClick} />
+          <ConfigProfile handleFinishRound={handleClick} />
         </div>
       );
     case 3:
       return (
         <div>
-          <button onClick={() => handleClick(round.statusId)}>Suivant</button>
-          matinée
+          <ConfigProfile handleFinishRound={handleClick} />
         </div>
       );
     case 4:
       return (
         <div>
-          <button onClick={() => handleClick(round.statusId)}>Suivant</button>
-          <Day />
+          <Day handleFinishRound={handleClick} />
         </div>
       );
     case 5:
       return (
         <div>
-          <button onClick={() => handleClick(round.statusId)}>Suivant</button>
-          soirée
+          <Evening handleFinishRound={handleClick} />
         </div>
       );
     case 6:
       return (
         <div>
-          <button onClick={() => handleClick(round.statusId)}>Suivant</button>
-          <Attack handleFinishRoud={handleClick} />
+          <Attack handleFinishRound={handleClick} />
         </div>
       );
     default:

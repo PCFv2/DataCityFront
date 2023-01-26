@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setDisplayComponent,
-} from "src/app/redux/displayComponentSlice";
+import { setDisplayComponent } from "src/app/redux/displayComponentSlice";
 import { setGameId } from "src/app/redux/gameSlice";
 import { setRound } from "src/app/redux/roundSlice";
+import { setName } from "src/app/redux/userSlice";
 import { requestJoinGame } from "src/app/requestServer";
 import { RootState } from "src/app/store";
 import { DISPLAY_COMPONENT } from "src/constants";
+import { MESSAGE_LOADER } from "src/constants/messageLoader";
 import { gameApi } from "src/services";
 import { useUpdateUserByIdMutation } from "src/services/queries/user";
 import OverlayLoader from "src/UI-KIT/components/OverlayLoader";
@@ -43,7 +43,7 @@ const Join = () => {
     if (isAvailable.data) {
       requestJoinGame(webSocketState.webSocket!, data.gameId).then(() => {
         console.log("Vous avez bien rejoins la partie");
-        dispatch(setGameId(data.gameId));
+        dispatch(setGameId(Number(data.gameId)));
         updateUser({
           userId: user.userId.split("/").join("-"),
           name: data.username,
@@ -69,7 +69,7 @@ const Join = () => {
   }; /* traitement du formulaire */
 
   if (processingServer || result.isLoading || gameLoading)
-    return <OverlayLoader />;
+    return <OverlayLoader message={MESSAGE_LOADER.partyLoading} />;
 
   return (
     <div>
