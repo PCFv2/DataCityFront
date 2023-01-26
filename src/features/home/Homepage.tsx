@@ -182,10 +182,7 @@ const Homepage = () => {
                 </ButtonLine>
                 <Description>
                     {/* TODO Description du jeu */}
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras id ipsum sodales, pretium
-                    dolor blandit, dapibus nulla. Proin volutpat varius ultrices. Nunc nec velit at turpis porttitor
-                    vestibulum. Vestibulum sollicitudin laoreet tincidunt. Morbi cursus ex eu accumsan vehicula. Mauris
-                    tellus purus, laaoreet non massa viverra, rhoncus aliquam felis. Sed nec urna mauris.
+                    Data City est un Serious Game qui a été créé pour vous sensibiliser à la protection de vos données et à la cybersécurité. Le but du jeu et qu’en fonction de vos choix, ainsi que la réussite ou non des mini jeux au cours de la partie, vous devez éliminer les autres joueurs de la partie en découvrant leurs adresses. 
                 </Description>
             </Home>
             <Rules>
@@ -194,21 +191,45 @@ const Homepage = () => {
                     <RulesTitleText>Règles</RulesTitleText>
                 </RulesTitle>
                 <RulesLine>
-                    <RulesLineIcon className="material-icons">info</RulesLineIcon>
+                    <RulesLineIcon className="material-icons">manage_accounts</RulesLineIcon>
                     <RulesLineText>
-                        <RulesLineTextTitle>Une partie, un survivant</RulesLineTextTitle>
-                        <RulesLineTextText>Votre but est d’éliminer les autres joueurs de la partie en trouvant leur
-                            adresse</RulesLineTextText>
+                        <RulesLineTextTitle>Au début du jeu</RulesLineTextTitle>
+                        <RulesLineTextText>Vous devez configurer votre profil en attribuant vos points dans les options de sécurité. Il faut être stratégique pour choisir soigneusement vos options. Ainsi à chaque fois que vous éliminez un joueur en atteignant 100% du hacking vous gagnez des points qui vous permettrons d’améliorer votre sécurité.
+                        </RulesLineTextText>
                     </RulesLineText>
                 </RulesLine>
                 <RulesLineReverse>
                     <RulesLineTextReverse>
-                        <RulesLineTextTitle>Une partie, un survivant</RulesLineTextTitle>
-                        <RulesLineTextText>Votre but est d’éliminer les autres joueurs de la partie en trouvant leur
-                            adresse</RulesLineTextText>
+                        <RulesLineTextTitle>Pendant la journée</RulesLineTextTitle>
+                        <RulesLineTextText>vous avez des activités à risques. C’est-à-dire, vous avez des évènements et des choix à faire et en fonction de vos choix vous prenez des risques de vous faire hacker ou non. A la fin de la journée, pendant la soirée vous verrez le résultat de votre journée et votre taux de réussite ou non.
+                        </RulesLineTextText>
                     </RulesLineTextReverse>
-                    <RulesLineIcon className="material-icons">info</RulesLineIcon>
+                    <RulesLineIcon className="material-icons">clear_day</RulesLineIcon>
                 </RulesLineReverse>
+                <RulesLine>
+                    <RulesLineIcon className="material-icons">clear_night</RulesLineIcon>
+                    <RulesLineText>
+                        <RulesLineTextTitle>Pendant la nuit</RulesLineTextTitle>
+                        <RulesLineTextText>les activités de hacking commence pour tous les joueurs. C’est sous forme de mini jeux, si vous réussissez les mini-jeux proposés le pourcentage de hacking augmente jusqu’à 100% pour éliminer un joueur bien sûr le pourcentage sera en fonction de la réussite du hacking, du résultat de la journée ainsi que les choix de protections des joueurs.
+                        </RulesLineTextText>
+                    </RulesLineText>
+                </RulesLine>
+                <RulesLineReverse>
+                    <RulesLineTextReverse>
+                        <RulesLineTextTitle>Les résultats de la journée</RulesLineTextTitle>
+                        <RulesLineTextText>ils vous seront donc présenté. Si vous avez fait des erreurs sur les activités dans la journée en fonction de celle-ci une explication sur vos échecs vous sera présenté.
+                        </RulesLineTextText>
+                    </RulesLineTextReverse>
+                    <RulesLineIcon className="material-icons">description</RulesLineIcon>
+                </RulesLineReverse>
+                <RulesLine>
+                    <RulesLineIcon className="material-icons">skull</RulesLineIcon>
+                    <RulesLineText>
+                        <RulesLineTextTitle>Élimination</RulesLineTextTitle>
+                        <RulesLineTextText>Pour éliminer une joueur il faut atteindre 100% de son hacking. Et une fois les avoir atteint, le joueur sera éliminé et pourra donc quitter la partie et en recommencera une autre. Les autres joueurs en verront leurs points augmenté.
+                        </RulesLineTextText>
+                    </RulesLineText>
+                </RulesLine>
             </Rules>
             <Footer>
                 { /* TODO Mettre les liens */ }
