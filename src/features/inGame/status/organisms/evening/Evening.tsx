@@ -90,15 +90,17 @@ const Evening = (
     userApi.endpoints.getUserById.useLazyQuery();
 
   /* dead */
-  getUser(user.userId)
-    .unwrap()
-    .then((data) => {
-      if (!data?.isAlive) {
-        requestFinishGame(webSocketState.webSocket!, game.gameId);
-        props.setHasFinishedGame(true);
-      }
-    })
-    .catch(() => navigate("/error:api"));
+  useEffect(() => {
+    getUser(user.userId)
+      .unwrap()
+      .then((data) => {
+        if (!data?.isAlive) {
+          requestFinishGame(webSocketState.webSocket!, game.gameId);
+          props.setHasFinishedGame(true);
+        }
+      })
+      .catch(() => navigate("/error:api"));
+  }, []);
 
   /* manage error */
   useEffect(() => {
