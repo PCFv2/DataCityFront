@@ -10,6 +10,7 @@ import { RootState } from "src/app/store";
 import ConfigProfile from "../inGame/status/organisms/configProfile/ConfigProfile";
 import RenderStatusId from "../inGame/status/RenderStatusId";
 import { MESSAGE_LOADER } from "src/constants/messageLoader";
+import Eavesdropping from "../inGame/attack/Eavesdropping";
 
 /* COMPONENT */
 const Host = React.lazy(() => import("../inGame/gameBuilder/Host"));
@@ -64,7 +65,7 @@ const Home = (props: { serverUrl: string }) => {
     case DISPLAY_COMPONENT.home:
       return (
         <Suspense fallback={<OverlayLoader />}>
-          <Homepage />
+          <Eavesdropping />
         </Suspense>
       );
     case DISPLAY_COMPONENT.hostComponent:
