@@ -108,7 +108,6 @@ const Host = (): JSX.Element => {
         requestFinishRound(webSocketState.webSocket!, game.gameId);
         dispatch(setIsLoading(true));
         dispatch(setGameData(gameInfos!));
-        dispatch(setNbPoints(gameInfos!.startNbPoints));
       })
       .catch(() => navigate("/error:api")); // error
   };
@@ -255,7 +254,9 @@ const Host = (): JSX.Element => {
         </LeftPanel>
         <RightPanel>
           <RightPanelContainer>
-            <RightPanelTitle>Configuration de la partie | id : {game.gameId}</RightPanelTitle>
+            <RightPanelTitle>
+              Configuration de la partie | id : {game.gameId}
+            </RightPanelTitle>
             <ConfForm onSubmit={handleSubmit(onSubmit)}>
               <InputLine>
                 <label>Nombre de joueurs maximum</label>

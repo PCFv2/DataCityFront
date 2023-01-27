@@ -89,25 +89,24 @@ const Evening = (
   const [getUser, { isLoading: getNameOfUserIsLoading }] =
     userApi.endpoints.getUserById.useLazyQuery();
 
+  /* dead */
+  getUser(user.userId)
+    .unwrap()
+    .then((data) => {
+      if (!data?.isAlive) {
+        requestFinishGame(webSocketState.webSocket!, game.gameId);
+        props.setHasFinishedGame(true);
+      }
+    })
+    .catch(() => navigate("/error:api"));
+
   /* manage error */
   useEffect(() => {
     if (oppenentIsError) navigate("/error:api");
   }, [oppenentIsError]);
 
   const handleFinish = async (): Promise<void> => {
-    getUser(user.userId)
-      .unwrap()
-      .then((data) => {
-        console.log(data.isAlive);
-        
-        if (!data?.isAlive) {
-          requestFinishGame(webSocketState.webSocket!, game.gameId);
-          props.setHasFinishedGame(true);
-        } else {
-          props.handleFinishRound!(round.statusId);
-        }
-      })
-      .catch(() => navigate("/error:api"));
+    props.handleFinishRound!(round.statusId);
   };
 
   if (isLoading || getNameOfUserIsLoading)

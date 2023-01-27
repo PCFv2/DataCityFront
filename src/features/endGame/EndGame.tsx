@@ -77,6 +77,8 @@ const EndGame = () => {
   const game: Game = useSelector((state: RootState) => state.gameSlice);
   const user: User = useSelector((state: RootState) => state.userSlice);
 
+  const [skip,] = useState<boolean>(user.isAlive);
+
   const navigate = useNavigate();
 
   const [display, setDisplay] = useState<string>();
@@ -97,16 +99,18 @@ const EndGame = () => {
     data: endGameUser,
     isLoading: endGameIsLoading,
     isError: endGameUserIsError,
-  } = useGetEndGameQuery({
-    gameId: game.gameId,
-    userId: user.userId,
-  });
+  } = useGetEndGameQuery(
+    {
+      gameId: game.gameId,
+      userId: user.userId,
+    },
+    {
+      skip,
+    }
+  );
 
   useEffect(() => {
-    if (oponnentIsError || userApiIsError) {
-      navigate("/error:api");
-    }
-    if (endGameUserIsError && !user.isAlive) {
+    if (oponnentIsError || userApiIsError || endGameUserIsError) {
       navigate("/error:api");
     }
   }, [oponnentIsError, endGameUserIsError, userApiIsError]);
