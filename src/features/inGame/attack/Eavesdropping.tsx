@@ -4,15 +4,54 @@ import { useSelector } from "react-redux";
 import { RootState } from "src/app/store";
 import { generateFiles, verifyWin } from "./services/eavesDropping";
 
-const Container = styled.span<{
+import background from "src/assets/img/phishing/background.jpg";
+import desktop from "src/assets/img/eavesDropping/desktop.jpg";
+
+const Rule = styled.div`
+  background-color: ${(props) => `${props.theme.colors.primary.white}A6`};
+  margin: 0 50% 0 10%;
+  padding: 10px;
+  & p {
+    dislay: none;
+  }
+`;
+
+const Content = styled.span<{
   coordinatesTop: number;
   coordinatesLeft: number;
+  isWrong: boolean;
 }>`
   position: absolute;
-  background-color: red;
-  top: ${(props) => `${props.coordinatesTop}%`};
-  left: ${(props) => `${props.coordinatesLeft}%`};
-  padding: 50px;
+  top: ${(props) => `${props.coordinatesTop}px`};
+  left: ${(props) => `${props.coordinatesLeft}px`};
+  transform: translateY(100%);
+  & span {
+    color: ${(props) => (props.isWrong ? "red" : "green")};
+    font-size: 50px;
+  }
+`;
+
+const Container = styled.div`
+  background: url(${background}) no-repeat center center fixed;
+  background-size: cover;
+  height: 100vh;
+  padding-top: 2%;
+
+  & p {
+    margin: 0;
+  }
+  & button {
+    margin: 50px auto;
+  }
+`;
+
+const SubContainer = styled.div`
+  height: 70%;
+  background: url(${desktop}) no-repeat;
+  background-size: cover;
+  border-radius: 10px;
+  margin: 40px 10%;
+  border: 15px solid ${(props) => props.theme.colors.secondary.grey};
 `;
 
 const EavesDropping = (props: AttackProps) => {
@@ -61,20 +100,24 @@ const EavesDropping = (props: AttackProps) => {
     );
 
   return (
-    <div>
-      {files.map((elm, index) => (
-        <Container
-          key={index}
-          onClick={() => handleClick(elm)}
-          coordinatesTop={elm.cordinateX}
-          coordinatesLeft={elm.cordinateY}
-        >
-          {elm.id}
-        </Container>
-      ))}
-      <h2>Jeu: écoute clandestine</h2>
-      <button onClick={handleFinish}>Enregistrer</button>
-    </div>
+    <Container>
+      <Rule>
+        <p>Mettez les bons fichier dans le dossier</p>
+      </Rule>
+      <SubContainer>
+        {files.map((elm, index) => (
+          <Content
+            key={index}
+            onClick={() => handleClick(elm)}
+            isWrong={elm.isWrong}
+            coordinatesTop={elm.cordinateY}
+            coordinatesLeft={elm.cordinateX}
+          >
+            <span className="material-icons">description</span>
+          </Content>
+        ))}
+      </SubContainer>
+    </Container>
   );
 };
 
