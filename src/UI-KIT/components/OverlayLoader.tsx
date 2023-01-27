@@ -2,6 +2,7 @@ import React from "react";
 
 import { keyframes } from "@emotion/react";
 import styled from "@emotion/styled";
+import logo from "src/assets/img/logo.webp";
 
 type OverlayLoaderProps = {
   message?: string;
@@ -29,13 +30,16 @@ const Overlay = styled.div`
   height: 100%;
   position: fixed;
   background: ${(props) => props.theme.colors.primary.blue};
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Overlay__content = styled.div`
-  margin: 20% auto;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 30px;
 `;
 
 const Dots = styled.div`
@@ -74,6 +78,7 @@ const OverlayLoader = (props: OverlayLoaderProps): JSX.Element => {
   return (
     <Overlay>
       <Overlay__content>
+        <img src={logo} width={200} />
         <Dots>
           <Dot></Dot>
           <Dot></Dot>

@@ -6,7 +6,10 @@ import "react-circular-progressbar/dist/styles.css";
 import { useSelector } from "react-redux";
 import { RootState } from "src/app/store";
 import { useGetEndGameQuery } from "src/services";
-import { useGetUserOpponentQuery } from "src/services/queries/user";
+import {
+  useGetUserByIdQuery,
+  useGetUserOpponentQuery,
+} from "src/services/queries/user";
 import OverlayLoader from "src/UI-KIT/components/OverlayLoader";
 
 import { ReactComponent as Face } from "src/assets/img/face.svg";
@@ -69,33 +72,40 @@ const DISPLAY_CONSTANT = {
   mailTransmission: "mailTransmission",
 };
 
-const EndGame = (props : {gameId : number, userId : string}) => {
+const EndGame = () => {
+  /* redux */
+  const game: Game = useSelector((state: RootState) => state.gameSlice);
+  const user: User = useSelector((state: RootState) => state.userSlice);
+
   const navigate = useNavigate();
 
-  console.log(props.gameId);
-  console.log(props.userId);
-  
-
   const [display, setDisplay] = useState<string>();
+
+  const {
+    data: userApi,
+    isLoading: userApiIsLoading,
+    isError: userApiIsError,
+  } = useGetUserByIdQuery(user.userId);
 
   const {
     data: oppenent,
     isLoading,
     isError: oponnentIsError,
-  } = useGetUserOpponentQuery(props.userId);
+  } = useGetUserOpponentQuery(user.userId);
 
   const {
     data: endGameUser,
     isLoading: endGameIsLoading,
     isError: endGameUserIsError,
   } = useGetEndGameQuery({
-    gameId: props.gameId,
-    userId: props.userId,
+    gameId: game.gameId,
+    userId: user.userId,
   });
 
   useEffect(() => {
-    if (oponnentIsError || endGameUserIsError) navigate("/error:api");
-  }, [oponnentIsError, endGameUserIsError]);
+    if (oponnentIsError || endGameUserIsError || userApiIsError)
+      navigate("/error:api");
+  }, [oponnentIsError, endGameUserIsError, userApiIsError]);
 
   const handleClick = (value: string) => {
     if (display === value) {
@@ -105,14 +115,21 @@ const EndGame = (props : {gameId : number, userId : string}) => {
     }
   };
 
-  if (isLoading || endGameIsLoading) return <OverlayLoader />;
+  if (isLoading || endGameIsLoading || userApiIsLoading)
+    return <OverlayLoader />;
   if (!oppenent) return <div>pas de data</div>;
   return (
     <Suspense fallback={<OverlayLoader />}>
       <Container>
         <h2>Fin de partie</h2>
         <span className="material-icons">waving_hand</span>
-        <p>{endGameUser} vous a tué</p>
+
+        {!userApi?.isAlive ? (
+          <p>{endGameUser} vous a tué</p>
+        ) : (
+          <p>Bienjoué ! Vous avez gagné la partie</p>
+        )}
+        
         <OppenentStatus>
           {Object.entries(oppenent!).length ? (
             Object.entries(oppenent!).map((elm) => (
@@ -190,9 +207,7 @@ const EndGame = (props : {gameId : number, userId : string}) => {
         {display === DISPLAY_CONSTANT.mailConsultation2 && (
           <MailConsultation2 />
         )}
-        <h2
-          onClick={() => handleClick(DISPLAY_CONSTANT.mailTransmission)}
-        >
+        <h2 onClick={() => handleClick(DISPLAY_CONSTANT.mailTransmission)}>
           Transmission de mail
         </h2>
         {display === DISPLAY_CONSTANT.mailTransmission && <MailTransmission />}
