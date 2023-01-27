@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "src/app/store";
 import { generateFiles, verifyWin } from "./services/eavesDropping";
 
-import background from "src/assets/img/phishing/background.jpg";
+import background from "src/assets/img/inGame/backgrounds/night.webp";
 import desktop from "src/assets/img/eavesDropping/desktop.jpg";
 
 const Rule = styled.div`
