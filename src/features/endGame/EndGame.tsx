@@ -69,12 +69,12 @@ const DISPLAY_CONSTANT = {
   mailTransmission: "mailTransmission",
 };
 
-const EndGame = () => {
+const EndGame = (props : {gameId : number, userId : string}) => {
   const navigate = useNavigate();
 
-  /* redux */
-  const user = useSelector((state: RootState) => state.userSlice);
-  const game = useSelector((state: RootState) => state.userSlice);
+  console.log(props.gameId);
+  console.log(props.userId);
+  
 
   const [display, setDisplay] = useState<string>();
 
@@ -82,15 +82,15 @@ const EndGame = () => {
     data: oppenent,
     isLoading,
     isError: oponnentIsError,
-  } = useGetUserOpponentQuery(user.userId);
+  } = useGetUserOpponentQuery(props.userId);
 
   const {
     data: endGameUser,
     isLoading: endGameIsLoading,
     isError: endGameUserIsError,
   } = useGetEndGameQuery({
-    gameId: game.gameId,
-    userId: user.userId,
+    gameId: props.gameId,
+    userId: props.userId,
   });
 
   useEffect(() => {

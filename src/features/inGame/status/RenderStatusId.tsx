@@ -6,9 +6,11 @@ import {
   setDisplayComponent,
   setIsLoading,
 } from "src/app/redux/displayComponentSlice";
+import { setRoundStatus } from "src/app/redux/roundSlice";
 import { requestFinishRound } from "src/app/requestServer";
 import { RootState } from "src/app/store";
 import { DISPLAY_COMPONENT, SOCKET_CODE } from "src/constants";
+import EndGame from "src/features/endGame/EndGame";
 import { gameApi, useSetFinishedMutation } from "src/services";
 import OverlayLoader from "src/UI-KIT/components/OverlayLoader";
 import { ConfigProfile } from "./organisms";
@@ -38,9 +40,8 @@ const RenderStatusId = () => {
   useEffect(() => {
     webSocketState.webSocket?.addEventListener("message", async (message) => {
       if (message.data === SOCKET_CODE.serverValidate.finishRound) {
-        if (hasFinishedGame) {
-          navigate("/end-game");
-        } else {
+        
+        if (!hasFinishedGame) {
           lastround(game.gameId)
             .unwrap()
             .then((round) => {
@@ -133,6 +134,7 @@ const RenderStatusId = () => {
   };
 
   if (setFinishedIsLoading) return <OverlayLoader />;
+  if (hasFinishedGame) return <EndGame gameId={game.gameId} userId={user.userId}/>
 
   switch (round.statusId) {
     case 2:
@@ -169,7 +171,9 @@ const RenderStatusId = () => {
         </div>
       );
     default:
-      return <div>rien</div>;
+      return(<div>
+        <EndGame gameId={game.gameId} userId={user.userId}/>
+      </div>);
   }
 };
 

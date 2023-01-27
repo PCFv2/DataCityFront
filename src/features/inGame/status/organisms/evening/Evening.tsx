@@ -98,6 +98,8 @@ const Evening = (
     getUser(user.userId)
       .unwrap()
       .then((data) => {
+        console.log(data.isAlive);
+        
         if (!data?.isAlive) {
           requestFinishGame(webSocketState.webSocket!, game.gameId);
           props.setHasFinishedGame(true);

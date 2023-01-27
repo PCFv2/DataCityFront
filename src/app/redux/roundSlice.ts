@@ -20,8 +20,11 @@ export const roundSlice = createSlice({
         ...action.payload,
       };
     },
+    setRoundStatus: (state, action: PayloadAction<number>) => {
+      state.statusId = action.payload
+    }
   },
 });
 
-export const { setRound } = roundSlice.actions;
+export const { setRound, setRoundStatus } = roundSlice.actions;
 export default roundSlice.reducer;
