@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "src/app/store";
 import { getRandomWords } from "./services/phishing";
-import background from "src/assets/img/phishing/background.jpg";
+import background from "src/assets/img/inGame/phishing/background.jpg";
 import { SecondaryButton } from "src/UI-KIT/components/Button";
 
 const Container = styled.div`

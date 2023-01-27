@@ -26,7 +26,8 @@ export const theme: Theme = {
       text: 'Poppins',
     },
     size: {
-      title: "6rem",
+      main_title: "6rem",
+      title: "4rem",
       page_title: "4rem",
       text: "2rem"
     }
