@@ -255,7 +255,7 @@ const Host = (): JSX.Element => {
         </LeftPanel>
         <RightPanel>
           <RightPanelContainer>
-            <RightPanelTitle>Configuration de votre partie</RightPanelTitle>
+            <RightPanelTitle>Configuration de la partie | id : {game.gameId}</RightPanelTitle>
             <ConfForm onSubmit={handleSubmit(onSubmit)}>
               <InputLine>
                 <label>Nombre de joueurs maximum</label>
@@ -265,14 +265,14 @@ const Host = (): JSX.Element => {
                 />
               </InputLine>
               <InputLine>
-                <label>Difficultée de la partie (0 à 100)</label>
+                <label>Nombre de points de départ</label>
                 <Input
                   {...register("startNbPoints")}
                   defaultValue={gameInfos?.startNbPoints}
                 />
               </InputLine>
               <InputLine>
-                <label>Nombre de points de départ</label>
+                <label>Difficultée de la partie (0 à 100)</label>
                 <Input
                   {...register("difficulty")}
                   defaultValue={gameInfos?.difficulty}
