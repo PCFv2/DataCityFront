@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/app/store";
 import { MESSAGE_LOADER } from "src/constants/messageLoader";
@@ -13,6 +13,8 @@ import "react-circular-progressbar/dist/styles.css";
 import styled from "@emotion/styled";
 import { PrimaryButton } from "src/UI-KIT/components/Button";
 import { useNavigate } from "react-router-dom";
+import { requestFinishGame } from "src/app/requestServer";
+import { SOCKET_CODE } from "src/constants";
 
 const Container = styled.div`
   background: url(${background}) no-repeat center center fixed;
@@ -69,6 +71,12 @@ const Evening = (props: AttackProps) => {
   /* redux */
   const round = useSelector((state: RootState) => state.roundSlice);
   const user = useSelector((state: RootState) => state.userSlice);
+  const webSocketState = useSelector(
+    (state: RootState) => state.webSocket
+  ); /* on récupére la webSocket */
+
+  /* hook */
+  const [hasFinishedGame, setHasFinishedGame] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -86,13 +94,25 @@ const Evening = (props: AttackProps) => {
     if (oppenentIsError) navigate("/error:api");
   }, [oppenentIsError]);
 
+  /* event listener */
+  useEffect(() => {
+    webSocketState.webSocket?.addEventListener("message", (message) => {
+      if (
+        message.data === SOCKET_CODE.serverValidate.finishRound &&
+        hasFinishedGame
+      ) {
+        navigate("/end-game"); /* on envoie sur la page fin du jeu */
+      }
+    });
+  }, []);
+
   const handleFinish = async (): Promise<void> => {
     getUser(user.userId)
       .unwrap()
       .then((data) => {
         if (!data?.isAlive) {
-          /* dead ? */
-          navigate("/end-game"); /* on envoie sur la page fin du jeu */
+          requestFinishGame(webSocketState.webSocket!);
+          setHasFinishedGame(true);
           return;
         }
         props.handleFinishRound!(round.statusId);
