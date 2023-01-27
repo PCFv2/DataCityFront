@@ -70,7 +70,6 @@ const DISPLAY_CONSTANT = {
 };
 
 const EndGame = () => {
-  const ref = useRef(null);
   const navigate = useNavigate();
 
   /* redux */
@@ -193,7 +192,6 @@ const EndGame = () => {
         )}
         <h2
           onClick={() => handleClick(DISPLAY_CONSTANT.mailTransmission)}
-          ref={ref}
         >
           Transmission de mail
         </h2>

@@ -45,9 +45,9 @@ export const requestFinishRound = (webSocket: WebSocket, gameId: number) => {
   });
 };
 
-export const requestFinishGame = (webSocket: WebSocket) => {
+export const requestFinishGame = (webSocket: WebSocket, gameId: number) => {
   new Promise<boolean>((resolve, reject) => {
-    webSocket.send(`${SOCKET_CODE.client.finishGame}`);
+    webSocket.send(`${SOCKET_CODE.client.finishGame}${gameId}`);
     resolve(true);
   });
 };

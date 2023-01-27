@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { finishRound } from "src/app/finishedRound/finishRound";
@@ -26,6 +26,8 @@ const RenderStatusId = () => {
   const game: Game = useSelector((state: RootState) => state.gameSlice);
   const round: Round = useSelector((state: RootState) => state.roundSlice);
 
+  const [hasFinishedGame, setHasFinishedGame] = useState<boolean>(false);
+
   const webSocketState = useSelector(
     (state: RootState) => state.webSocket
   ); /* on récupére la webSocket */
@@ -36,15 +38,19 @@ const RenderStatusId = () => {
   useEffect(() => {
     webSocketState.webSocket?.addEventListener("message", async (message) => {
       if (message.data === SOCKET_CODE.serverValidate.finishRound) {
-        lastround(game.gameId)
-          .unwrap()
-          .then((round) => {
-            if (finishRound(round)) {
-              dispatch(setDisplayComponent(DISPLAY_COMPONENT.renderStatusId));
-              dispatch(setIsLoading(false));
-            }
-          })
-          .catch(() => navigate("/error:api")); // error
+        if (hasFinishedGame) {
+          navigate("/end-game");
+        } else {
+          lastround(game.gameId)
+            .unwrap()
+            .then((round) => {
+              if (finishRound(round)) {
+                dispatch(setDisplayComponent(DISPLAY_COMPONENT.renderStatusId));
+                dispatch(setIsLoading(false));
+              }
+            })
+            .catch(() => navigate("/error:api")); // error
+        }
       }
     });
   });
@@ -150,7 +156,10 @@ const RenderStatusId = () => {
     case 5:
       return (
         <div>
-          <Evening handleFinishRound={handleClick} />
+          <Evening
+            handleFinishRound={handleClick}
+            setHasFinishedGame={setHasFinishedGame}
+          />
         </div>
       );
     case 6:

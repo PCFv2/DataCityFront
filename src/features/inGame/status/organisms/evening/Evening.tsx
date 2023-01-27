@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/app/store";
 import { MESSAGE_LOADER } from "src/constants/messageLoader";
@@ -67,16 +67,16 @@ const Opponent = styled.div`
   gap: 30px;
 `;
 
-const Evening = (props: AttackProps) => {
+const Evening = (
+  props: AttackProps & { setHasFinishedGame: Dispatch<SetStateAction<boolean>> }
+) => {
   /* redux */
   const round = useSelector((state: RootState) => state.roundSlice);
   const user = useSelector((state: RootState) => state.userSlice);
+  const game = useSelector((state: RootState) => state.gameSlice);
   const webSocketState = useSelector(
     (state: RootState) => state.webSocket
   ); /* on récupére la webSocket */
-
-  /* hook */
-  const [hasFinishedGame, setHasFinishedGame] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -94,28 +94,16 @@ const Evening = (props: AttackProps) => {
     if (oppenentIsError) navigate("/error:api");
   }, [oppenentIsError]);
 
-  /* event listener */
-  useEffect(() => {
-    webSocketState.webSocket?.addEventListener("message", (message) => {
-      if (
-        message.data === SOCKET_CODE.serverValidate.finishRound &&
-        hasFinishedGame
-      ) {
-        navigate("/end-game"); /* on envoie sur la page fin du jeu */
-      }
-    });
-  }, []);
-
   const handleFinish = async (): Promise<void> => {
     getUser(user.userId)
       .unwrap()
       .then((data) => {
         if (!data?.isAlive) {
-          requestFinishGame(webSocketState.webSocket!);
-          setHasFinishedGame(true);
-          return;
+          requestFinishGame(webSocketState.webSocket!, game.gameId);
+          props.setHasFinishedGame(true);
+        } else {
+          props.handleFinishRound!(round.statusId);
         }
-        props.handleFinishRound!(round.statusId);
       })
       .catch(() => navigate("/error:api"));
   };
