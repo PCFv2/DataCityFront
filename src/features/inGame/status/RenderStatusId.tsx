@@ -52,6 +52,9 @@ const RenderStatusId = () => {
             .catch(() => navigate("/error:api")); // error
         }
       }
+      if (message.data === SOCKET_CODE.serverValidate.finishGame) {
+        setHasFinishedGame(true); // fin de partie
+      }
     });
   });
 

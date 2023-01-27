@@ -4,6 +4,7 @@ export const SOCKET_CODE = {
     modifyGame: "01",
     finishRound: "02",
     getToken: "03",
+    finishGame: "04",
   },
   serverError: {
     unknownError: "10",
