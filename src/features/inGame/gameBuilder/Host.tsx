@@ -255,7 +255,7 @@ const Host = (): JSX.Element => {
         </LeftPanel>
         <RightPanel>
           <RightPanelContainer>
-            <RightPanelTitle>Configuration de votre partie</RightPanelTitle>
+            <RightPanelTitle>Configuration de la partie | id : {game.gameId}</RightPanelTitle>
             <ConfForm onSubmit={handleSubmit(onSubmit)}>
               <InputLine>
                 <label>Nombre de joueurs maximum</label>
