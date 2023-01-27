@@ -103,8 +103,12 @@ const EndGame = () => {
   });
 
   useEffect(() => {
-    if (oponnentIsError || endGameUserIsError || userApiIsError)
+    if (oponnentIsError || userApiIsError) {
       navigate("/error:api");
+    }
+    if (endGameUserIsError && !user.isAlive) {
+      navigate("/error:api");
+    }
   }, [oponnentIsError, endGameUserIsError, userApiIsError]);
 
   const handleClick = (value: string) => {
@@ -129,7 +133,7 @@ const EndGame = () => {
         ) : (
           <p>Bienjoué ! Vous avez gagné la partie</p>
         )}
-        
+
         <OppenentStatus>
           {Object.entries(oppenent!).length ? (
             Object.entries(oppenent!).map((elm) => (
