@@ -54,12 +54,6 @@ const RenderStatusId = () => {
       }
       if (message.data === SOCKET_CODE.serverValidate.finishGame) {
         setHasFinishedGame(true); // fin de partie
-        setFinished({
-          gameId: game.gameId,
-          userId: user.userId,
-        })
-          .unwrap()
-          .catch(() => navigate("/error:api"));
       }
     });
   });
