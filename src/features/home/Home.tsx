@@ -65,7 +65,7 @@ const Home = (props: { serverUrl: string }) => {
     case DISPLAY_COMPONENT.home:
       return (
         <Suspense fallback={<OverlayLoader />}>
-          <Eavesdropping />
+          <Homepage />
         </Suspense>
       );
     case DISPLAY_COMPONENT.hostComponent:
