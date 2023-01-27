@@ -6,7 +6,7 @@ import userApi, { useGetUserOpponentQuery } from "src/services/queries/user";
 import OverlayLoader from "src/UI-KIT/components/OverlayLoader";
 
 import { ReactComponent as Face } from "src/assets/img/face.svg";
-import background from "src/assets/img/phishing/background.jpg";
+import background from "src/assets/img/inGame/backgrounds/night.webp";
 
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";

@@ -209,7 +209,7 @@ const ConfigProfile = (props: ConfigProfileProps) => {
         <ConfigPage>
             <Window>
                 <WindowTitle>Configuration de votre profil de jeu</WindowTitle>
-                <Points>Il vous reste <b>{displayPlayerPoints} points</b></Points>
+                <Points>Il vous reste <b>{playerPoints} points</b></Points>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Table>
                         <TableHeadersLine>
@@ -223,11 +223,11 @@ const ConfigProfile = (props: ConfigProfileProps) => {
                         {Object.values(allConfiguration!).map((elm: Configuration, index) => (
                             <TableLine key={elm.configurationId}>
                                 <TableElementName>{elm.name}</TableElementName>
-                                <TableElement isDisabled={displayPlayerPoints < 0}>
+                                <TableElement isDisabled={playerPoints < 0}>
                                     <input
                                         id={elm.value1}
                                         value={"value1"}
-                                        disabled={displayPlayerPoints < 0 && true}
+                                        disabled={playerPoints < 0 && true}
                                         type="radio"
                                         onClick={() => handleClick(index, elm.configurationId, 0)}
                                         {...register(`configuration.${index}.value`)}
@@ -235,11 +235,11 @@ const ConfigProfile = (props: ConfigProfileProps) => {
                                     <label htmlFor={elm.value1} title={elm.value1}><RenderIcon
                                         name={elm.value1}></RenderIcon></label>
                                 </TableElement>
-                                <TableElement isDisabled={displayPlayerPoints - 1 < 0}>
+                                <TableElement isDisabled={playerPoints - 1 < 0}>
                                     <input
                                         id={elm.value2}
                                         value={"value2"}
-                                        disabled={displayPlayerPoints - 1 < 0 && true}
+                                        disabled={playerPoints - 1 < 0 && true}
                                         type="radio"
                                         onClick={() => handleClick(index, elm.configurationId, 1)}
                                         {...register(`configuration.${index}.value`)}
@@ -247,11 +247,11 @@ const ConfigProfile = (props: ConfigProfileProps) => {
                                     <label htmlFor={elm.value2} title={elm.value2}><RenderIcon
                                         name={elm.value2}></RenderIcon></label>
                                 </TableElement>
-                                <TableElement isDisabled={displayPlayerPoints - 2 < 0}>
+                                <TableElement isDisabled={playerPoints - 2 < 0}>
                                     <input
                                         id={elm.value3}
                                         value={"value3"}
-                                        disabled={displayPlayerPoints - 2 < 0 && true}
+                                        disabled={playerPoints - 2 < 0 && true}
                                         type="radio"
                                         onClick={() => handleClick(index, elm.configurationId, 2)}
                                         {...register(`configuration.${index}.value`)}
@@ -261,11 +261,11 @@ const ConfigProfile = (props: ConfigProfileProps) => {
                                 </TableElement>
                                 {elm.value4 && (
                                     <>
-                                        <TableElement isDisabled={displayPlayerPoints - 3 < 0}>
+                                        <TableElement isDisabled={playerPoints - 3 < 0}>
                                             <input
                                                 id={elm.value4}
                                                 value={"value4"}
-                                                disabled={displayPlayerPoints - 3 < 0 && true}
+                                                disabled={playerPoints - 3 < 0 && true}
                                                 type="radio"
                                                 onClick={() => handleClick(index, elm.configurationId, 3)}
                                                 {...register(`configuration.${index}.value`)}
