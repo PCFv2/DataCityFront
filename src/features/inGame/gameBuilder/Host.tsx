@@ -265,14 +265,14 @@ const Host = (): JSX.Element => {
                 />
               </InputLine>
               <InputLine>
-                <label>Difficultée de la partie (0 à 100)</label>
+                <label>Nombre de points de départ</label>
                 <Input
                   {...register("startNbPoints")}
                   defaultValue={gameInfos?.startNbPoints}
                 />
               </InputLine>
               <InputLine>
-                <label>Nombre de points de départ</label>
+                <label>Difficultée de la partie (0 à 100)</label>
                 <Input
                   {...register("difficulty")}
                   defaultValue={gameInfos?.difficulty}
