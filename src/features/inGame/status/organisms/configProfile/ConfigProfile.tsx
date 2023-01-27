@@ -2,21 +2,19 @@ import React, {useEffect, useState} from "react";
 import {useGetAllConfigurationQuery} from "src/services";
 import OverlayLoader from "src/UI-KIT/components/OverlayLoader";
 
-import {useForm} from "react-hook-form";
-import {getSumOfPoints} from "./service";
-import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "src/app/store";
-import {setNbPoints} from "src/app/redux/userSlice";
-import userApi, {
-    useGetUserConfigurationQuery,
-    usePutUserConfigurationMutation,
-    useUpdateUserByIdMutation,
-} from "src/services/queries/user";
 import styled from "@emotion/styled";
 import background from "src/assets/img/inGame/backgrounds/night.webp";
-import renderIcon from "./molecules/RenderIcon";
 import RenderIcon from "./molecules/RenderIcon";
-import {keyframes} from "@emotion/react";
+import { useForm } from "react-hook-form";
+import { initPlayerPoints } from "./service";
+import { useSelector } from "react-redux";
+import { RootState } from "src/app/store";
+import userApi, {
+  useGetUserByIdQuery,
+  useGetUserConfigurationQuery,
+  useUpdateUserByIdMutation,
+} from "src/services/queries/user";
+import { useNavigate } from "react-router-dom";
 
 type ConfigProfileProps = {
     handleFinishRound?: (
@@ -27,76 +25,91 @@ type ConfigProfileProps = {
 };
 
 const ConfigProfile = (props: ConfigProfileProps) => {
-    /* redux */
-    const dispatch = useDispatch();
-    const user = useSelector((state: RootState) => state.userSlice);
-    const round = useSelector((state: RootState) => state.roundSlice);
+  const navigate = useNavigate();
+  /* redux */
+  const user = useSelector((state: RootState) => state.userSlice);
+  const round = useSelector((state: RootState) => state.roundSlice);
 
-    const playerPoints: number = useSelector(
-        (state: RootState) => state.gameSlice.startNbPoints
-    );
+  /* Queries */
+  const {
+    data: allConfiguration,
+    isLoading,
+    isError: allConfigurationIsError,
+  } = useGetAllConfigurationQuery(); // API /configuration
+  const {
+    data: userConfiguration,
+    isLoading: isLoadingUserConfiguration,
+    isError: userConfigurationIsError,
+  } = useGetUserConfigurationQuery(user.userId); // API /user/{id}/configuration
+  const {
+    data: userAPI,
+    isLoading: userApiIsLoading,
+    isError: userAPIIsError,
+  } = useGetUserByIdQuery(user.userId);
 
-    /* Hook */
-    const [displayPlayerPoints, setDisplayPlayerPoints] =
-        useState<number>(playerPoints); /* just to display point of player */
-    const [playerSpentPoints, setPlayerSpentPoints] = useState<ChoiceOfUser[]>(
-        []
-    ); /* list of points spent of each category by the player */
+  /* manage error */
+  useEffect(() => {
+    if (allConfigurationIsError || userConfigurationIsError || userAPIIsError)
+      navigate("/error:api");
+  }, [allConfigurationIsError, userAPIIsError, userConfigurationIsError]);
 
-    /* Queries */
-    const {data: allConfiguration, isLoading} = useGetAllConfigurationQuery(); // API /configuration
-    const {data: userConfiguration, isLoading: isLoadingUserConfiguration} =
-        useGetUserConfigurationQuery(user.userId); // API /user/{id}/configuration
+  /* Mutations */
+  const [updateUser, { isLoading: userLoading }] = useUpdateUserByIdMutation(); // API user/{userId}
 
-    /* Mutations */
-    const [updateUser, {isLoading: userLoading}] = useUpdateUserByIdMutation(); // API user/{userId}
+  /* Hook */
+  const [playerSpentPoints, setPlayerSpentPoints] = useState<ChoiceOfUser[]>(
+    []
+  ); /* list of points spent of each category by the player */
+  const [playerPoints, setPlayerPoints] = useState<number>(
+    userAPI?.nbPoints!
+  ); /* just to display point of player */
+  /* React hook form */
+  const { register, handleSubmit, setValue, reset } =
+    useForm<UserConfigurationForm>();
 
-    /* React hook form */
-    const {register, handleSubmit, setValue, reset} =
-        useForm<UserConfigurationForm>();
+  /* Rendering condition useEffect */
+  useEffect(() => {
+    reset({ configuration: userConfiguration }); // set default value when fetch of userConfiguration is success
+    setPlayerPoints(userAPI?.nbPoints!);
+    setPlayerSpentPoints(initPlayerPoints(userConfiguration!));
+  }, [userConfiguration, userAPI]);
 
-    /* Rendering condition useEffect */
-    useEffect(() => {
-        reset({configuration: userConfiguration}); // set default value when fetch of userConfiguration is success
-    }, [userConfiguration]);
+  const handleClick = (
+    index: number,
+    configurationId: number,
+    nbPoint: number
+  ) => {
+    const data = [...playerSpentPoints];
+    if (nbPoint > data[index].point) {
+      setPlayerPoints(playerPoints - (nbPoint - data[index].point));
+      data[index].point = nbPoint;
+      setPlayerSpentPoints(data);
+    } else if (nbPoint < data[index].point) {
+      setPlayerPoints(playerPoints + (data[index].point - nbPoint));
+      data[index].point = nbPoint;
+      setPlayerSpentPoints(data);
+    }
 
-    useEffect(() => {
-        setDisplayPlayerPoints(
-            playerPoints - getSumOfPoints(playerSpentPoints)
-        ); /* Manage display of point */
-    }, [playerSpentPoints]);
+    setValue(`configuration.${index}.configurationId`, configurationId);
+  };
 
-    const onSubmit = (data: UserConfigurationForm) => {
-        /* Envoie les informations au back */
+  const onSubmit = (data: UserConfigurationForm) => {
+    /* Envoie les informations au back */
+    props.handleFinishRound!(round.statusId, data); /* set Finished round */
+    updateUser({ userId: user.userId, nbPoints: playerPoints })
+      .unwrap()
+      .catch(() => navigate("/error:api")); // send to API user
+  };
 
-        props.handleFinishRound!(round.statusId, data); /* set Finished round */
+  if (
+    isLoading ||
+    isLoadingUserConfiguration ||
+    userLoading ||
+    userApiIsLoading
+  )
+    return <OverlayLoader />;
 
-        updateUser({userId: user.userId, nbPoints: displayPlayerPoints}); // send to API user
-        dispatch(setNbPoints(displayPlayerPoints)); /* set nbPoints of user */
-    };
-
-    const handleClick = (
-        index: number,
-        configurationId: number,
-        nbPoint: number
-    ) => {
-        const data = [...playerSpentPoints];
-        if (data.find((elm) => elm.index === index)) {
-            const findOne = data.findIndex((elm) => elm.index === index);
-            data[findOne].point = nbPoint;
-            setPlayerSpentPoints(data);
-        } else {
-            setPlayerSpentPoints((oldPoints) => [
-                ...oldPoints,
-                {index: index, point: nbPoint},
-            ]);
-        }
-        setValue(`configuration.${index}.configurationId`, configurationId);
-    };
-
-    if (isLoading || isLoadingUserConfiguration || userLoading)
-        return <OverlayLoader/>;
-
+  
     const ConfigPage = styled.main`
       background: url(${background}) no-repeat center center fixed;
       background-size: cover;

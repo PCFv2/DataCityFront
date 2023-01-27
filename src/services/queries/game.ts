@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const gameApi = createApi({
   reducerPath: "gameApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env.REACT_APP_API_URL + "/game",
+    baseUrl: process.env.REACT_APP_API_URL_DEV + "/game",
   }),
   endpoints: (builder) => ({
     getGameById: builder.query<Game, number>({
@@ -68,8 +68,15 @@ export const gameApi = createApi({
     getLastround: builder.query<Round, number>({
       query: (id) => `/${id}/lastround`,
     }),
-    getUserAttacks: builder.query<UserAttacks[], {gameId: number, roundId:number, userId: string}>({
-      query: ({gameId, roundId, userId}) => `/${gameId}/round/${roundId}/user/${userId}/attacks`,
+    getUserAttacks: builder.query<
+      UserAttacks[],
+      { gameId: number; roundId: number; userId: string }
+    >({
+      query: ({ gameId, roundId, userId }) =>
+        `/${gameId}/round/${roundId}/user/${userId}/attacks`,
+    }),
+    getEndGame: builder.query<string, { gameId: number; userId: string }>({
+      query: (data) => `/${data.gameId}/user/${data.userId}/endGame`,
     }),
   }),
 });
@@ -87,4 +94,5 @@ export const {
   useSetFinishedMutation,
   useGetLastroundQuery,
   useGetUserAttacksQuery,
+  useGetEndGameQuery,
 } = gameApi;

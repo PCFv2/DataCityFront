@@ -10,7 +10,8 @@ export const theme: Theme = {
       lightBlue_pressed: "#92C2F2",
       red: "#A31621",
       black: "#141201",
-      white: "#FFFFFF"
+      white: "#FFFFFF",
+      grey: "#F4F6F6",
     },
     secondary: {
       brown: "#2A0800",
@@ -27,6 +28,7 @@ export const theme: Theme = {
     size: {
       main_title: "6rem",
       title: "4rem",
+      page_title: "4rem",
       text: "2rem"
     }
   },

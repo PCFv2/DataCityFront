@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { finishRound } from "src/app/finishedRound/finishRound";
 import {
   setDisplayComponent,
@@ -8,21 +9,22 @@ import {
 import { requestFinishRound } from "src/app/requestServer";
 import { RootState } from "src/app/store";
 import { DISPLAY_COMPONENT, SOCKET_CODE } from "src/constants";
-import { MESSAGE_LOADER } from "src/constants/messageLoader";
 import { gameApi, useSetFinishedMutation } from "src/services";
 import OverlayLoader from "src/UI-KIT/components/OverlayLoader";
 import { ConfigProfile } from "./organisms";
 import Attack from "./organisms/attack/Attack";
 import Day from "./organisms/day/Day";
+import Evening from "./organisms/evening/Evening";
 
 const RenderStatusId = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [setFinished, { isLoading: setFinishedIsLoading }] =
     useSetFinishedMutation();
 
-  const user = useSelector((state: RootState) => state.userSlice);
-  const game = useSelector((state: RootState) => state.gameSlice);
-  const round = useSelector((state: RootState) => state.roundSlice);
+  const user: User = useSelector((state: RootState) => state.userSlice);
+  const game: Game = useSelector((state: RootState) => state.gameSlice);
+  const round: Round = useSelector((state: RootState) => state.roundSlice);
 
   const webSocketState = useSelector(
     (state: RootState) => state.webSocket
@@ -34,11 +36,15 @@ const RenderStatusId = () => {
   useEffect(() => {
     webSocketState.webSocket?.addEventListener("message", async (message) => {
       if (message.data === SOCKET_CODE.serverValidate.finishRound) {
-        const roundApi = await lastround(game.gameId);
-        if (finishRound(roundApi.data!)) {
-          dispatch(setDisplayComponent(DISPLAY_COMPONENT.renderStatusId));
-          dispatch(setIsLoading(false));
-        }
+        lastround(game.gameId)
+          .unwrap()
+          .then((round) => {
+            if (finishRound(round)) {
+              dispatch(setDisplayComponent(DISPLAY_COMPONENT.renderStatusId));
+              dispatch(setIsLoading(false));
+            }
+          })
+          .catch(() => navigate("/error:api")); // error
       }
     });
   });
@@ -46,7 +52,8 @@ const RenderStatusId = () => {
   const handleClick = (
     round: number,
     userConfiguration?: UserConfigurationForm,
-    night?: Night
+    night?: Night,
+    day?: DayForm
   ) => {
     switch (round) {
       case 2:
@@ -54,78 +61,96 @@ const RenderStatusId = () => {
           gameId: game.gameId,
           userId: user.userId,
           ...userConfiguration,
-        }).then(() => {
-          requestFinishRound(webSocketState.webSocket!, game.gameId);
-          dispatch(setIsLoading(true));
-        });
+        })
+          .unwrap()
+          .then(() => {
+            requestFinishRound(webSocketState.webSocket!, game.gameId);
+            dispatch(setIsLoading(true));
+          })
+          .catch(() => navigate("/error:api"));
         break;
 
       case 3:
         setFinished({
           gameId: game.gameId,
           userId: user.userId,
-        }).then(() => {
-          requestFinishRound(webSocketState.webSocket!, game.gameId);
-          dispatch(setIsLoading(true));
-        });
+          ...userConfiguration,
+        })
+          .unwrap()
+          .then(() => {
+            requestFinishRound(webSocketState.webSocket!, game.gameId);
+            dispatch(setIsLoading(true));
+          })
+          .catch(() => navigate("/error:api"));
         break;
 
       case 4:
         setFinished({
           gameId: game.gameId,
           userId: user.userId,
-        }).then(() => {
-          requestFinishRound(webSocketState.webSocket!, game.gameId);
-          dispatch(setIsLoading(true));
-        });
-        //TODO Journée
+          ...day,
+        })
+          .unwrap()
+          .then(() => {
+            requestFinishRound(webSocketState.webSocket!, game.gameId);
+            dispatch(setIsLoading(true));
+          })
+          .catch(() => navigate("/error:api"));
         break;
       case 5:
-        //TODO Soirée
+        setFinished({
+          gameId: game.gameId,
+          userId: user.userId,
+        })
+          .unwrap()
+          .then(() => {
+            requestFinishRound(webSocketState.webSocket!, game.gameId);
+            dispatch(setIsLoading(true));
+          })
+          .catch(() => navigate("/error:api"));
+        //TODO soirée
         break;
       case 6:
         setFinished({
           gameId: game.gameId,
           userId: user.userId,
           ...night,
-        }).then(() => {
-          requestFinishRound(webSocketState.webSocket!, game.gameId);
-          dispatch(setIsLoading(true));
-        });
+        })
+          .unwrap()
+          .then(() => {
+            requestFinishRound(webSocketState.webSocket!, game.gameId);
+            dispatch(setIsLoading(true));
+          })
+          .catch(() => navigate("/error:api"));
         break;
     }
   };
 
-  if (setFinishedIsLoading)
-    return <OverlayLoader />;
+  if (setFinishedIsLoading) return <OverlayLoader />;
 
   switch (round.statusId) {
     case 2:
       return (
         <div>
-          <button onClick={() => handleClick(round.statusId)}>Suivant</button>
           <ConfigProfile handleFinishRound={handleClick} />
         </div>
       );
     case 3:
       return (
         <div>
-          <button onClick={() => handleClick(round.statusId)}>Suivant</button>
-          matinée
+          <ConfigProfile handleFinishRound={handleClick} />
         </div>
       );
     case 4:
       return (
         <div>
-          <button onClick={() => handleClick(round.statusId)}>Suivant</button>
-          <Day />
+          <Day handleFinishRound={handleClick} />
         </div>
       );
     case 5:
       return (
         <div>
-          <button onClick={() => handleClick(round.statusId)}>Suivant</button>
-          soirée
+          <Evening handleFinishRound={handleClick} />
         </div>
       );
     case 6:

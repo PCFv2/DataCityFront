@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { DISPLAY_COMPONENT, ROUTES } from "src/constants";
 import {
   gameApi,
@@ -11,7 +11,7 @@ import {
   setDisplayComponent,
   setSocketCode,
 } from "src/app/redux/displayComponentSlice";
-import { setGameId, setHostId } from "src/app/redux/gameSlice";
+import { setGameId } from "src/app/redux/gameSlice";
 import OverlayLoader from "src/UI-KIT/components/OverlayLoader";
 import { SOCKET_CODE } from "src/constants";
 import { requestCreateGame } from "src/app/requestServer";
@@ -20,52 +20,54 @@ import { setRound } from "src/app/redux/roundSlice";
 import { SecondaryButton } from "../../../UI-KIT/components/Button";
 import { MESSAGE_LOADER } from "src/constants/messageLoader";
 
-const GameCreate = () => {
+const GameCreate = (): JSX.Element => {
+  const navigate = useNavigate();
+  /* hook */
   const [processingServer, setProcessingServer] = useState<boolean>(false);
+
+  /* redux */
   const webSocketState = useSelector(
     (state: RootState) => state.webSocket
   ); /* on récupére la webSocket */
   const dispatch = useDispatch();
-  const [createGame, { isLoading, isError }] = usePostCreateGameMutation();
+
+  /* mutation */
+  const [createGame, { isLoading }] = usePostCreateGameMutation();
 
   //query
-  const [lastRound, { isLoading: roundIsLoading }] =
+  const [lastround, { isLoading: roundIsLoading }] =
     gameApi.endpoints.getLastround.useLazyQuery();
 
   const handleClick = async () => {
     setProcessingServer(true);
     dispatch(setSocketCode(SOCKET_CODE.client.gameCreate));
-    const result =
-      await createGame(); /* Envoie d'une demande de création d'une partie au Back */
 
-    if (!isError) {
-      /* si ok pour le back */
-      const gameId: number = Number(
-        Object.values(Object.entries(result)[0][1])[0]
-      ); /* on récupère le gameId */
-
-      requestCreateGame(webSocketState.webSocket!, gameId).then(async () => {
-        console.log("création de la partie réussi");
-        dispatch(setGameId(gameId)); /* on set le gameId dans redux */
-        dispatch(
-          setDisplayComponent(DISPLAY_COMPONENT.hostComponent)
-        ); /* on affiche le composent host */
-        setProcessingServer(false); /* on arrete le chargement */
-        const round = await lastRound(gameId);
-        dispatch(
-          setRound(round.data!)
-        ); /* On rentre les infos du round dans le state */
-      });
-    }
+    createGame() /* Envoie d'une demande de création d'une partie au Back */
+      .unwrap()
+      .then((gameId) => {
+        requestCreateGame(webSocketState.webSocket!, Object.values(gameId)[0])
+          .then(() => {
+            dispatch(
+              setGameId(Object.values(gameId)[0])
+            ); /* on set le gameId dans redux */
+            dispatch(
+              setDisplayComponent(DISPLAY_COMPONENT.hostComponent)
+            ); /* on affiche le composent host */
+            setProcessingServer(false); /* on arrete le chargement */
+            lastround(Object.values(gameId)[0])
+              .unwrap()
+              .then((round) => dispatch(setRound(round)))
+              .catch(() => navigate("/error:api")); // error
+          })
+          .catch(() => navigate("/error:server")); // error
+      })
+      .catch(() => navigate("/error:api")); // error
   };
-  if (isLoading || processingServer)
+
+  if (isLoading || processingServer || roundIsLoading)
     return <OverlayLoader message={MESSAGE_LOADER.gameCreate} />;
-  return (
-    <SecondaryButton
-      onClick={handleClick}
-      content={"Créer une partie"}
-    ></SecondaryButton>
-  );
+
+  return <SecondaryButton onClick={handleClick} content={"Créer une partie"} />;
 };
 
 export default GameCreate;

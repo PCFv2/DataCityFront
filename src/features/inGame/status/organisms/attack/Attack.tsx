@@ -1,7 +1,7 @@
 import React, { Suspense, useMemo } from "react";
 import { ATTACK } from "src/constants";
 import OverlayLoader from "../../../../../UI-KIT/components/OverlayLoader";
-import ErrorPage from "src/app/pages/main/ErrorPage";
+import ErrorPage from "src/app/pages/ErrorPage";
 
 const Eavesdropping = React.lazy(
   () => import("src/features/inGame/attack/Eavesdropping")
@@ -14,12 +14,10 @@ const StealthDowload = React.lazy(
 );
 
 const Attack = (props: AttackProps) => {
-  // const attackNb = useMemo(
-  //   () => Math.floor(Math.random() * ATTACK.nbAttacks),
-  //   []
-  // );
-
-  const attackNb: number = 0;
+  const attackNb = useMemo(
+    () => Math.floor(Math.random() * ATTACK.nbAttacks),
+    []
+  );
 
   switch (attackNb) {
     case ATTACK.attacks.eavesdropping:
