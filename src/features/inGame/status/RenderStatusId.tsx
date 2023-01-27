@@ -40,7 +40,6 @@ const RenderStatusId = () => {
   useEffect(() => {
     webSocketState.webSocket?.addEventListener("message", async (message) => {
       if (message.data === SOCKET_CODE.serverValidate.finishRound) {
-        
         if (!hasFinishedGame) {
           lastround(game.gameId)
             .unwrap()
@@ -134,7 +133,8 @@ const RenderStatusId = () => {
   };
 
   if (setFinishedIsLoading) return <OverlayLoader />;
-  if (hasFinishedGame) return <EndGame gameId={game.gameId} userId={user.userId}/>
+
+  if (hasFinishedGame) return <EndGame />;
 
   switch (round.statusId) {
     case 2:
@@ -171,9 +171,7 @@ const RenderStatusId = () => {
         </div>
       );
     default:
-      return(<div>
-        <EndGame gameId={game.gameId} userId={user.userId}/>
-      </div>);
+      return <></>;
   }
 };
 
