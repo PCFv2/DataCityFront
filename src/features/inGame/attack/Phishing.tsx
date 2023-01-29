@@ -91,6 +91,7 @@ const Phishing = (props: AttackProps) => {
   const round = useSelector((state: RootState) => state.roundSlice);
   const game = useSelector((state: RootState) => state.gameSlice);
   const webSocketState = useSelector((state: RootState) => state.webSocket);
+  const bot = useSelector((state: RootState) => state.botSlice);
 
   const wordsList: string[] = [
     "Mettre ",
@@ -120,8 +121,10 @@ const Phishing = (props: AttackProps) => {
     };
     props.handleFinishRound!(round.statusId, undefined, resultAttack);
 
-    // bot
-    botSetFinished(game.gameId, webSocketState.webSocket!);
+    /* BOT */
+    if (bot.botIsActive) {
+      botSetFinished(game.gameId, webSocketState.webSocket!);
+    }
   };
 
   const handleClick = (word: string) => {

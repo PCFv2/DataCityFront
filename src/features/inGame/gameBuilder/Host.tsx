@@ -27,7 +27,8 @@ import {
   SecondaryButton,
 } from "../../../UI-KIT/components/Button";
 import { useNavigate } from "react-router-dom";
-import { bot, botSetFinished } from "src/features/bot/bot";
+import { loadBot, botSetFinished } from "src/features/bot/bot";
+import { setBotIsActive } from "src/app/redux/botSlice";
 
 const Host = (): JSX.Element => {
   const navigate = useNavigate();
@@ -40,6 +41,8 @@ const Host = (): JSX.Element => {
   const game: Game = useSelector(
     (state: RootState) => state.gameSlice
   ); /* game info */
+
+  const bot = useSelector((state: RootState) => state.botSlice); /* game info */
 
   const webSocketState = useSelector(
     (state: RootState) => state.webSocket
@@ -67,11 +70,16 @@ const Host = (): JSX.Element => {
   } = useGetAllUsersByGameIdQuery(game.gameId); /* API GET game/id/user */
 
   /* bot */
-  const loadBot = () => {
+  const handleLoadBot = (): void => {
     if (userInGame?.length === 1) {
       setProcessingServer(true);
-      bot(game.gameId).then(() => setProcessingServer(false));
+      loadBot(game.gameId).then(() => {
+        setProcessingServer(false);
+        dispatch(setBotIsActive(true)); // bot activé
+        return;
+      });
     }
+    return;
   };
 
   /* manage error */
@@ -120,8 +128,10 @@ const Host = (): JSX.Element => {
       })
       .catch(() => navigate("/error:api")); // error
 
-    // bot
-    botSetFinished(game.gameId, webSocketState.webSocket!);
+    /* BOT */
+    if (bot.botIsActive) {
+      botSetFinished(game.gameId, webSocketState.webSocket!);
+    }
   };
 
   useEffect(() => {
@@ -300,7 +310,13 @@ const Host = (): JSX.Element => {
                   onClick={handleStartGame}
                   content={"Lancer la partie"}
                 ></Primary2Button>
-                <SecondaryButton onClick={loadBot} content={"activer le bot"} />
+
+                {(!bot.botIsActive && userInGame?.length === 1) && (
+                  <SecondaryButton
+                    onClick={handleLoadBot}
+                    content={"activer le bot"}
+                  />
+                )}
               </ButtonLine>
             </ConfForm>
           </RightPanelContainer>

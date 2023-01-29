@@ -75,6 +75,7 @@ const Evening = (
   const round = useSelector((state: RootState) => state.roundSlice);
   const user = useSelector((state: RootState) => state.userSlice);
   const game = useSelector((state: RootState) => state.gameSlice);
+  const bot = useSelector((state: RootState) => state.botSlice);
   const webSocketState = useSelector(
     (state: RootState) => state.webSocket
   ); /* on récupére la webSocket */
@@ -110,9 +111,11 @@ const Evening = (
 
   const handleFinish = async (): Promise<void> => {
     props.handleFinishRound!(round.statusId);
-    
-    //bot;
-    botSetFinished(game.gameId, webSocketState.webSocket!);
+
+    /* BOT */
+    if (bot.botIsActive) {
+      botSetFinished(game.gameId, webSocketState.webSocket!);
+    }
   };
 
   if (isLoading || getNameOfUserIsLoading)

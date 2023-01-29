@@ -16,6 +16,7 @@ const Day = (props: AttackProps) => {
   const game = useSelector((state: RootState) => state.gameSlice);
   const round = useSelector((state: RootState) => state.roundSlice);
   const webSocketState = useSelector((state: RootState) => state.webSocket);
+  const bot = useSelector((state: RootState) => state.botSlice);
 
   // To register globally choice
   const [choices, setChoices] = useState<Day[]>();
@@ -45,8 +46,10 @@ const Day = (props: AttackProps) => {
       };
       props.handleFinishRound!(round.statusId, undefined, undefined, dayForm);
 
-      //bot
-      botSetFinished(game.gameId, webSocketState.webSocket!, user.userId);
+      /* BOT */
+      if (bot.botIsActive) {
+        botSetFinished(game.gameId, webSocketState.webSocket!, user.userId);
+      }
     }
   };
 

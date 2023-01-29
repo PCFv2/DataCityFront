@@ -30,7 +30,8 @@ const ConfigProfile = (props: ConfigProfileProps) => {
   /* redux */
   const user = useSelector((state: RootState) => state.userSlice);
   const round = useSelector((state: RootState) => state.roundSlice);
-  const game = useSelector((state: RootState) => state.roundSlice);
+  const game = useSelector((state: RootState) => state.gameSlice);
+  const bot = useSelector((state: RootState) => state.botSlice);
   const webSocketState = useSelector((state: RootState) => state.webSocket);
 
   /* Queries */
@@ -103,8 +104,10 @@ const ConfigProfile = (props: ConfigProfileProps) => {
       .unwrap()
       .catch(() => navigate("/error:api")); // send to API user
 
-    // bot
-    botSetFinished(game.gameId, webSocketState.webSocket!);
+    /* BOT */
+    if (bot.botIsActive) {
+      botSetFinished(game.gameId, webSocketState.webSocket!);
+    }
   };
 
   if (

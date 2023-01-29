@@ -68,6 +68,7 @@ const EavesDropping = (props: AttackProps) => {
   const round = useSelector((state: RootState) => state.roundSlice);
   const game = useSelector((state: RootState) => state.gameSlice);
   const webSocketState = useSelector((state: RootState) => state.webSocket);
+  const bot = useSelector((state: RootState) => state.botSlice);
 
   useEffect(() => {
     if (!verifyWin(files)) setHasWon(true);
@@ -92,8 +93,10 @@ const EavesDropping = (props: AttackProps) => {
     };
     props.handleFinishRound!(round.statusId, undefined, resultAttack);
 
-    // bot
-    botSetFinished(game.gameId, webSocketState.webSocket!);
+    /* BOT */
+    if (bot.botIsActive) {
+      botSetFinished(game.gameId, webSocketState.webSocket!);
+    }
   };
 
   /* a gagné */

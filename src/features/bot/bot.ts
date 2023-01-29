@@ -21,6 +21,55 @@ const listener = (ws: WebSocket): Promise<string | boolean> => {
   });
 };
 
+const createBotConfiguration = (): UserConfigurationForm => {
+  const botConfiguration: UserConfigurationForm = {
+    configuration: [
+      {
+        configurationId: 1,
+        nom: "Mail",
+        value: `value${Math.floor(Math.random() * (4 - 1) + 1)}`,
+      },
+      {
+        configurationId: 2,
+        nom: "Sécurité téléphone",
+        value: `value${Math.floor(Math.random() * (4 - 1) + 1)}`,
+      },
+      {
+        configurationId: 3,
+        nom: "Application de discussion",
+        value: `value${Math.floor(Math.random() * (4 - 1) + 1)}`,
+      },
+      {
+        configurationId: 4,
+        nom: "Navigateur",
+        value: `value${Math.floor(Math.random() * (4 - 1) + 1)}`,
+      },
+      {
+        configurationId: 5,
+        nom: "Stockage de photo",
+        value: `value${Math.floor(Math.random() * (4 - 1) + 1)}`,
+      },
+      {
+        configurationId: 6,
+        nom: "Cookies",
+        value: `value${Math.floor(Math.random() * (4 - 1) + 1)}`,
+      },
+      {
+        configurationId: 7,
+        nom: "Moteur de recherche",
+        value: `value${Math.floor(Math.random() * (4 - 1) + 1)}`,
+      },
+      {
+        configurationId: 8,
+        nom: "OS",
+        value: `value${Math.floor(Math.random() * (4 - 1) + 1)}`,
+      },
+    ],
+  };
+
+  return botConfiguration;
+};
+
 export const botSetFinished = (
   gameId: number,
   ws: WebSocket,
@@ -50,50 +99,7 @@ export const botSetFinished = (
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({
-              configuration: [
-                {
-                  configurationId: 1,
-                  nom: "Mail",
-                  value: `value${Math.floor(Math.random() * (4 - 1) + 1)}`,
-                },
-                {
-                  configurationId: 2,
-                  nom: "Sécurité téléphone",
-                  value: `value${Math.floor(Math.random() * (4 - 1) + 1)}`,
-                },
-                {
-                  configurationId: 3,
-                  nom: "Application de discussion",
-                  value: `value${Math.floor(Math.random() * (4 - 1) + 1)}`,
-                },
-                {
-                  configurationId: 4,
-                  nom: "Navigateur",
-                  value: `value${Math.floor(Math.random() * (4 - 1) + 1)}`,
-                },
-                {
-                  configurationId: 5,
-                  nom: "Stockage de photo",
-                  value: `value${Math.floor(Math.random() * (4 - 1) + 1)}`,
-                },
-                {
-                  configurationId: 6,
-                  nom: "Cookies",
-                  value: `value${Math.floor(Math.random() * (4 - 1) + 1)}`,
-                },
-                {
-                  configurationId: 7,
-                  nom: "Moteur de recherche",
-                  value: `value${Math.floor(Math.random() * (4 - 1) + 1)}`,
-                },
-                {
-                  configurationId: 8,
-                  nom: "OS",
-                  value: `value${Math.floor(Math.random() * (4 - 1) + 1)}`,
-                },
-              ],
-            }),
+            body: JSON.stringify(createBotConfiguration()),
           }).then(() => requestFinishRound(ws, gameId));
           break;
         case 3:
@@ -102,50 +108,7 @@ export const botSetFinished = (
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({
-              configuration: [
-                {
-                  configurationId: 1,
-                  nom: "Mail",
-                  value: `value${Math.floor(Math.random() * (4 - 1) + 1)}`,
-                },
-                {
-                  configurationId: 2,
-                  nom: "Sécurité téléphone",
-                  value: `value${Math.floor(Math.random() * (4 - 1) + 1)}`,
-                },
-                {
-                  configurationId: 3,
-                  nom: "Application de discussion",
-                  value: `value${Math.floor(Math.random() * (4 - 1) + 1)}`,
-                },
-                {
-                  configurationId: 4,
-                  nom: "Navigateur",
-                  value: `value${Math.floor(Math.random() * (4 - 1) + 1)}`,
-                },
-                {
-                  configurationId: 5,
-                  nom: "Stockage de photo",
-                  value: `value${Math.floor(Math.random() * (4 - 1) + 1)}`,
-                },
-                {
-                  configurationId: 6,
-                  nom: "Cookies",
-                  value: `value${Math.floor(Math.random() * (4 - 1) + 1)}`,
-                },
-                {
-                  configurationId: 7,
-                  nom: "Moteur de recherche",
-                  value: `value${Math.floor(Math.random() * (4 - 1) + 1)}`,
-                },
-                {
-                  configurationId: 8,
-                  nom: "OS",
-                  value: `value${Math.floor(Math.random() * (4 - 1) + 1)}`,
-                },
-              ],
-            }),
+            body: JSON.stringify(createBotConfiguration()),
           }).then(() => requestFinishRound(ws, gameId));
           break;
         case 4:
@@ -191,13 +154,12 @@ export const botSetFinished = (
     });
 };
 
-export const bot = (gameId: number): Promise<boolean> => {
+export const loadBot = (gameId: number): Promise<boolean> => {
   return new Promise<boolean>((resolve, reject) => {
     const ws = startBotWebSocket(); // websocket
-    const userId = listener(ws);
 
     // join
-    userId.then((userId) => {
+    listener(ws).then((userId) => {
       botUserId = userId.toString();
       fetch(`http://127.0.0.1:8000/game/${gameId}/join`, {
         method: "GET",
