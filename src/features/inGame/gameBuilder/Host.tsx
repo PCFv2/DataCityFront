@@ -27,6 +27,7 @@ import {
   SecondaryButton,
 } from "../../../UI-KIT/components/Button";
 import { useNavigate } from "react-router-dom";
+import { bot, botSetFinished } from "src/features/bot/bot";
 
 const Host = (): JSX.Element => {
   const navigate = useNavigate();
@@ -64,6 +65,14 @@ const Host = (): JSX.Element => {
     refetch: userRefetch,
     isError: userInGameIsError,
   } = useGetAllUsersByGameIdQuery(game.gameId); /* API GET game/id/user */
+
+  /* bot */
+  const loadBot = () => {
+    if (userInGame?.length === 1) {
+      setProcessingServer(true);
+      bot(game.gameId).then(() => setProcessingServer(false));
+    }
+  };
 
   /* manage error */
   useEffect(() => {
@@ -110,6 +119,9 @@ const Host = (): JSX.Element => {
         dispatch(setGameData(gameInfos!));
       })
       .catch(() => navigate("/error:api")); // error
+
+    // bot
+    botSetFinished(game.gameId, webSocketState.webSocket!);
   };
 
   useEffect(() => {
@@ -288,6 +300,7 @@ const Host = (): JSX.Element => {
                   onClick={handleStartGame}
                   content={"Lancer la partie"}
                 ></Primary2Button>
+                <SecondaryButton onClick={loadBot} content={"activer le bot"} />
               </ButtonLine>
             </ConfForm>
           </RightPanelContainer>

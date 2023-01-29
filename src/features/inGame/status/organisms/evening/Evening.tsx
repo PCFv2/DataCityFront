@@ -15,6 +15,7 @@ import { PrimaryButton } from "src/UI-KIT/components/Button";
 import { useNavigate } from "react-router-dom";
 import { requestFinishGame } from "src/app/requestServer";
 import { SOCKET_CODE } from "src/constants";
+import { botSetFinished } from "src/features/bot/bot";
 
 const Container = styled.div`
   background: url(${background}) no-repeat center center fixed;
@@ -109,6 +110,9 @@ const Evening = (
 
   const handleFinish = async (): Promise<void> => {
     props.handleFinishRound!(round.statusId);
+    
+    //bot;
+    botSetFinished(game.gameId, webSocketState.webSocket!);
   };
 
   if (isLoading || getNameOfUserIsLoading)

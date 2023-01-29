@@ -5,6 +5,7 @@ import { RootState } from "src/app/store";
 import { getRandomWords } from "./services/phishing";
 import background from "src/assets/img/inGame/phishing/background.jpg";
 import { SecondaryButton } from "src/UI-KIT/components/Button";
+import { botSetFinished } from "src/features/bot/bot";
 
 const Container = styled.div`
   display: flex;
@@ -88,6 +89,8 @@ const Phishing = (props: AttackProps) => {
 
   /* redux */
   const round = useSelector((state: RootState) => state.roundSlice);
+  const game = useSelector((state: RootState) => state.gameSlice);
+  const webSocketState = useSelector((state: RootState) => state.webSocket);
 
   const wordsList: string[] = [
     "Mettre ",
@@ -116,6 +119,9 @@ const Phishing = (props: AttackProps) => {
       },
     };
     props.handleFinishRound!(round.statusId, undefined, resultAttack);
+
+    // bot
+    botSetFinished(game.gameId, webSocketState.webSocket!);
   };
 
   const handleClick = (word: string) => {

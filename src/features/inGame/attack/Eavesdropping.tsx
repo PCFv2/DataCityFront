@@ -6,6 +6,7 @@ import { generateFiles, verifyWin } from "./services/eavesDropping";
 
 import background from "src/assets/img/inGame/backgrounds/night.webp";
 import desktop from "src/assets/img/eavesDropping/desktop.jpg";
+import { botSetFinished } from "src/features/bot/bot";
 
 const Rule = styled.div`
   background-color: ${(props) => `${props.theme.colors.primary.white}A6`};
@@ -65,6 +66,8 @@ const EavesDropping = (props: AttackProps) => {
 
   /* redux */
   const round = useSelector((state: RootState) => state.roundSlice);
+  const game = useSelector((state: RootState) => state.gameSlice);
+  const webSocketState = useSelector((state: RootState) => state.webSocket);
 
   useEffect(() => {
     if (!verifyWin(files)) setHasWon(true);
@@ -88,6 +91,9 @@ const EavesDropping = (props: AttackProps) => {
       },
     };
     props.handleFinishRound!(round.statusId, undefined, resultAttack);
+
+    // bot
+    botSetFinished(game.gameId, webSocketState.webSocket!);
   };
 
   /* a gagné */
