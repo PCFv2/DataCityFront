@@ -1,53 +1,27 @@
-import React, {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {useNavigate} from "react-router-dom";
-import {finishRound} from "src/app/finishedRound/finishRound";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { finishRound } from "src/app/finishedRound/finishRound";
 import {
   setDisplayComponent,
   setIsLoading,
 } from "src/app/redux/displayComponentSlice";
-import {setRoundStatus} from "src/app/redux/roundSlice";
-import {requestFinishRound} from "src/app/requestServer";
-import {RootState} from "src/app/store";
-import {DISPLAY_COMPONENT, SOCKET_CODE} from "src/constants";
+import { setRoundStatus } from "src/app/redux/roundSlice";
+import { requestFinishRound } from "src/app/requestServer";
+import { RootState } from "src/app/store";
+import { DISPLAY_COMPONENT, SOCKET_CODE } from "src/constants";
 import EndGame from "src/features/endGame/EndGame";
-import {gameApi, useSetFinishedMutation} from "src/services";
+import { gameApi, useSetFinishedMutation } from "src/services";
 import OverlayLoader from "src/UI-KIT/components/OverlayLoader";
-import {ConfigProfile} from "./organisms";
+import { ConfigProfile } from "./organisms";
 import Attack from "./organisms/attack/Attack";
 import Day from "./organisms/day/Day";
 import Evening from "./organisms/evening/Evening";
-import styled from "@emotion/styled";
-import dayBackground from "src/assets/img/inGame/backgrounds/day.webp";
-import nightBackground from "src/assets/img/inGame/backgrounds/night.webp";
-
-const DayContainer = styled.div`
-  background: url(${dayBackground}) no-repeat center center fixed;
-  background-size: cover;
-  height: 97.8%;
-  padding: 1rem 10rem 0 10rem;
-  display: flex;
-  flex-direction: column;
-  row-gap: 2rem;
-`
-
-const ConfigProfileContainer = styled.div`
-  background: url(${dayBackground}) no-repeat center center fixed;
-  background-size: cover;
-  padding: 1rem 10rem 1rem 10rem;
-`
-
-const MainTitle = styled.h1`
-  color: ${(props) => props.theme.colors.primary.white};
-  font-family: ${(props) => props.theme.font.family.title};
-  font-size: ${(props) => props.theme.font.size.page_title};
-  margin: 0;
-`
 
 const RenderStatusId = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [setFinished, {isLoading: setFinishedIsLoading}] =
+  const [setFinished, { isLoading: setFinishedIsLoading }] =
     useSetFinishedMutation();
 
   const user: User = useSelector((state: RootState) => state.userSlice);
@@ -161,29 +135,28 @@ const RenderStatusId = () => {
     }
   };
 
-  if (setFinishedIsLoading) return <OverlayLoader/>;
+  if (setFinishedIsLoading) return <OverlayLoader />;
 
-  if (hasFinishedGame) return <EndGame/>;
+  if (hasFinishedGame) return <EndGame />;
 
   switch (round.statusId) {
     case 2:
       return (
-        <ConfigProfileContainer>
-          <ConfigProfile handleFinishRound={handleClick}/>
-        </ConfigProfileContainer>
+        <div>
+          <ConfigProfile handleFinishRound={handleClick} />
+        </div>
       );
     case 3:
       return (
-        <ConfigProfileContainer>
-          <ConfigProfile handleFinishRound={handleClick}/>
-        </ConfigProfileContainer>
+        <div>
+          <ConfigProfile handleFinishRound={handleClick} />
+        </div>
       );
     case 4:
       return (
-        <DayContainer>
-          <MainTitle>Data City</MainTitle>
-          <Day handleFinishRound={handleClick}/>
-        </DayContainer>
+        <div>
+          <Day handleFinishRound={handleClick} />
+        </div>
       );
     case 5:
       return (
@@ -197,7 +170,7 @@ const RenderStatusId = () => {
     case 6:
       return (
         <div>
-          <Attack handleFinishRound={handleClick}/>
+          <Attack handleFinishRound={handleClick} />
         </div>
       );
     default:
