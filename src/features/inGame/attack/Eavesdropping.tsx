@@ -9,9 +9,10 @@ import desktop from "src/assets/img/eavesDropping/desktop.jpg";
 import { botSetFinished } from "src/features/bot/bot";
 
 const Rule = styled.div`
+  font-size: 1.1rem;
   background-color: ${(props) => `${props.theme.colors.primary.white}A6`};
   margin: 0 50% 0 10%;
-  padding: 10px;
+  padding: 5px;
   & p {
     dislay: none;
   }
