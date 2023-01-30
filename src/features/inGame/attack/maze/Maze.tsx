@@ -8,6 +8,13 @@ import MazeDesktop from "./organims/MazeDesktop";
 import { wallsDesktop } from "./organims/MazeDesktop";
 import MazeMobile, { wallsMobile } from "./organims/MazeMobile";
 
+const Content = styled.div`
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const Container = styled.div<{ screenWidth: number }>`
   width: ${(props) => (props.screenWidth >= 1100 ? "1000px" : "500px")};
   height: 500px;
@@ -20,7 +27,6 @@ const Container = styled.div<{ screenWidth: number }>`
   position: relative;
   display: block;
   border: 15px solid ${(props) => props.theme.colors.secondary.grey};
-  margin: 0 auto;
   border-radius: 10px;
 `;
 
@@ -54,7 +60,7 @@ const Rule = styled.div`
   }
 `;
 
-const AttackSuccess = styled.div`
+const AttackResponse = styled.div`
   padding: 1em;
   border-radius: 5px;
   background-color: ${(props) => `${props.theme.colors.primary.white}A6`};
@@ -196,30 +202,36 @@ const Maze = (props: AttackProps) => {
 
   if (hasWon === false)
     return (
-      <div>
-        <p> Votre attaque a échoué !</p>
-        <PrimaryButton onClick={handleFinish} content={"Enregistrer"} />
-      </div>
+      <Content>
+        <AttackResponse>
+          <p> Votre attaque a échoué !</p>
+          <PrimaryButton onClick={handleFinish} content={"Enregistrer"} />
+        </AttackResponse>
+      </Content>
     );
   if (hasWon === true)
     return (
-      <AttackSuccess>
-        <p> Vous avez réussi votre attaque !</p>
-        <PrimaryButton onClick={handleFinish} content={"Enregistrer"} />
-      </AttackSuccess>
+      <Content>
+        <AttackResponse>
+          <p> Vous avez réussi votre attaque !</p>
+          <PrimaryButton onClick={handleFinish} content={"Enregistrer"} />
+        </AttackResponse>
+      </Content>
     );
 
   return (
-    <div>
-      <Rule>
-        <p>Trouver le bon chemin vers le site web</p>
-      </Rule>
-      <Container screenWidth={width}>
-        {width >= 1100 ? <MazeDesktop /> : <MazeMobile />}
-        <Point x={position.x} y={position.y}></Point>
-        <FinishPoint x={posFinishPoint.x} y={posFinishPoint.y} />
-      </Container>
-    </div>
+    <Content>
+      <div>
+        <Rule>
+          <p>Trouver le bon chemin vers le site web</p>
+        </Rule>
+        <Container screenWidth={width}>
+          {width >= 1100 ? <MazeDesktop /> : <MazeMobile />}
+          <Point x={position.x} y={position.y}></Point>
+          <FinishPoint x={posFinishPoint.x} y={posFinishPoint.y} />
+        </Container>
+      </div>
+    </Content>
   );
 };
 

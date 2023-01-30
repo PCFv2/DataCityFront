@@ -24,9 +24,6 @@ const BackgroundNight = styled.div`
   background: url(${backgroundNight}) no-repeat center center fixed;
   background-size: cover;
   height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const RenderStatusId = () => {
