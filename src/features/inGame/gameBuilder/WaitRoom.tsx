@@ -27,8 +27,6 @@ import {Primary2Button, SecondaryButton} from "../../../UI-KIT/components/Button
 const HostStyle = styled.main`
   background: url(${background}) no-repeat center center fixed;
   background-size: cover;
-  height: 97.8%;
-  padding: 1rem 10rem 0 10rem;
 `;
 
 const MainTitle = styled.h1`
