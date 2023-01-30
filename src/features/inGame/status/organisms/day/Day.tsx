@@ -6,6 +6,7 @@ import OverlayLoader from "../../../../../UI-KIT/components/OverlayLoader";
 import Question from "./question/Question";
 import { QUESTIONS } from "../../../../../constants/question";
 import { useNavigate } from "react-router-dom";
+import { botSetFinished } from "src/features/bot/bot";
 
 const Day = (props: AttackProps) => {
   const navigate = useNavigate();
@@ -14,6 +15,8 @@ const Day = (props: AttackProps) => {
   const user = useSelector((state: RootState) => state.userSlice);
   const game = useSelector((state: RootState) => state.gameSlice);
   const round = useSelector((state: RootState) => state.roundSlice);
+  const webSocketState = useSelector((state: RootState) => state.webSocket);
+  const bot = useSelector((state: RootState) => state.botSlice);
 
   // To register globally choice
   const [choices, setChoices] = useState<Day[]>();
@@ -42,6 +45,11 @@ const Day = (props: AttackProps) => {
         day: choices!,
       };
       props.handleFinishRound!(round.statusId, undefined, undefined, dayForm);
+
+      /* BOT */
+      if (bot.botIsActive) {
+        botSetFinished(game.gameId, webSocketState.webSocket!, user.userId);
+      }
     }
   };
 

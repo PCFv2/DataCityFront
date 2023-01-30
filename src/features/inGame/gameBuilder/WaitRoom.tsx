@@ -44,7 +44,6 @@ const WaitRoom = (): JSX.Element => {
     isLoading: userLoading,
     refetch: userRefetch,
     isError: userInGameIsError,
-    isUninitialized,
   } = useGetAllUsersByGameIdQuery(game.gameId); /* API GET game/id/user */
 
   const {
@@ -76,6 +75,7 @@ const WaitRoom = (): JSX.Element => {
           .catch(() => navigate("/error:api")); // error
       }
       if (message.data === SOCKET_CODE.serverValidate.finishRound) {
+        console.log(message);
         lastround(game.gameId)
           .unwrap()
           .then((round) => {

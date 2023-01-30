@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import React, { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "src/app/store";
+import { botSetFinished } from "src/features/bot/bot";
 import MazeDesktop from "./organims/MazeDesktop";
 import { wallsDesktop } from "./organims/MazeDesktop";
 import MazeMobile, { wallsMobile } from "./organims/MazeMobile";
@@ -48,6 +49,9 @@ type AttackProps = {
 const Maze = (props: AttackProps) => {
   /* redux */
   const round = useSelector((state: RootState) => state.roundSlice);
+  const game = useSelector((state: RootState) => state.gameSlice);
+  const webSocketState = useSelector((state: RootState) => state.webSocket);
+  const bot = useSelector((state: RootState) => state.botSlice);
 
   /* responsive */
   const [width, setWindowWidth] = useState(0);
@@ -155,6 +159,11 @@ const Maze = (props: AttackProps) => {
       },
     };
     props.handleFinishRound!(round.statusId, undefined, resultAttack);
+
+    /* BOT */
+    if (bot.botIsActive) {
+      botSetFinished(game.gameId, webSocketState.webSocket!);
+    }
   };
 
   if (hasWon === false)

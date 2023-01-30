@@ -7,10 +7,12 @@ export const generateFiles = (number: number): FileType[] => {
     const minY: number = (window.innerHeight * 10) / 100;
     const maxY: number = minY + (window.innerHeight * 60) / 100 - minY;
 
-    const randomNumberX: number = Math.floor(Math.random() * (maxX - minX + 1) + minX);
-    const randomNumberY: number = Math.floor(Math.random() * (maxY - minY + 1) + minY);
-
-    console.log(randomNumberX, randomNumberY);
+    const randomNumberX: number = Math.floor(
+      Math.random() * (maxX - minX + 1) + minX
+    );
+    const randomNumberY: number = Math.floor(
+      Math.random() * (maxY - minY + 1) + minY
+    );
 
     const isWrong: boolean = randomNumberX % 2 ? true : false;
     const file: FileType = {
