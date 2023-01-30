@@ -69,6 +69,13 @@ const AttackResponse = styled.div`
   color: ${(props) => props.theme.colors.primary.blue};
 `;
 
+const AttackContainer = styled.div`
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const EavesDropping = (props: AttackProps) => {
   const NUMBER_FILES = 6;
   /* hook */
@@ -116,10 +123,12 @@ const EavesDropping = (props: AttackProps) => {
   /* a gagné */
   if (hasWon)
     return (
-      <AttackResponse>
-        <p>Vous avez réussi votre attaque !</p>
-        <PrimaryButton onClick={handleFinish} content={"Enregistrer"} />
-      </AttackResponse>
+      <AttackContainer>
+        <AttackResponse>
+          <p>Vous avez réussi votre attaque !</p>
+          <PrimaryButton onClick={handleFinish} content={"Enregistrer"} />
+        </AttackResponse>
+      </AttackContainer>
     );
 
   return (
