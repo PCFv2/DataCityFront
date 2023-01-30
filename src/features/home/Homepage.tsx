@@ -7,6 +7,7 @@ import styled from "@emotion/styled";
 import { PrimaryButton } from "../../UI-KIT/components/Button";
 import background from "../../assets/img/homepage/background.webp";
 import { css } from "@emotion/react";
+import { useNavigate } from "react-router-dom";
 
 const HomePageStyle = styled.main`
   background: url(${background}) no-repeat center center fixed;
@@ -166,9 +167,18 @@ const Contact = styled.a`
 
 const Homepage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleClick = (): void => {
     dispatch(setDisplayComponent(DISPLAY_COMPONENT.joinComponent));
   };
+
+const handleClickml = () => {
+  navigate("/mentions-legales");
+}
+
+const handleClickcgu = () => {
+  navigate("/cgu");
+}
 
   return (
     <HomePageStyle>
@@ -184,10 +194,7 @@ const Homepage = () => {
         <Description>
           {/* TODO Description du jeu */}
           Data City est un Serious Game qui a été créé pour vous sensibiliser à
-          la protection de vos données et à la cybersécurité. Le but du jeu et
-          qu’en fonction de vos choix, ainsi que la réussite ou non des mini
-          jeux au cours de la partie, vous devez éliminer les autres joueurs de
-          la partie en découvrant leurs adresses.
+          la protection de vos données et à la cybersécurité. Le but du jeu est d'éliminer les autres joueurs de la partie en découvrant leurs adresses. En fonction de vos choix et des mini jeux vous aurez plus ou moins de pourcentage de perdre ou de gagner.
         </Description>
       </Home>
       <Rules>
@@ -268,8 +275,8 @@ const Homepage = () => {
       </Rules>
       <Footer>
         {/* TODO Mettre les liens */}
-        <Link href="#">Mentions Légales</Link>
-        <Link href="#">Conditions générales d'utilisation</Link>
+        <Link onClick={handleClickml}>Mentions Légales</Link>
+        <Link onClick={handleClickcgu}>Conditions générales d'utilisation</Link>
         <Contact href="mailto:marius.pistoresi@etu.univ-amu.fr, mattias.gervilliers@etu.univ-amu.fr, guillaume.kusiak@etu.univ-amu.fr, melanie.hugues@etu.univ-amu.fr">
           <FooterIcon className="material-icons">mail</FooterIcon>
           Contactez-nous : PCFv2

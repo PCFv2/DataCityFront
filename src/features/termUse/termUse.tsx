@@ -1,8 +1,36 @@
 import React from "react";
+import styled from "@emotion/styled";
+import background from "../../assets/img/homepage/background.webp";
+import { css } from "@emotion/react";
+import { useNavigate } from "react-router-dom";
+
+const PageCGU = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  row-gap: 3.5rem;
+  margin: 0 20%;
+  padding-bottom: 2.5%;
+  height: 100vh;
+`;
+
+const MainTitle = styled.h1`
+  color: ${(props) => props.theme.colors.primary.blue};
+  font-family: ${(props) => props.theme.font.family.title};
+  font-size: ${(props) => props.theme.font.size.title};
+  text-align: center;
+`;
 
 const TermUse = () => {
+    const navigate = useNavigate();
+    
+    const handleClickhp = () => {
+        navigate("/");
+    }
     return (
-        <div>
+        <PageCGU>
+            <MainTitle onClick={handleClickhp}>DATA CITY</MainTitle>
+
             <h1>Condition Utilisateur</h1>
 
             <body>
@@ -103,7 +131,7 @@ const TermUse = () => {
                 <a>Dernière mise à jour effectuée le 17/01/2023</a>
 
             </body>
-        </div>
+        </PageCGU>
     );
 };
 

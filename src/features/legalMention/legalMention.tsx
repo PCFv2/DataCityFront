@@ -1,8 +1,37 @@
 import React from "react";
+import styled from "@emotion/styled";
+import background from "../../assets/img/homepage/background.webp";
+import { css } from "@emotion/react";
+import { useNavigate } from "react-router-dom";
+
+const PageMl = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  row-gap: 3.5rem;
+  margin: 0 20%;
+  padding-bottom: 2.5%;
+  height: 100vh;
+`;
+
+const MainTitle = styled.h1`
+  color: ${(props) => props.theme.colors.primary.blue};
+  font-family: ${(props) => props.theme.font.family.title};
+  font-size: ${(props) => props.theme.font.size.title};
+  text-align: center;
+`;
 
 const LegalMention = () => {
+    
+    const navigate = useNavigate();
+    
+    const handleClickhp = () => {
+        navigate("/");
+    }
     return(
-        <div>
+        <PageMl>
+            <MainTitle onClick={handleClickhp}>DATA CITY</MainTitle>
+
             <h1>Mention Légales</h1>
 
             <body>
@@ -111,7 +140,7 @@ const LegalMention = () => {
                 Informations personnelles : « les informations qui permettent, sous quelque forme que ce soit, directement ou non, l’identification des personnes physiques auxquelles elles s’appliquent » (article 4 de la loi n° 78-17 du 6 janvier 1978).
                 </a>
             </body>
-        </div>
+        </PageMl>
     );
 }
 
