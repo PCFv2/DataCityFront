@@ -1,39 +1,12 @@
-import React, {useState, useMemo, useEffect} from "react";
-import {useGetUserAttacksQuery} from "src/services";
-import {useSelector} from "react-redux";
-import {RootState} from "src/app/store";
+import React, { useState, useMemo, useEffect } from "react";
+import { useGetUserAttacksQuery } from "src/services";
+import { useSelector } from "react-redux";
+import { RootState } from "src/app/store";
 import OverlayLoader from "../../../../../UI-KIT/components/OverlayLoader";
 import Question from "./question/Question";
-import {QUESTIONS} from "../../../../../constants/question";
-import {useNavigate} from "react-router-dom";
-import {botSetFinished} from "src/features/bot/bot";
-import styled from "@emotion/styled";
-import background from "src/assets/img/inGame/backgrounds/day.webp";
-import {PrimaryButton} from "../../../../../UI-KIT/components/Button";
-
-const QuestionContainer = styled.div`
-  background-color: ${(props) => `${props.theme.colors.primary.white}E6`};
-  border-radius: ${(props) => props.theme.radius.big};
-  padding: 1rem 3rem 2rem 3rem;
-  height: 60%;
-`
-
-const ResponseContainer = styled.div`
-  background-color: ${(props) => `${props.theme.colors.primary.white}E6`};
-  border-radius: ${(props) => props.theme.radius.big};
-  padding: 1rem 3rem 2rem 3rem;
-`
-
-const Response = styled.div`
-  width: 30%;
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-`
-
-const ResponseText = styled.p`
-  text-align: center;
-`
+import { QUESTIONS } from "../../../../../constants/question";
+import { useNavigate } from "react-router-dom";
+import { botSetFinished } from "src/features/bot/bot";
 
 const Day = (props: AttackProps) => {
   const navigate = useNavigate();
@@ -83,7 +56,7 @@ const Day = (props: AttackProps) => {
   const randQuestion = useMemo(() => Math.floor(Math.random() * 3), []);
 
   if (isLoading) {
-    return <OverlayLoader/>;
+    return <OverlayLoader />;
   } else {
     if (userAttacks) {
       while (questionNb < userAttacks.length) {
@@ -107,27 +80,25 @@ const Day = (props: AttackProps) => {
         question.userId = userAttacks[questionNb].userId;
 
         return (
-            <QuestionContainer>
-              <Question
-                question={question}
-                choices={choices}
-                setChoices={setChoices}
-                questionNb={questionNb}
-                setQuestionNb={setQuestionNb}
-              />
-            </QuestionContainer>
+          <div>
+            <Question
+              question={question}
+              choices={choices}
+              setChoices={setChoices}
+              questionNb={questionNb}
+              setQuestionNb={setQuestionNb}
+            />
+          </div>
         );
       }
     }
   }
 
   return (
-    <ResponseContainer>
-      <Response>
-        <ResponseText>Votre réponse a été validé</ResponseText>
-        <PrimaryButton onClick={handleClick} content={"Suivant"}></PrimaryButton>
-      </Response>
-    </ResponseContainer>
+    <div>
+      <p>Votre réponse a été validé</p>
+      <button onClick={handleClick}>Suivant</button>
+    </div>
   );
 };
 

@@ -118,6 +118,12 @@ const ConfigProfile = (props: ConfigProfileProps) => {
   )
     return <OverlayLoader />;
 
+  const ConfigPage = styled.main`
+    background: url(${background}) no-repeat center center fixed;
+    background-size: cover;
+    padding-bottom: 5rem;
+  `;
+
   const Window = styled.div`
     margin: auto;
     border-radius: ${(props) => props.theme.radius.medium};
@@ -210,6 +216,7 @@ const ConfigProfile = (props: ConfigProfileProps) => {
   `;
 
   return (
+    <ConfigPage>
       <Window>
         <WindowTitle>Configuration de votre profil de jeu</WindowTitle>
         <Points>
@@ -302,6 +309,7 @@ const ConfigProfile = (props: ConfigProfileProps) => {
           </Table>
         </form>
       </Window>
+    </ConfigPage>
   );
 };
 
