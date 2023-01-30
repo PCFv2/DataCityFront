@@ -72,21 +72,6 @@ const createBotConfiguration = (): UserConfigurationForm => {
   return botConfiguration;
 };
 
-export const botIsAlive = (ws: WebSocket, gameId: number): void => {
-  fetch(process.env.REACT_APP_API_URL_DEV + `/user/${botUserId}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (!data.isAlive) {
-        requestFinishGame(ws, gameId);
-      }
-    });
-};
-
 export const botSetFinished = (
   gameId: number,
   ws: WebSocket,
