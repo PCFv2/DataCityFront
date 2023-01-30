@@ -44,6 +44,12 @@ const MainTitle = styled.h1`
   margin: 0;
 `
 
+const BackgroundNight = styled.div`
+  background: url(${nightBackground}) no-repeat center center fixed;
+  background-size: cover;
+  height: 100%;
+`;
+
 const RenderStatusId = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -196,9 +202,9 @@ const RenderStatusId = () => {
       );
     case 6:
       return (
-        <div>
-          <Attack handleFinishRound={handleClick}/>
-        </div>
+        <BackgroundNight>
+          <Attack handleFinishRound={handleClick} />
+        </BackgroundNight>
       );
     default:
       return <></>;

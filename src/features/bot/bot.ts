@@ -75,7 +75,7 @@ export const botSetFinished = (
   ws: WebSocket,
   opponentUserId?: string
 ) => {
-  fetch(`http://127.0.0.1:8000/game/${gameId}/lastround`, {
+  fetch(process.env.REACT_APP_API_URL_DEV + `/game/${gameId}/lastround`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -85,7 +85,7 @@ export const botSetFinished = (
     .then((data) => {
       switch (data.statusId) {
         case 1:
-          fetch(`http://127.0.0.1:8000/game/${gameId}/user/${botUserId}`, {
+          fetch(process.env.REACT_APP_API_URL_DEV + `/game/${gameId}/user/${botUserId}`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
@@ -94,7 +94,7 @@ export const botSetFinished = (
           }).then(() => requestFinishRound(ws, gameId));
           break;
         case 2:
-          fetch(`http://127.0.0.1:8000/game/${gameId}/user/${botUserId}`, {
+          fetch(process.env.REACT_APP_API_URL_DEV + `/game/${gameId}/user/${botUserId}`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
@@ -103,7 +103,7 @@ export const botSetFinished = (
           }).then(() => requestFinishRound(ws, gameId));
           break;
         case 3:
-          fetch(`http://127.0.0.1:8000/game/${gameId}/user/${botUserId}`, {
+          fetch(process.env.REACT_APP_API_URL_DEV + `/game/${gameId}/user/${botUserId}`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
@@ -112,7 +112,7 @@ export const botSetFinished = (
           }).then(() => requestFinishRound(ws, gameId));
           break;
         case 4:
-          fetch(`http://127.0.0.1:8000/game/${gameId}/user/${botUserId}`, {
+          fetch(process.env.REACT_APP_API_URL_DEV + `/game/${gameId}/user/${botUserId}`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
@@ -128,7 +128,7 @@ export const botSetFinished = (
           }).then(() => requestFinishRound(ws, gameId));
           break;
         case 5:
-          fetch(`http://127.0.0.1:8000/game/${gameId}/user/${botUserId}`, {
+          fetch(process.env.REACT_APP_API_URL_DEV + `/game/${gameId}/user/${botUserId}`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
@@ -137,7 +137,7 @@ export const botSetFinished = (
           }).then(() => requestFinishRound(ws, gameId));
           break;
         case 6:
-          fetch(`http://127.0.0.1:8000/game/${gameId}/user/${botUserId}`, {
+          fetch(process.env.REACT_APP_API_URL_DEV + `/game/${gameId}/user/${botUserId}`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
@@ -161,7 +161,7 @@ export const loadBot = (gameId: number): Promise<boolean> => {
     // join
     listener(ws).then((userId) => {
       botUserId = userId.toString();
-      fetch(`http://127.0.0.1:8000/game/${gameId}/join`, {
+      fetch(process.env.REACT_APP_API_URL_DEV + `/game/${gameId}/join`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -171,7 +171,7 @@ export const loadBot = (gameId: number): Promise<boolean> => {
         .then((data) => {
           if (data) {
             requestJoinGame(ws, gameId).then(() => {
-              fetch(`http://127.0.0.1:8000/user/${userId.toString()}`, {
+              fetch(process.env.REACT_APP_API_URL_DEV + `/user/${userId.toString()}`, {
                 method: "PUT",
                 headers: {
                   "Content-Type": "application/json",

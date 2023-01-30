@@ -50,7 +50,7 @@ const Box = styled.div<{ isSelected?: boolean }>`
 
 const Rule = styled.p`
   font-size: 1.1rem;
-  padding: 10px;
+  padding: 5px;
   border-radius: ${(props) => props.theme.radius.small};
   background-color: ${(props) => `${props.theme.colors.primary.white}A6`};
   font-weight: bold;
