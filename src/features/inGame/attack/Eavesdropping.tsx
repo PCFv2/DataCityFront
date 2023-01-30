@@ -7,6 +7,7 @@ import { generateFiles, verifyWin } from "./services/eavesDropping";
 import background from "src/assets/img/inGame/backgrounds/night.webp";
 import desktop from "src/assets/img/eavesDropping/desktop.jpg";
 import { botSetFinished } from "src/features/bot/bot";
+import { PrimaryButton } from "src/UI-KIT/components/Button";
 
 const Rule = styled.div`
   font-size: 1.1rem;
@@ -56,6 +57,18 @@ const SubContainer = styled.div`
   border: 15px solid ${(props) => props.theme.colors.secondary.grey};
 `;
 
+const AttackResponse = styled.div`
+  padding: 1em;
+  border-radius: 5px;
+  background-color: ${(props) => `${props.theme.colors.primary.white}A6`};
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  color: ${(props) => props.theme.colors.primary.blue};
+`;
+
 const EavesDropping = (props: AttackProps) => {
   const NUMBER_FILES = 6;
   /* hook */
@@ -103,10 +116,10 @@ const EavesDropping = (props: AttackProps) => {
   /* a gagné */
   if (hasWon)
     return (
-      <div>
-        <button onClick={handleFinish}>Enregistrer</button>Vous avez trouvé la
-        bonne phrase bravo !
-      </div>
+      <AttackResponse>
+        <p>Vous avez réussi votre attaque !</p>
+        <PrimaryButton onClick={handleFinish} content={"Enregistrer"} />
+      </AttackResponse>
     );
 
   return (
