@@ -16,6 +16,66 @@ import styled from "@emotion/styled";
 import background from "src/assets/img/beforeGame/background.webp";
 import { SecondaryButton } from "../../../UI-KIT/components/Button";
 
+const JoinStyle = styled.main`
+  background: url(${background}) no-repeat center center fixed;
+  background-size: cover;
+  padding: 0 10%;
+  height: 100%;
+`;
+
+const MainTitle = styled.h1`
+  color: ${(props) => props.theme.colors.primary.white};
+  font-family: ${(props) => props.theme.font.family.title};
+  font-size: ${(props) => props.theme.font.size.page_title};
+  margin: 0;
+  padding: 30px 0;
+`;
+
+const MainWindow = styled.div`
+    margin-top: 10%;
+    align-items: center;
+    justify-content: space-between;
+    background-color: ${(props) => `${props.theme.colors.primary.blue}E6`};
+    color: ${(props) => props.theme.colors.primary.white};
+    display: flex;
+    flex-direction: column;
+    border-radius: ${(props) => props.theme.radius.medium};
+    padding: 30px;
+`;
+
+const MainWindowTitle = styled.h1`
+  text-align: center;
+`;
+
+const InputLine = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 3rem;
+`;
+
+const SingleInput = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Input = styled.input`
+  background-color: ${(props) => props.theme.colors.primary.grey};
+  border-radius: ${(props) => props.theme.radius.small};
+  border: solid 2px ${(props) => props.theme.colors.primary.lightBlue};
+  padding: 0.3rem 0.7rem;
+`;
+
+const Content = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 3em;
+  & button {
+    margin: 30px 0;
+  }
+`;
+
 const Join = (): JSX.Element => {
   const navigate = useNavigate();
 
@@ -83,61 +143,6 @@ const Join = (): JSX.Element => {
 
   if (processingServer || isLoadingUser || gameLoading || roundIsLoading)
     return <OverlayLoader message={MESSAGE_LOADER.partyLoading} />;
-
-  const JoinStyle = styled.main`
-    background: url(${background}) no-repeat center center fixed;
-    background-size: cover;
-    padding: 1rem 10rem 0 10rem;
-    height: 97.8%;
-    display: flex;
-    flex-direction: column;
-    row-gap: 2rem;
-  `;
-
-  const MainTitle = styled.h1`
-    color: ${(props) => props.theme.colors.primary.white};
-    font-family: ${(props) => props.theme.font.family.title};
-    font-size: ${(props) => props.theme.font.size.page_title};
-    margin: 0;
-  `;
-
-  const MainWindow = styled.div`
-    align-items: center;
-    justify-content: space-between;
-    background-color: ${(props) => `${props.theme.colors.primary.blue}E6`};
-    color: ${(props) => props.theme.colors.primary.white};
-    display: flex;
-    padding: 1rem 3rem 2rem 3rem;
-    flex-direction: column;
-    height: 40%;
-    border-radius: ${(props) => props.theme.radius.medium};
-    width: 100%;
-  `;
-
-  const MainWindowTitle = styled.h1``;
-
-  const InputLine = styled.div`
-    display: flex;
-    column-gap: 3rem;
-  `;
-
-  const SingleInput = styled.div`
-    display: flex;
-    flex-direction: column;
-  `;
-
-  const Input = styled.input`
-    background-color: ${(props) => props.theme.colors.primary.grey};
-    border-radius: ${(props) => props.theme.radius.small};
-    border: solid 2px ${(props) => props.theme.colors.primary.lightBlue};
-    padding: 0.3rem 0.7rem;
-  `;
-
-  const Content = styled.form`
-    display: flex;
-    flex-direction: column;
-    row-gap: 3rem;
-  `;
 
   return (
     <JoinStyle>
