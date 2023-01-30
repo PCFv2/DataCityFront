@@ -194,10 +194,7 @@ const handleClickcgu = () => {
         <Description>
           {/* TODO Description du jeu */}
           Data City est un Serious Game qui a été créé pour vous sensibiliser à
-          la protection de vos données et à la cybersécurité. Le but du jeu et
-          qu’en fonction de vos choix, ainsi que la réussite ou non des mini
-          jeux au cours de la partie, vous devez éliminer les autres joueurs de
-          la partie en découvrant leurs adresses.
+          la protection de vos données et à la cybersécurité. Le but du jeu est d'éliminer les autres joueurs de la partie en découvrant leurs adresses. En fonction de vos choix et des mini jeux vous aurez plus ou moins de pourcentage de perdre ou de gagner.
         </Description>
       </Home>
       <Rules>
