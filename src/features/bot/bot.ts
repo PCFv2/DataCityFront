@@ -121,7 +121,7 @@ export const botSetFinished = (
               day: [
                 {
                   userId: opponentUserId,
-                  result: Math.round(Math.random() * 2) % 2 ? true : false,
+                  result: !!(Math.floor((Math.random() * 2) % 2)),
                 },
               ],
             }),
@@ -145,7 +145,7 @@ export const botSetFinished = (
             body: JSON.stringify({
               night: {
                 attackId: Math.floor(Math.random() * (4 - 1) + 1),
-                effectiveness: Math.random() * 100,
+                effectiveness: Math.floor(Math.random() * 100),
               },
             }),
           }).then(() => requestFinishRound(ws, gameId));
