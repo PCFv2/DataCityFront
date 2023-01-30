@@ -309,7 +309,7 @@ const Host = (): JSX.Element => {
                 ></SecondaryButton>
                 {userInGame!.length > 1 && (
                   <Primary2Button
-                    onClick={handleStartGame}
+                    onClick={() => handleStartGame(false)}
                     content={"Lancer la partie"}
                   ></Primary2Button>
                 )}
