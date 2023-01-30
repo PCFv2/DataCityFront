@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "src/app/store";
 import { botSetFinished } from "src/features/bot/bot";
+import { PrimaryButton } from "src/UI-KIT/components/Button";
 import MazeDesktop from "./organims/MazeDesktop";
 import { wallsDesktop } from "./organims/MazeDesktop";
 import MazeMobile, { wallsMobile } from "./organims/MazeMobile";
@@ -10,10 +11,15 @@ import MazeMobile, { wallsMobile } from "./organims/MazeMobile";
 const Container = styled.div<{ screenWidth: number }>`
   width: ${(props) => (props.screenWidth >= 1100 ? "1000px" : "500px")};
   height: 500px;
-  background-color: grey;
+  background: rgb(9, 76, 54);
+  background: linear-gradient(
+    90deg,
+    rgba(9, 76, 54, 1) 0%,
+    rgba(9, 43, 31, 1) 100%
+  );
   position: relative;
   display: block;
-  border: 10px solid black;
+  border: 15px solid ${(props) => props.theme.colors.secondary.grey};
   margin: 0 auto;
   border-radius: 10px;
 `;
@@ -24,7 +30,7 @@ const Point = styled.span<Position>`
   left: ${(props) => props.x}px;
   width: 20px;
   height: 20px;
-  background-color: ${(props) => props.theme.colors.primary.lightBlue};
+  background-color: #3fb987;
   border-radius: 5px;
 `;
 
@@ -32,10 +38,32 @@ const FinishPoint = styled.div<Position>`
   position: absolute;
   width: 40px;
   height: 40px;
-  background-color: ${(props) => props.theme.colors.primary.blue};
+  background-color: #595959;
   border-radius: 3px;
   top: ${(props) => props.y}px;
   left: ${(props) => props.x}px;
+`;
+
+const Rule = styled.div`
+  font-size: 1.1rem;
+  background-color: ${(props) => `${props.theme.colors.primary.white}A6`};
+  margin: 0 50% 0 0;
+  padding: 5px;
+  & p {
+    dislay: none;
+  }
+`;
+
+const AttackSuccess = styled.div`
+  padding: 1em;
+  border-radius: 5px;
+  background-color: ${(props) => `${props.theme.colors.primary.white}A6`};
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  color: ${(props) => props.theme.colors.primary.blue};
 `;
 
 type AttackProps = {
@@ -169,24 +197,29 @@ const Maze = (props: AttackProps) => {
   if (hasWon === false)
     return (
       <div>
-        <button onClick={handleFinish}>Enregistrer</button>
-        perdu
+        <p> Votre attaque a échoué !</p>
+        <PrimaryButton onClick={handleFinish} content={"Enregistrer"} />
       </div>
     );
   if (hasWon === true)
     return (
-      <div>
-        <button onClick={handleFinish}>Enregistrer</button>
-        gagné
-      </div>
+      <AttackSuccess>
+        <p> Vous avez réussi votre attaque !</p>
+        <PrimaryButton onClick={handleFinish} content={"Enregistrer"} />
+      </AttackSuccess>
     );
 
   return (
-    <Container screenWidth={width}>
-      {width >= 1100 ? <MazeDesktop /> : <MazeMobile />}
-      <Point x={position.x} y={position.y} />
-      <FinishPoint x={posFinishPoint.x} y={posFinishPoint.y} />
-    </Container>
+    <div>
+      <Rule>
+        <p>Trouver le bon chemin vers le site web</p>
+      </Rule>
+      <Container screenWidth={width}>
+        {width >= 1100 ? <MazeDesktop /> : <MazeMobile />}
+        <Point x={position.x} y={position.y}></Point>
+        <FinishPoint x={posFinishPoint.x} y={posFinishPoint.y} />
+      </Container>
+    </div>
   );
 };
 
