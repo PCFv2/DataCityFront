@@ -224,15 +224,15 @@ const WaitRoom = (): JSX.Element => {
             <ConfForm>
               <InputLine>
                 <label>Nombre de joueurs maximum</label>
-                <Input defaultValue={gameInfos?.maxPlayers.toString()} disabled/>
+                <Input placeholder={gameInfos?.maxPlayers.toString()} disabled/>
               </InputLine>
               <InputLine>
                 <label>Nombre de points de départ</label>
-                <Input defaultValue={gameInfos?.startNbPoints.toString()} disabled/>
+                <Input placeholder={gameInfos?.startNbPoints.toString()} disabled/>
               </InputLine>
               <InputLine>
                 <label>Difficultée de la partie (0 à 100)</label>
-                <Input defaultValue={gameInfos?.difficulty.toString()} disabled/>
+                <Input placeholder={gameInfos?.difficulty.toString()} disabled/>
               </InputLine>
               <ButtonLine>
                 <SecondaryButton content={"Prêt"} onClick={handleReady}/>

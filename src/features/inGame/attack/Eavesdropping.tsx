@@ -31,6 +31,7 @@ const Content = styled.span<{
   & span {
     color: ${(props) => (props.isWrong ? "red" : "green")};
     font-size: 50px;
+    user-select: none;
   }
 `;
 
