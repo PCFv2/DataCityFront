@@ -76,6 +76,7 @@ const Host = (): JSX.Element => {
       loadBot(game.gameId).then(() => {
         setProcessingServer(false);
         dispatch(setBotIsActive(true)); // bot activé
+        handleStartGame(true);
         return;
       });
     }
@@ -114,7 +115,8 @@ const Host = (): JSX.Element => {
   }; /* traitement du formulaire */
 
   // Lancement de la partie, set finished for player
-  const handleStartGame = () => {
+  const handleStartGame = (botIsActive?: boolean) => {
+    /* BOT */
     dispatch(setStartNbPoints(gameInfos?.startNbPoints!));
     setFinished({
       gameId: game.gameId,
@@ -128,8 +130,7 @@ const Host = (): JSX.Element => {
       })
       .catch(() => navigate("/error:api")); // error
 
-    /* BOT */
-    if (bot.botIsActive) {
+    if (botIsActive) {
       botSetFinished(game.gameId, webSocketState.webSocket!);
     }
   };
@@ -306,15 +307,17 @@ const Host = (): JSX.Element => {
                   type="submit"
                   content={"Enregistrer"}
                 ></SecondaryButton>
-                <Primary2Button
-                  onClick={handleStartGame}
-                  content={"Lancer la partie"}
-                ></Primary2Button>
+                {userInGame!.length > 1 && (
+                  <Primary2Button
+                    onClick={handleStartGame}
+                    content={"Lancer la partie"}
+                  ></Primary2Button>
+                )}
 
-                {(!bot.botIsActive && userInGame?.length === 1) && (
+                {!bot.botIsActive && userInGame?.length === 1 && (
                   <SecondaryButton
                     onClick={handleLoadBot}
-                    content={"activer le bot"}
+                    content={"Lancer la partie avec un bot"}
                   />
                 )}
               </ButtonLine>
