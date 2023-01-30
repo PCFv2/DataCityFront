@@ -1,7 +1,9 @@
-import { requestFinishRound, requestJoinGame } from "src/app/requestServer";
+import {
+  requestFinishGame,
+  requestFinishRound,
+  requestJoinGame,
+} from "src/app/requestServer";
 import { SOCKET_CODE } from "src/constants";
-import { gameApi } from "src/services";
-import userApi from "src/services/queries/user";
 
 let botUserId: string = "";
 
@@ -70,6 +72,21 @@ const createBotConfiguration = (): UserConfigurationForm => {
   return botConfiguration;
 };
 
+export const botIsAlive = (ws: WebSocket, gameId: number): void => {
+  fetch(process.env.REACT_APP_API_URL_DEV + `/user/${botUserId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (!data.isAlive) {
+        requestFinishGame(ws, gameId);
+      }
+    });
+};
+
 export const botSetFinished = (
   gameId: number,
   ws: WebSocket,
@@ -85,70 +102,108 @@ export const botSetFinished = (
     .then((data) => {
       switch (data.statusId) {
         case 1:
-          fetch(process.env.REACT_APP_API_URL_DEV + `/game/${gameId}/user/${botUserId}`, {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({}),
-          }).then(() => requestFinishRound(ws, gameId));
+          fetch(
+            process.env.REACT_APP_API_URL_DEV +
+              `/game/${gameId}/user/${botUserId}`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({}),
+            }
+          ).then(() => requestFinishRound(ws, gameId));
           break;
         case 2:
-          fetch(process.env.REACT_APP_API_URL_DEV + `/game/${gameId}/user/${botUserId}`, {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(createBotConfiguration()),
-          }).then(() => requestFinishRound(ws, gameId));
+          fetch(
+            process.env.REACT_APP_API_URL_DEV +
+              `/game/${gameId}/user/${botUserId}`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(createBotConfiguration()),
+            }
+          ).then(() => requestFinishRound(ws, gameId));
           break;
         case 3:
-          fetch(process.env.REACT_APP_API_URL_DEV + `/game/${gameId}/user/${botUserId}`, {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(createBotConfiguration()),
-          }).then(() => requestFinishRound(ws, gameId));
+          fetch(
+            process.env.REACT_APP_API_URL_DEV +
+              `/game/${gameId}/user/${botUserId}`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(createBotConfiguration()),
+            }
+          ).then(() => requestFinishRound(ws, gameId));
           break;
         case 4:
-          fetch(process.env.REACT_APP_API_URL_DEV + `/game/${gameId}/user/${botUserId}`, {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              day: [
-                {
-                  userId: opponentUserId,
-                  result: Math.round(Math.random() * 2) % 2 ? true : false,
-                },
-              ],
-            }),
-          }).then(() => requestFinishRound(ws, gameId));
+          fetch(
+            process.env.REACT_APP_API_URL_DEV +
+              `/game/${gameId}/user/${botUserId}`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                day: [
+                  {
+                    userId: opponentUserId,
+                    result: Math.round(Math.random() * 2) % 2 ? true : false,
+                  },
+                ],
+              }),
+            }
+          ).then(() => requestFinishRound(ws, gameId));
           break;
         case 5:
-          fetch(process.env.REACT_APP_API_URL_DEV + `/game/${gameId}/user/${botUserId}`, {
-            method: "PUT",
+          fetch(process.env.REACT_APP_API_URL_DEV + `/user/${botUserId}`, {
+            method: "GET",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({}),
-          }).then(() => requestFinishRound(ws, gameId));
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (!data.isAlive) {
+                requestFinishGame(ws, gameId);
+              } else {
+                fetch(
+                  process.env.REACT_APP_API_URL_DEV +
+                    `/game/${gameId}/user/${botUserId}`,
+                  {
+                    method: "PUT",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({}),
+                  }
+                ).then(() => requestFinishRound(ws, gameId));
+              }
+            });
+
           break;
         case 6:
-          fetch(process.env.REACT_APP_API_URL_DEV + `/game/${gameId}/user/${botUserId}`, {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              night: {
-                attackId: Math.floor(Math.random() * (4 - 1) + 1),
-                effectiveness: Math.random() * 100,
+          fetch(
+            process.env.REACT_APP_API_URL_DEV +
+              `/game/${gameId}/user/${botUserId}`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
               },
-            }),
-          }).then(() => requestFinishRound(ws, gameId));
+              body: JSON.stringify({
+                night: {
+                  attackId: Math.floor(Math.random() * (4 - 1) + 1),
+                  effectiveness: Math.random() * 100,
+                },
+              }),
+            }
+          ).then(() => requestFinishRound(ws, gameId));
           break;
       }
     });
@@ -171,13 +226,17 @@ export const loadBot = (gameId: number): Promise<boolean> => {
         .then((data) => {
           if (data) {
             requestJoinGame(ws, gameId).then(() => {
-              fetch(process.env.REACT_APP_API_URL_DEV + `/user/${userId.toString()}`, {
-                method: "PUT",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ name: "BOT", nbPoints: 5 }),
-              }).then(() =>
+              fetch(
+                process.env.REACT_APP_API_URL_DEV +
+                  `/user/${userId.toString()}`,
+                {
+                  method: "PUT",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({ name: "BOT", nbPoints: 5 }),
+                }
+              ).then(() =>
                 requestJoinGame(ws, gameId)
                   .then(() => {
                     resolve(true);
