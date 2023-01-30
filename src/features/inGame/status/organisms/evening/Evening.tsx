@@ -133,7 +133,7 @@ const Evening = (
                   <span>{elm[0]}</span>
                 </Profil>
                 <Status>
-                  <h2>Physique</h2>
+                  <h2>Social</h2>
                   <div style={{ width: 109, height: 109 }}>
                     <CircularProgressbar
                       value={Object.values(elm[1][0])[0]}
@@ -142,7 +142,7 @@ const Evening = (
                   </div>
                 </Status>
                 <Status>
-                  <h2>Social</h2>
+                  <h2>Internet</h2>
                   <div style={{ width: 109, height: 109 }}>
                     <CircularProgressbar
                       value={Object.values(elm[1][1])[0]}
@@ -151,7 +151,7 @@ const Evening = (
                   </div>
                 </Status>
                 <Status>
-                  <h2>Internet</h2>
+                  <h2>Physique</h2>
                   <div style={{ width: 109, height: 109 }}>
                     <CircularProgressbar
                       value={Object.values(elm[1][2])[0]}
