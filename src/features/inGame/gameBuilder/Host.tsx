@@ -27,6 +27,8 @@ import {
   SecondaryButton,
 } from "../../../UI-KIT/components/Button";
 import { useNavigate } from "react-router-dom";
+import { loadBot, botSetFinished } from "src/features/bot/bot";
+import { setBotIsActive } from "src/app/redux/botSlice";
 
 const Host = (): JSX.Element => {
   const navigate = useNavigate();
@@ -39,6 +41,8 @@ const Host = (): JSX.Element => {
   const game: Game = useSelector(
     (state: RootState) => state.gameSlice
   ); /* game info */
+
+  const bot = useSelector((state: RootState) => state.botSlice); /* game info */
 
   const webSocketState = useSelector(
     (state: RootState) => state.webSocket
@@ -64,6 +68,20 @@ const Host = (): JSX.Element => {
     refetch: userRefetch,
     isError: userInGameIsError,
   } = useGetAllUsersByGameIdQuery(game.gameId); /* API GET game/id/user */
+
+  /* bot */
+  const handleLoadBot = (): void => {
+    if (userInGame?.length === 1) {
+      setProcessingServer(true);
+      loadBot(game.gameId).then(() => {
+        setProcessingServer(false);
+        dispatch(setBotIsActive(true)); // bot activé
+        handleStartGame(true);
+        return;
+      });
+    }
+    return;
+  };
 
   /* manage error */
   useEffect(() => {
@@ -97,7 +115,8 @@ const Host = (): JSX.Element => {
   }; /* traitement du formulaire */
 
   // Lancement de la partie, set finished for player
-  const handleStartGame = () => {
+  const handleStartGame = (botIsActive?: boolean) => {
+    /* BOT */
     dispatch(setStartNbPoints(gameInfos?.startNbPoints!));
     setFinished({
       gameId: game.gameId,
@@ -110,6 +129,10 @@ const Host = (): JSX.Element => {
         dispatch(setGameData(gameInfos!));
       })
       .catch(() => navigate("/error:api")); // error
+
+    if (botIsActive) {
+      botSetFinished(game.gameId, webSocketState.webSocket!);
+    }
   };
 
   useEffect(() => {
@@ -284,10 +307,19 @@ const Host = (): JSX.Element => {
                   type="submit"
                   content={"Enregistrer"}
                 ></SecondaryButton>
-                <Primary2Button
-                  onClick={handleStartGame}
-                  content={"Lancer la partie"}
-                ></Primary2Button>
+                {userInGame!.length > 1 && (
+                  <Primary2Button
+                    onClick={handleStartGame}
+                    content={"Lancer la partie"}
+                  ></Primary2Button>
+                )}
+
+                {!bot.botIsActive && userInGame?.length === 1 && (
+                  <SecondaryButton
+                    onClick={handleLoadBot}
+                    content={"Lancer la partie avec un bot"}
+                  />
+                )}
               </ButtonLine>
             </ConfForm>
           </RightPanelContainer>

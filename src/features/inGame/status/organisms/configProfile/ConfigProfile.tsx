@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from "react";
-import {useGetAllConfigurationQuery} from "src/services";
+import React, { useEffect, useState } from "react";
+import { useGetAllConfigurationQuery } from "src/services";
 import OverlayLoader from "src/UI-KIT/components/OverlayLoader";
 
 import styled from "@emotion/styled";
@@ -15,13 +15,14 @@ import userApi, {
   useUpdateUserByIdMutation,
 } from "src/services/queries/user";
 import { useNavigate } from "react-router-dom";
+import { botSetFinished } from "src/features/bot/bot";
 
 type ConfigProfileProps = {
-    handleFinishRound?: (
-        round: number,
-        userConfiguration?: UserConfigurationForm,
-        night?: Night
-    ) => void;
+  handleFinishRound?: (
+    round: number,
+    userConfiguration?: UserConfigurationForm,
+    night?: Night
+  ) => void;
 };
 
 const ConfigProfile = (props: ConfigProfileProps) => {
@@ -29,6 +30,9 @@ const ConfigProfile = (props: ConfigProfileProps) => {
   /* redux */
   const user = useSelector((state: RootState) => state.userSlice);
   const round = useSelector((state: RootState) => state.roundSlice);
+  const game = useSelector((state: RootState) => state.gameSlice);
+  const bot = useSelector((state: RootState) => state.botSlice);
+  const webSocketState = useSelector((state: RootState) => state.webSocket);
 
   /* Queries */
   const {
@@ -99,6 +103,11 @@ const ConfigProfile = (props: ConfigProfileProps) => {
     updateUser({ userId: user.userId, nbPoints: playerPoints })
       .unwrap()
       .catch(() => navigate("/error:api")); // send to API user
+
+    /* BOT */
+    if (bot.botIsActive) {
+      botSetFinished(game.gameId, webSocketState.webSocket!);
+    }
   };
 
   if (
@@ -109,186 +118,199 @@ const ConfigProfile = (props: ConfigProfileProps) => {
   )
     return <OverlayLoader />;
 
-  
-    const ConfigPage = styled.main`
-      background: url(${background}) no-repeat center center fixed;
-      background-size: cover;
-      padding-bottom: 5rem;
-    `
+  const ConfigPage = styled.main`
+    background: url(${background}) no-repeat center center fixed;
+    background-size: cover;
+    padding-bottom: 5rem;
+  `;
 
-    const Window = styled.div`
-      margin: auto;
-      border-radius: ${(props) => props.theme.radius.medium};
-      background-color: ${(props) => props.theme.colors.primary.white};
-      display: flex;
-      flex-direction: column;
-      width: 65%;
-      box-shadow: ${(props) => props.theme.colors.primary.black} 0px 7px 29px 0px;
-    `
+  const Window = styled.div`
+    margin: auto;
+    border-radius: ${(props) => props.theme.radius.medium};
+    background-color: ${(props) => props.theme.colors.primary.white};
+    display: flex;
+    flex-direction: column;
+    width: 65%;
+    box-shadow: ${(props) => props.theme.colors.primary.black} 0px 7px 29px 0px;
+  `;
 
-    const WindowTitle = styled.h1`
-      color: ${(props) => props.theme.colors.primary.blue};
-      font-size: 1.5rem;
-      text-align: center;
-      margin-bottom: 0;
-    `
+  const WindowTitle = styled.h1`
+    color: ${(props) => props.theme.colors.primary.blue};
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 0;
+  `;
 
-    const Points = styled.p`
-      text-align: center;
-    `
+  const Points = styled.p`
+    text-align: center;
+  `;
 
-    const Table = styled.table`
-      background-color: ${(props) => props.theme.colors.primary.blue};
-      color: ${(props) => props.theme.colors.primary.white};
-      border-radius: 0 0 ${(props) => props.theme.radius.medium} ${(props) => props.theme.radius.medium};
-      border-collapse: collapse;
-      text-align: center;
-      vertical-align: center;
-      width: 100%;
-      overflow: scroll;
-    `
+  const Table = styled.table`
+    background-color: ${(props) => props.theme.colors.primary.blue};
+    color: ${(props) => props.theme.colors.primary.white};
+    border-radius: 0 0 ${(props) => props.theme.radius.medium}
+      ${(props) => props.theme.radius.medium};
+    border-collapse: collapse;
+    text-align: center;
+    vertical-align: center;
+    width: 100%;
+    overflow: scroll;
+  `;
 
-    const TableLine = styled.tr`
-      border: #FFF;
-    `
+  const TableLine = styled.tr`
+    border: #fff;
+  `;
 
-    const TableHeader = styled.th`
-      border-bottom: ${(props) => props.theme.border.regular} ${(props) => props.theme.colors.primary.white};
-      padding: 1rem;
+  const TableHeader = styled.th`
+    border-bottom: ${(props) => props.theme.border.regular}
+      ${(props) => props.theme.colors.primary.white};
+    padding: 1rem;
 
-      &:nth-child(1) {
-        border-right: ${(props) => props.theme.border.regular} ${(props) => props.theme.colors.primary.white};
-        border-bottom: none;
-      }
-    `
+    &:nth-child(1) {
+      border-right: ${(props) => props.theme.border.regular}
+        ${(props) => props.theme.colors.primary.white};
+      border-bottom: none;
+    }
+  `;
 
-    const TableHeadersLine = styled.tr`
-    `
+  const TableHeadersLine = styled.tr``;
 
-    const TableElement = styled.td<{ isDisabled?: boolean }>`
+  const TableElement = styled.td<{ isDisabled?: boolean }>`
+    padding: 0.5rem;
 
-      padding: 0.5rem;
+    & svg {
+      width: 48px;
+      height: 48px;
+      padding: 4px;
+      cursor: pointer;
+      filter: grayscale(${(props) => (props.isDisabled ? "1" : "0")});
+    }
 
-      & svg {
-        width: 48px;
-        height: 48px;
-        padding: 4px;
-        cursor: pointer;
-        filter: grayscale(${(props) => props.isDisabled ? "1" : "0"});
-      }
+    & input {
+      display: none;
 
-      & input {
-        display: none;
-
-        &:checked + label {
-          & svg {
-            border-radius: 50%;
-            border: solid 3px ${(props) => props.theme.colors.primary.white};
-          }
+      &:checked + label {
+        & svg {
+          border-radius: 50%;
+          border: solid 3px ${(props) => props.theme.colors.primary.white};
         }
       }
-    `
+    }
+  `;
 
-    const TableElementName = styled.td`
-      border-right: ${(props) => props.theme.border.regular} ${(props) => props.theme.colors.primary.white};
-    `
+  const TableElementName = styled.td`
+    border-right: ${(props) => props.theme.border.regular}
+      ${(props) => props.theme.colors.primary.white};
+  `;
 
-    const SaveButton = styled.button`
-      background-color: unset;
-      border: none;
-      cursor: pointer;
-      border-radius: 50%;
+  const SaveButton = styled.button`
+    background-color: unset;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
 
-      & span {
-        color: ${(props) => props.theme.colors.primary.lightBlue};
-        font-size: 64px;
-      }
-    `
+    & span {
+      color: ${(props) => props.theme.colors.primary.lightBlue};
+      font-size: 64px;
+    }
+  `;
 
-    return (
-        <ConfigPage>
-            <Window>
-                <WindowTitle>Configuration de votre profil de jeu</WindowTitle>
-                <Points>Il vous reste <b>{playerPoints} points</b></Points>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <Table>
-                        <TableHeadersLine>
-                            <TableHeader></TableHeader>
-                            <TableHeader>0 points</TableHeader>
-                            <TableHeader>1 points</TableHeader>
-                            <TableHeader>2 points</TableHeader>
-                            <TableHeader>3 points</TableHeader>
-                        </TableHeadersLine>
+  return (
+    <ConfigPage>
+      <Window>
+        <WindowTitle>Configuration de votre profil de jeu</WindowTitle>
+        <Points>
+          Il vous reste <b>{playerPoints} points</b>
+        </Points>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Table>
+            <TableHeadersLine>
+              <TableHeader></TableHeader>
+              <TableHeader>0 points</TableHeader>
+              <TableHeader>1 points</TableHeader>
+              <TableHeader>2 points</TableHeader>
+              <TableHeader>3 points</TableHeader>
+            </TableHeadersLine>
 
-                        {Object.values(allConfiguration!).map((elm: Configuration, index) => (
-                            <TableLine key={elm.configurationId}>
-                                <TableElementName>{elm.name}</TableElementName>
-                                <TableElement isDisabled={playerPoints < 0}>
-                                    <input
-                                        id={elm.value1}
-                                        value={"value1"}
-                                        disabled={playerPoints < 0 && true}
-                                        type="radio"
-                                        onClick={() => handleClick(index, elm.configurationId, 0)}
-                                        {...register(`configuration.${index}.value`)}
-                                    />
-                                    <label htmlFor={elm.value1} title={elm.value1}><RenderIcon
-                                        name={elm.value1}></RenderIcon></label>
-                                </TableElement>
-                                <TableElement isDisabled={playerPoints - 1 < 0}>
-                                    <input
-                                        id={elm.value2}
-                                        value={"value2"}
-                                        disabled={playerPoints - 1 < 0 && true}
-                                        type="radio"
-                                        onClick={() => handleClick(index, elm.configurationId, 1)}
-                                        {...register(`configuration.${index}.value`)}
-                                    />
-                                    <label htmlFor={elm.value2} title={elm.value2}><RenderIcon
-                                        name={elm.value2}></RenderIcon></label>
-                                </TableElement>
-                                <TableElement isDisabled={playerPoints - 2 < 0}>
-                                    <input
-                                        id={elm.value3}
-                                        value={"value3"}
-                                        disabled={playerPoints - 2 < 0 && true}
-                                        type="radio"
-                                        onClick={() => handleClick(index, elm.configurationId, 2)}
-                                        {...register(`configuration.${index}.value`)}
-                                    />
-                                    <label htmlFor={elm.value3} title={elm.value3}><RenderIcon
-                                        name={elm.value3}></RenderIcon></label>
-                                </TableElement>
-                                {elm.value4 && (
-                                    <>
-                                        <TableElement isDisabled={playerPoints - 3 < 0}>
-                                            <input
-                                                id={elm.value4}
-                                                value={"value4"}
-                                                disabled={playerPoints - 3 < 0 && true}
-                                                type="radio"
-                                                onClick={() => handleClick(index, elm.configurationId, 3)}
-                                                {...register(`configuration.${index}.value`)}
-                                            />
-                                            <label htmlFor={elm.value4} title={elm.value4}><RenderIcon
-                                                name={elm.value4}></RenderIcon></label>
-                                        </TableElement>
-                                    </>
-                                )}
-                            </TableLine>
-                        ))}
-                        <TableElement></TableElement>
-                        <TableElement></TableElement>
-                        <TableElement></TableElement>
-                        <TableElement></TableElement>
-                        <TableElement>
-                            <SaveButton type="submit"><span className="material-icons">check_circle</span></SaveButton>
-                        </TableElement>
-                    </Table>
-                </form>
-            </Window>
-        </ConfigPage>
-    );
+            {Object.values(allConfiguration!).map(
+              (elm: Configuration, index) => (
+                <TableLine key={elm.configurationId}>
+                  <TableElementName>{elm.name}</TableElementName>
+                  <TableElement isDisabled={playerPoints < 0}>
+                    <input
+                      id={elm.value1}
+                      value={"value1"}
+                      disabled={playerPoints < 0 && true}
+                      type="radio"
+                      onClick={() => handleClick(index, elm.configurationId, 0)}
+                      {...register(`configuration.${index}.value`)}
+                    />
+                    <label htmlFor={elm.value1} title={elm.value1}>
+                      <RenderIcon name={elm.value1}></RenderIcon>
+                    </label>
+                  </TableElement>
+                  <TableElement isDisabled={playerPoints - 1 < 0}>
+                    <input
+                      id={elm.value2}
+                      value={"value2"}
+                      disabled={playerPoints - 1 < 0 && true}
+                      type="radio"
+                      onClick={() => handleClick(index, elm.configurationId, 1)}
+                      {...register(`configuration.${index}.value`)}
+                    />
+                    <label htmlFor={elm.value2} title={elm.value2}>
+                      <RenderIcon name={elm.value2}></RenderIcon>
+                    </label>
+                  </TableElement>
+                  <TableElement isDisabled={playerPoints - 2 < 0}>
+                    <input
+                      id={elm.value3}
+                      value={"value3"}
+                      disabled={playerPoints - 2 < 0 && true}
+                      type="radio"
+                      onClick={() => handleClick(index, elm.configurationId, 2)}
+                      {...register(`configuration.${index}.value`)}
+                    />
+                    <label htmlFor={elm.value3} title={elm.value3}>
+                      <RenderIcon name={elm.value3}></RenderIcon>
+                    </label>
+                  </TableElement>
+                  {elm.value4 && (
+                    <>
+                      <TableElement isDisabled={playerPoints - 3 < 0}>
+                        <input
+                          id={elm.value4}
+                          value={"value4"}
+                          disabled={playerPoints - 3 < 0 && true}
+                          type="radio"
+                          onClick={() =>
+                            handleClick(index, elm.configurationId, 3)
+                          }
+                          {...register(`configuration.${index}.value`)}
+                        />
+                        <label htmlFor={elm.value4} title={elm.value4}>
+                          <RenderIcon name={elm.value4}></RenderIcon>
+                        </label>
+                      </TableElement>
+                    </>
+                  )}
+                </TableLine>
+              )
+            )}
+            <TableElement></TableElement>
+            <TableElement></TableElement>
+            <TableElement></TableElement>
+            <TableElement></TableElement>
+            <TableElement>
+              <SaveButton type="submit">
+                <span className="material-icons">check_circle</span>
+              </SaveButton>
+            </TableElement>
+          </Table>
+        </form>
+      </Window>
+    </ConfigPage>
+  );
 };
 
 export default ConfigProfile;
