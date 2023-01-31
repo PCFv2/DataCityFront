@@ -3,7 +3,7 @@ import React, { Suspense, useEffect, useRef, useState } from "react";
 
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/app/store";
 import { useGetEndGameQuery } from "src/services";
 import {
@@ -24,6 +24,8 @@ import MailTransmission from "./organism/MailTransmission";
 import { PrimaryButton } from "src/UI-KIT/components/Button";
 import { useNavigate } from "react-router-dom";
 import MailConsultation from "./organism/MailConsultation";
+import { setDisplayComponent } from "src/app/redux/displayComponentSlice";
+import { DISPLAY_COMPONENT } from "src/constants";
 
 const OppenentStatus = styled.div`
   display: flex;
@@ -32,6 +34,9 @@ const OppenentStatus = styled.div`
   justify-content: center;
   flex-wrap: wrap;
   gap: 5em;
+  border-top: 2px solid ${(props) => props.theme.colors.primary.blue};
+  border-bottom: 2px solid ${(props) => props.theme.colors.primary.blue};
+  padding: 30px 0;
 `;
 const Status = styled.div`
   display: flex;
@@ -50,14 +55,41 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 50px;
-  & > span {
-    font-size: 50px;
+  background-color: ${(props) => props.theme.colors.primary.white};
+  border-radius: ${(props) => props.theme.radius.big};
+  & button {
+    margin: 30px 0;
   }
 `;
 
 const Opponent = styled.div`
   display: flex;
   gap: 30px;
+`;
+
+const Win = styled.p`
+  font-weight: bold;
+  color: ${(props) => props.theme.colors.primary.blue};
+  font-size: 1.1rem;
+`;
+
+const Icon = styled.span`
+  font-size: 50px;
+`;
+
+const Title = styled.span<{ isSelected: boolean }>`
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  & > span {
+    transition: 0.4s;
+    transform: ${(props) =>
+      props.isSelected ? "rotate(0deg)" : "rotate(-90deg)"};
+    font-size: 50px;
+  }
+  & h2 {
+    margin: 0;
+  }
 `;
 
 const DISPLAY_CONSTANT = {
@@ -73,6 +105,7 @@ const DISPLAY_CONSTANT = {
 };
 
 const EndGame = () => {
+  const dispatch = useDispatch();
   /* redux */
   const game: Game = useSelector((state: RootState) => state.gameSlice);
   const user: User = useSelector((state: RootState) => state.userSlice);
@@ -123,12 +156,12 @@ const EndGame = () => {
     <Suspense fallback={<OverlayLoader />}>
       <Container>
         <h2>Fin de partie</h2>
-        <span className="material-icons">waving_hand</span>
+        <Icon className="material-icons">waving_hand</Icon>
 
         {!userApi?.isAlive ? (
           <p>{endGameUser} vous a tué</p>
         ) : (
-          <p>Bienjoué ! Vous avez gagné la partie</p>
+          <Win>Bienjoué ! Vous avez gagné la partie</Win>
         )}
 
         <OppenentStatus>
@@ -172,48 +205,78 @@ const EndGame = () => {
             <div>Pas d'information</div>
           )}
         </OppenentStatus>
-        <h2 onClick={() => handleClick(DISPLAY_CONSTANT.mailConsultation)}>
-          Consultation de mail
-        </h2>
+        <Title isSelected={display === DISPLAY_CONSTANT.mailConsultation}>
+          <span className="material-icons">arrow_drop_down</span>
+          <h2 onClick={() => handleClick(DISPLAY_CONSTANT.mailConsultation)}>
+            Consultation de mail
+          </h2>
+        </Title>
         {display === DISPLAY_CONSTANT.mailConsultation && <MailConsultation />}
-        <h2 onClick={() => handleClick(DISPLAY_CONSTANT.internetNavigation)}>
-          Navigation sur internet
-        </h2>
+        <Title isSelected={display === DISPLAY_CONSTANT.internetNavigation}>
+          <span className="material-icons">arrow_drop_down</span>
+          <h2 onClick={() => handleClick(DISPLAY_CONSTANT.internetNavigation)}>
+            Navigation sur internet
+          </h2>
+        </Title>
         {display === DISPLAY_CONSTANT.internetNavigation && (
           <InternetNavigation />
         )}
-        <h2 onClick={() => handleClick(DISPLAY_CONSTANT.buyOnline)}>
-          Achat en ligne
-        </h2>
+        <Title isSelected={display === DISPLAY_CONSTANT.buyOnline}>
+          <span className="material-icons">arrow_drop_down</span>
+          <h2 onClick={() => handleClick(DISPLAY_CONSTANT.buyOnline)}>
+            Achat en ligne
+          </h2>
+        </Title>
         {display === DISPLAY_CONSTANT.buyOnline && <OnlineBuy />}
-        <h2 onClick={() => handleClick(DISPLAY_CONSTANT.networkPublic)}>
-          Réseau wifi public
-        </h2>
+        <Title isSelected={display === DISPLAY_CONSTANT.networkPublic}>
+          <span className="material-icons">arrow_drop_down</span>
+          <h2 onClick={() => handleClick(DISPLAY_CONSTANT.networkPublic)}>
+            Réseau wifi public
+          </h2>
+        </Title>
         {display === DISPLAY_CONSTANT.networkPublic && <PublicNetwork />}
-        <h2 onClick={() => handleClick(DISPLAY_CONSTANT.usb)}>Clé USB</h2>
+        <Title isSelected={display === DISPLAY_CONSTANT.usb}>
+          <span className="material-icons">arrow_drop_down</span>
+          <h2 onClick={() => handleClick(DISPLAY_CONSTANT.usb)}>Clé USB</h2>
+        </Title>
         {display === DISPLAY_CONSTANT.usb && <Usb />}
-        <h2 onClick={() => handleClick(DISPLAY_CONSTANT.softwareInstall)}>
-          Installation logiciel
-        </h2>
+        <Title isSelected={display === DISPLAY_CONSTANT.softwareInstall}>
+          <span className="material-icons">arrow_drop_down</span>
+          <h2 onClick={() => handleClick(DISPLAY_CONSTANT.softwareInstall)}>
+            Installation logiciel
+          </h2>
+        </Title>
         {display === DISPLAY_CONSTANT.softwareInstall && <SoftwareInstall />}
-        <h2 onClick={() => handleClick(DISPLAY_CONSTANT.virtuelCommication)}>
-          Communication virtuel
-        </h2>
+        <Title isSelected={display === DISPLAY_CONSTANT.virtuelCommication}>
+          <span className="material-icons">arrow_drop_down</span>
+          <h2 onClick={() => handleClick(DISPLAY_CONSTANT.virtuelCommication)}>
+            Communication virtuel
+          </h2>
+        </Title>
         {display === DISPLAY_CONSTANT.virtuelCommication && (
           <VirtuelCommunication />
         )}
-        <h2 onClick={() => handleClick(DISPLAY_CONSTANT.mailConsultation2)}>
-          Consultation de mail 2
-        </h2>
+        <Title isSelected={display === DISPLAY_CONSTANT.mailConsultation2}>
+          <span className="material-icons">arrow_drop_down</span>
+          <h2 onClick={() => handleClick(DISPLAY_CONSTANT.mailConsultation2)}>
+            Consultation de mail 2
+          </h2>
+        </Title>
         {display === DISPLAY_CONSTANT.mailConsultation2 && (
           <MailConsultation2 />
         )}
-        <h2 onClick={() => handleClick(DISPLAY_CONSTANT.mailTransmission)}>
-          Transmission de mail
-        </h2>
+        <Title isSelected={display === DISPLAY_CONSTANT.mailTransmission}>
+          <span className="material-icons">arrow_drop_down</span>
+          <h2 onClick={() => handleClick(DISPLAY_CONSTANT.mailTransmission)}>
+            Transmission de mail
+          </h2>
+        </Title>
         {display === DISPLAY_CONSTANT.mailTransmission && <MailTransmission />}
         <PrimaryButton
-          onClick={() => navigate("/")}
+          onClick={() => {
+            dispatch(setDisplayComponent(DISPLAY_COMPONENT.home));
+            window.scrollTo(0, 0);
+          }}
           content={"Revenir à l'accueil"}
         />
       </Container>

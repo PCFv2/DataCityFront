@@ -194,10 +194,7 @@ const Homepage = () => {
         <Description>
           {/* TODO Description du jeu */}
           Data City est un Serious Game qui a été créé pour vous sensibiliser à
-          la protection de vos données et à la cybersécurité. Le but du jeu est
-          d'éliminer les autres joueurs de la partie en découvrant leurs
-          adresses. En fonction de vos choix et des mini jeux vous aurez plus ou
-          moins de pourcentage de perdre ou de gagner.
+          la protection de vos données et à la cybersécurité. Le but du jeu est d'éliminer les autres joueurs de la partie en découvrant leurs adresses. En fonction de vos choix et des mini jeux vous aurez plus ou moins de pourcentage de perdre ou de gagner.
         </Description>
       </Home>
       <Rules>
@@ -255,8 +252,8 @@ const Homepage = () => {
             <RulesLineTextTitle>Les résultats de la journée</RulesLineTextTitle>
             <RulesLineTextText>
               Ils vous seront donc présenté. Si vous avez fait des erreurs sur
-              les activités dans la journée en fonction de celle-ci une
-              explication sur vos échecs vous sera présenté.
+              les activités dans la journée en fonction de celle-ci des
+              explication sur vos échecs vous seront présenté.
             </RulesLineTextText>
           </RulesLineTextReverse>
           <RulesLineIcon className="material-icons">description</RulesLineIcon>
@@ -268,10 +265,10 @@ const Homepage = () => {
           <RulesLineText>
             <RulesLineTextTitle>Élimination</RulesLineTextTitle>
             <RulesLineTextText>
-              Pour éliminer une joueur il faut atteindre 100% de son hacking. Et
+              Pour éliminer un joueur il faut atteindre 100% de son hacking. Et
               une fois les avoir atteint, le joueur sera éliminé et pourra donc
-              quitter la partie et en recommencera une autre. Les autres joueurs
-              en verront leurs points augmenté.
+              quitter la partie et en recommencer une autre. Les autres joueurs
+              en verront leurs points augmentés.
             </RulesLineTextText>
           </RulesLineText>
         </RulesLine>

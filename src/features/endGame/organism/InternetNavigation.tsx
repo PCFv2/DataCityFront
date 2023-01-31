@@ -2,7 +2,7 @@ import React from "react";
 
 const InternetNavigation = () => {
   return (
-    <div>
+    <div style={{ padding: "0 30%", textAlign: "justify" }}>
       <p>
         Sécuriser sa navigation sur internet ne se limite aujourd’hui plus
         seulement à accéder au volet « Navigation privée » de votre navigateur
