@@ -33,8 +33,11 @@ import { setBotIsActive } from "src/app/redux/botSlice";
 const HostStyle = styled.main`
   background: url(${background}) no-repeat center center fixed;
   background-size: cover;
-  height: 100%;
   padding: 0 10%;
+  height: 100%;
+  @media (max-width: 1100px) {
+    height: auto;
+  }
 `;
 
 const MainTitle = styled.h1`
@@ -51,6 +54,7 @@ const MainWindow = styled.div`
   align-items: center;
   @media (max-width: 1100px) {
     flex-wrap: wrap;
+    padding: 10% 0;
   }
 `;
 
