@@ -2,7 +2,7 @@ import React from "react";
 
 const SoftwareInstall = () => {
   return (
-    <div>
+    <div style={{ padding: "0 30%", textAlign: "justify" }}>
       <p>
         Internet regorge de logiciels piratés, proposés pour le téléchargement.
         Les usagers tombent facilement dans le piège parce qu’ils pensent que

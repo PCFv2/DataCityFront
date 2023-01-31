@@ -68,6 +68,12 @@ const BackgroundNight = styled.div`
   height: 100%;
 `;
 
+const EndGameContainer = styled.div`
+  background: url(${nightBackground}) no-repeat center center fixed;
+  background-size: cover;
+  padding: 0 10%;
+`;
+
 const RenderStatusId = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -187,7 +193,13 @@ const RenderStatusId = () => {
 
   if (setFinishedIsLoading) return <OverlayLoader />;
 
-  if (hasFinishedGame) return <EndGame />;
+  if (hasFinishedGame)
+    return (
+      <EndGameContainer>
+        <MainTitle>Data City</MainTitle>
+        <EndGame />
+      </EndGameContainer>
+    );
 
   switch (round.statusId) {
     case 2:
