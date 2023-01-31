@@ -73,7 +73,7 @@ const TableHeader = styled.th`
     ${(props) => props.theme.colors.primary.white};
   padding: 1rem;
 
-  &:nth-child(1) {
+  &:nth-of-type(1) {
     border-right: ${(props) => props.theme.border.regular}
       ${(props) => props.theme.colors.primary.white};
     border-bottom: none;
@@ -234,11 +234,11 @@ const ConfigProfile = (props: ConfigProfileProps) => {
           {Object.values(allConfiguration!).map((elm: Configuration, index) => (
             <TableLine key={elm.configurationId}>
               <TableElementName>{elm.name}</TableElementName>
-              <TableElement isDisabled={playerPoints < 0}>
+              <TableElement isDisabled={playerSpentPoints[index].point + playerPoints < 0}>
                 <input
                   id={elm.value1}
                   value={"value1"}
-                  disabled={playerPoints < 0 && true}
+                  disabled={playerSpentPoints[index].point + playerPoints < 0 && true}
                   type="radio"
                   onClick={() => handleClick(index, elm.configurationId, 0)}
                   {...register(`configuration.${index}.value`)}
@@ -247,11 +247,11 @@ const ConfigProfile = (props: ConfigProfileProps) => {
                   <RenderIcon name={elm.value1}></RenderIcon>
                 </label>
               </TableElement>
-              <TableElement isDisabled={playerPoints - 1 < 0}>
+              <TableElement isDisabled={ playerSpentPoints[index].point + playerPoints < 1}>
                 <input
                   id={elm.value2}
                   value={"value2"}
-                  disabled={playerPoints - 1 < 0 && true}
+                  disabled={ playerSpentPoints[index].point + playerPoints < 1 && true}
                   type="radio"
                   onClick={() => handleClick(index, elm.configurationId, 1)}
                   {...register(`configuration.${index}.value`)}
@@ -260,11 +260,11 @@ const ConfigProfile = (props: ConfigProfileProps) => {
                   <RenderIcon name={elm.value2}></RenderIcon>
                 </label>
               </TableElement>
-              <TableElement isDisabled={playerPoints - 2 < 0}>
+              <TableElement isDisabled={ playerSpentPoints[index].point + playerPoints < 2}>
                 <input
                   id={elm.value3}
                   value={"value3"}
-                  disabled={playerPoints - 2 < 0 && true}
+                  disabled={ playerSpentPoints[index].point + playerPoints < 2 && true}
                   type="radio"
                   onClick={() => handleClick(index, elm.configurationId, 2)}
                   {...register(`configuration.${index}.value`)}
@@ -275,11 +275,13 @@ const ConfigProfile = (props: ConfigProfileProps) => {
               </TableElement>
               {elm.value4 && (
                 <>
-                  <TableElement isDisabled={playerPoints - 3 < 0}>
+                  <TableElement isDisabled={playerSpentPoints[index].point + playerPoints < 3}>
                     <input
                       id={elm.value4}
                       value={"value4"}
-                      disabled={playerPoints - 3 < 0 && true}
+                      disabled={
+                        playerSpentPoints[index].point + playerPoints < 3 && true
+                      }
                       type="radio"
                       onClick={() => handleClick(index, elm.configurationId, 3)}
                       {...register(`configuration.${index}.value`)}

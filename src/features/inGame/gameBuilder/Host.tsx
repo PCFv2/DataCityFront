@@ -67,6 +67,7 @@ const LeftPanel = styled.div`
   align-items: center;
   height: 90%;
   width: 20%;
+  text-align: center;
   border-radius: ${(props) => props.theme.radius.small};
   padding: 0.5rem 1.5rem;
   @media (max-width: 1100px) {
@@ -95,14 +96,13 @@ const RightPanel = styled.div`
   align-items: center;
   border-radius: 0 ${(props) => props.theme.radius.medium}
     ${(props) => props.theme.radius.medium} 0;
-  height: 65%;
   width: 80%;
   @media (max-width: 1100px) {
     height: auto;
     width: 100%;
     border-radius: ${(props) => props.theme.radius.medium};
   }
-  padding: 30px 0;
+  padding: 50px 0;
 `;
 
 const RightPanelContainer = styled.div`
