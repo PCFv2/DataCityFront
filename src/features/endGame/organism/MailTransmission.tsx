@@ -2,7 +2,7 @@ import React from "react";
 
 const TransimissionMail = () => {
   return (
-    <div>
+    <div style={{ padding: "0 30%", textAlign: "justify" }}>
       <p>
         Évidemment, lorsque vous créez une adresse mail, vous créez un mot de
         passe personnel et incessible. Mais cela ne suffit pas à protéger votre

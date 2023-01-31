@@ -10,7 +10,6 @@ import { RootState } from "src/app/store";
 import ConfigProfile from "../inGame/status/organisms/configProfile/ConfigProfile";
 import RenderStatusId from "../inGame/status/RenderStatusId";
 import { MESSAGE_LOADER } from "src/constants/messageLoader";
-import Eavesdropping from "../inGame/attack/Eavesdropping";
 
 /* COMPONENT */
 const Host = React.lazy(() => import("../inGame/gameBuilder/Host"));
@@ -60,49 +59,48 @@ const Home = (props: { serverUrl: string }) => {
   if (!websocketIsAccess || displayComponentState.isLoading)
     return <OverlayLoader message={MESSAGE_LOADER.loading} />;
   else {
-    
   }
 
-    // Affichage
-    switch (displayComponentState.displayComponent) {
-      case DISPLAY_COMPONENT.home:
-        return (
-          <Suspense fallback={<OverlayLoader />}>
-            <Homepage />
-          </Suspense>
-        );
-      case DISPLAY_COMPONENT.hostComponent:
-        return (
-          <Suspense fallback={<OverlayLoader />}>
-            <Host />
-          </Suspense>
-        );
-      case DISPLAY_COMPONENT.joinComponent:
-        return (
-          <Suspense fallback={<OverlayLoader />}>
-            <Join />
-          </Suspense>
-        );
-      case DISPLAY_COMPONENT.waitRoomComponent:
-        return (
-          <Suspense fallback={<OverlayLoader />}>
-            <WaitRoom />
-          </Suspense>
-        );
-      case DISPLAY_COMPONENT.configProfile:
-        return (
-          <Suspense fallback={<OverlayLoader />}>
-            <ConfigProfile />
-          </Suspense>
-        );
-      case DISPLAY_COMPONENT.renderStatusId:
-        return (
-          <Suspense fallback={<OverlayLoader />}>
-            <RenderStatusId />
-          </Suspense>
-        );
-    }
-    return <div>Le serveur ne réponds pas</div>;
+  // Affichage
+  switch (displayComponentState.displayComponent) {
+    case DISPLAY_COMPONENT.home:
+      return (
+        <Suspense fallback={<OverlayLoader />}>
+          <Homepage />
+        </Suspense>
+      );
+    case DISPLAY_COMPONENT.hostComponent:
+      return (
+        <Suspense fallback={<OverlayLoader />}>
+          <Host />
+        </Suspense>
+      );
+    case DISPLAY_COMPONENT.joinComponent:
+      return (
+        <Suspense fallback={<OverlayLoader />}>
+          <Join />
+        </Suspense>
+      );
+    case DISPLAY_COMPONENT.waitRoomComponent:
+      return (
+        <Suspense fallback={<OverlayLoader />}>
+          <WaitRoom />
+        </Suspense>
+      );
+    case DISPLAY_COMPONENT.configProfile:
+      return (
+        <Suspense fallback={<OverlayLoader />}>
+          <ConfigProfile />
+        </Suspense>
+      );
+    case DISPLAY_COMPONENT.renderStatusId:
+      return (
+        <Suspense fallback={<OverlayLoader />}>
+          <RenderStatusId />
+        </Suspense>
+      );
+  }
+  return <div>Le serveur ne réponds pas</div>;
 };
 
 export default Home;

@@ -2,7 +2,7 @@ import React from "react";
 
 const MailConsultation2 = () => {
   return (
-    <div>
+    <div style={{ padding: "0 30%", textAlign: "justify" }}>
       <p>
         Les organisations qui manquent de vigilance sur leur politique de
         sécurité et de confidentialité s'exposent à des risques importants de
