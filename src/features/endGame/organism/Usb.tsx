@@ -2,7 +2,7 @@ import React from "react";
 
 const Usb = () => {
   return (
-    <div>
+    <div style={{ padding: "0 30%", textAlign: "justify" }}>
       <p>
         Il vous est peut-être déjà arrivé de récupérer une clé USB
         promotionnelle lors d’un salon professionnel, ou encore d’en trouver une

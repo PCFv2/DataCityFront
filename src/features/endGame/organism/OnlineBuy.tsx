@@ -2,7 +2,7 @@ import React from "react";
 
 const OnlineBuy = () => {
   return (
-    <div>
+    <div style={{ padding: "0 30%", textAlign: "justify" }}>
       <p>
         Internet a révolutionné la manière dont nous achetons. Souvent, l’offre
         pléthorique de produits, aux prix excessivement bas et donc alléchants,

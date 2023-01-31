@@ -2,7 +2,7 @@ import React from "react";
 
 const PublicNetwork = () => {
   return (
-    <div>
+    <div style={{ padding: "0 30%", textAlign: "justify" }}>
       <p>
         Les utilisateurs des réseaux wifi sont à la merci des pirates
         informatiques. Heureusement, il existe des moyens permettant de s’en

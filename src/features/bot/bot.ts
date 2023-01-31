@@ -8,7 +8,7 @@ import { SOCKET_CODE } from "src/constants";
 let botUserId: string = "";
 
 const startBotWebSocket = (): WebSocket => {
-  return new WebSocket(process.env.REACT_APP_SERVER_URL_DEV!); // create socket bot
+  return new WebSocket(process.env.REACT_APP_SERVER_URL!); // create socket bot
 };
 
 const listener = (ws: WebSocket): Promise<string | boolean> => {
@@ -77,7 +77,7 @@ export const botSetFinished = (
   ws: WebSocket,
   opponentUserId?: string
 ) => {
-  fetch(process.env.REACT_APP_API_URL_DEV + `/game/${gameId}/lastround`, {
+  fetch(process.env.REACT_APP_API_URL + `/game/${gameId}/lastround`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -88,7 +88,7 @@ export const botSetFinished = (
       switch (data.statusId) {
         case 1:
           fetch(
-            process.env.REACT_APP_API_URL_DEV +
+            process.env.REACT_APP_API_URL +
               `/game/${gameId}/user/${botUserId}`,
             {
               method: "PUT",
@@ -101,7 +101,7 @@ export const botSetFinished = (
           break;
         case 2:
           fetch(
-            process.env.REACT_APP_API_URL_DEV +
+            process.env.REACT_APP_API_URL +
               `/game/${gameId}/user/${botUserId}`,
             {
               method: "PUT",
@@ -114,7 +114,7 @@ export const botSetFinished = (
           break;
         case 3:
           fetch(
-            process.env.REACT_APP_API_URL_DEV +
+            process.env.REACT_APP_API_URL +
               `/game/${gameId}/user/${botUserId}`,
             {
               method: "PUT",
@@ -127,7 +127,7 @@ export const botSetFinished = (
           break;
         case 4:
           fetch(
-            process.env.REACT_APP_API_URL_DEV +
+            process.env.REACT_APP_API_URL +
               `/game/${gameId}/user/${botUserId}`,
             {
               method: "PUT",
@@ -146,7 +146,7 @@ export const botSetFinished = (
           ).then(() => requestFinishRound(ws, gameId));
           break;
         case 5:
-          fetch(process.env.REACT_APP_API_URL_DEV + `/user/${botUserId}`, {
+          fetch(process.env.REACT_APP_API_URL + `/user/${botUserId}`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
@@ -158,7 +158,7 @@ export const botSetFinished = (
                 requestFinishGame(ws, gameId);
               } else {
                 fetch(
-                  process.env.REACT_APP_API_URL_DEV +
+                  process.env.REACT_APP_API_URL +
                     `/game/${gameId}/user/${botUserId}`,
                   {
                     method: "PUT",
@@ -174,7 +174,7 @@ export const botSetFinished = (
           break;
         case 6:
           fetch(
-            process.env.REACT_APP_API_URL_DEV +
+            process.env.REACT_APP_API_URL +
               `/game/${gameId}/user/${botUserId}`,
             {
               method: "PUT",
@@ -201,7 +201,7 @@ export const loadBot = (gameId: number): Promise<boolean> => {
     // join
     listener(ws).then((userId) => {
       botUserId = userId.toString();
-      fetch(process.env.REACT_APP_API_URL_DEV + `/game/${gameId}/join`, {
+      fetch(process.env.REACT_APP_API_URL + `/game/${gameId}/join`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -212,7 +212,7 @@ export const loadBot = (gameId: number): Promise<boolean> => {
           if (data) {
             requestJoinGame(ws, gameId).then(() => {
               fetch(
-                process.env.REACT_APP_API_URL_DEV +
+                process.env.REACT_APP_API_URL +
                   `/user/${userId.toString()}`,
                 {
                   method: "PUT",
