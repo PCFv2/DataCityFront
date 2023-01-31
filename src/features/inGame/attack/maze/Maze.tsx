@@ -13,6 +13,9 @@ const Content = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  & div {
+    
+  }
 `;
 
 const Container = styled.div<{ screenWidth: number }>`
@@ -82,8 +85,8 @@ type AttackProps = {
 
 const Maze = (props: AttackProps) => {
   /* redux */
-  const round = useSelector((state: RootState) => state.roundSlice);
-  const game = useSelector((state: RootState) => state.gameSlice);
+  const round: Round = useSelector((state: RootState) => state.roundSlice);
+  const game: Game = useSelector((state: RootState) => state.gameSlice);
   const webSocketState = useSelector((state: RootState) => state.webSocket);
   const bot = useSelector((state: RootState) => state.botSlice);
 

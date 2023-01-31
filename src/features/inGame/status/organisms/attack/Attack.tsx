@@ -1,4 +1,4 @@
-import React, { Suspense, useMemo } from "react";
+import React, { Suspense, useEffect, useMemo, useState } from "react";
 import { ATTACK } from "src/constants";
 import OverlayLoader from "../../../../../UI-KIT/components/OverlayLoader";
 import ErrorPage from "src/app/pages/ErrorPage";
@@ -14,6 +14,22 @@ const StealthDowload = React.lazy(
 );
 
 const Attack = (props: AttackProps) => {
+  /* responsive */
+  const [width, setWindowWidth] = useState(0);
+
+  useEffect(() => {
+    updateDimensions();
+
+    window.addEventListener("resize", updateDimensions);
+
+    return () => window.removeEventListener("resize", updateDimensions);
+  }, []);
+
+  const updateDimensions = () => {
+    const width = window.innerWidth;
+    setWindowWidth(width);
+  };
+
   const attackNb = useMemo(
     () => Math.floor(Math.random() * ATTACK.nbAttacks),
     []
@@ -35,9 +51,14 @@ const Attack = (props: AttackProps) => {
     case ATTACK.attacks.stealthDownload:
       return (
         <Suspense fallback={<OverlayLoader />}>
-          <StealthDowload handleFinishRound={props.handleFinishRound} />
+          {width > 650 ? (
+            <StealthDowload handleFinishRound={props.handleFinishRound} />
+          ) : (
+            <Eavesdropping handleFinishRound={props.handleFinishRound} />
+          )}
         </Suspense>
       );
+
     default:
       return <ErrorPage />;
   }

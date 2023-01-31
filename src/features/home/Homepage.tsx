@@ -46,7 +46,7 @@ const ButtonLine = styled.div`
   flex-wrap: wrap;
   gap: 10px;
   margin-top: auto;
-  padding: 0 10%;
+  padding: 10% 10% 5% 10%;
 `;
 
 // Rules

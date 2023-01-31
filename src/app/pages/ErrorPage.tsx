@@ -22,6 +22,7 @@ const Container = styled.div`
     color: ${(props) => props.theme.colors.primary.blue};
     font-weight: bold;
     font-size: 1.1rem;
+    text-align: center;
   }
 `;
 
