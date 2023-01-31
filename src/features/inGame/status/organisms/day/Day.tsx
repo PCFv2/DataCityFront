@@ -59,7 +59,7 @@ const Day = (props: AttackProps) => {
   } = useGetUserAttacksQuery({
     gameId: game.gameId,
     // To get attacks of previous round
-    roundId: round.roundId - 1,
+    roundId: round.roundId,
     userId: user.userId,
   });
 
