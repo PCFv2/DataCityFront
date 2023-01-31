@@ -6,10 +6,17 @@ const Wall = styled.div<Wall>`
     props.type === "horizontale" ? `${props.width}%` : "10px"};
   height: ${(props) =>
     props.type === "verticale" ? `${props.height}%` : "10px"};
-  background-color: black;
+  background: rgb(9, 76, 54);
+  background: linear-gradient(
+    90deg,
+    rgba(9, 76, 54, 1) 0%,
+    rgba(9, 43, 31, 1) 100%
+  );
   position: absolute;
   top: ${(props) => props.position.y}px;
   left: ${(props) => props.position.x}px;
+  -webkit-box-shadow: 1px 1px 15px 1px #000000;
+  box-shadow: 1px 1px 15px 1px #000000;
 `;
 
 /* walls for maze */

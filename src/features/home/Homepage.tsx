@@ -7,6 +7,7 @@ import styled from "@emotion/styled";
 import { PrimaryButton } from "../../UI-KIT/components/Button";
 import background from "../../assets/img/homepage/background.webp";
 import { css } from "@emotion/react";
+import { useNavigate } from "react-router-dom";
 
 const HomePageStyle = styled.main`
   background: url(${background}) no-repeat center center fixed;
@@ -20,7 +21,6 @@ const Home = styled.div`
   row-gap: 3.5rem;
   margin: 0 20%;
   padding-bottom: 2.5%;
-  height: 100vh;
 `;
 
 const Description = styled.p`
@@ -29,6 +29,7 @@ const Description = styled.p`
   background-color: rgba(255, 255, 255, 0.85);
   border-radius: ${(props) => props.theme.radius.medium};
   padding: 2.5% 7.5%;
+  margin: 10% 0;
   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
 `;
 
@@ -42,6 +43,8 @@ const MainTitle = styled.h1`
 const ButtonLine = styled.div`
   display: flex;
   justify-content: space-evenly;
+  flex-wrap: wrap;
+  gap: 10px;
   margin-top: auto;
   padding: 0 10%;
 `;
@@ -49,14 +52,13 @@ const ButtonLine = styled.div`
 // Rules
 
 const Rules = styled.div`
+  position: relative;
   background-color: ${(props) => props.theme.colors.primary.blue};
-  //width: 100%;
   padding: 0.5rem 10% 3rem 10%;
   color: ${(props) => props.theme.colors.primary.white};
   margin-top: 2rem;
   display: flex;
   flex-direction: column;
-
   row-gap: 2rem;
 `;
 
@@ -127,11 +129,13 @@ const RulesLineTextText = styled.p`
 // Footer (qui est bien collé au bas de la page
 
 const Footer = styled.footer`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
   margin-top: 5rem;
   background-color: ${(props) => props.theme.colors.primary.blue};
-  display: flex;
-  column-gap: 3rem;
-  justify-content: space-between;
   padding: 1.1rem 10%;
   color: ${(props) => props.theme.colors.primary.lightBlue};
 `;
@@ -152,10 +156,7 @@ const FooterIcon = styled.span`
 
 const Contact = styled.a`
   display: flex;
-  align-items: center;
-  //justify-content: space-between;
-  column-gap: 1rem;
-  margin-left: auto;
+  gap: 10px;
   color: ${(props) => props.theme.colors.primary.lightBlue};
   text-decoration: none;
 
@@ -166,8 +167,17 @@ const Contact = styled.a`
 
 const Homepage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleClick = (): void => {
     dispatch(setDisplayComponent(DISPLAY_COMPONENT.joinComponent));
+  };
+
+  const handleClickml = () => {
+    navigate("/mentions-legales");
+  };
+
+  const handleClickcgu = () => {
+    navigate("/cgu");
   };
 
   return (
@@ -184,10 +194,10 @@ const Homepage = () => {
         <Description>
           {/* TODO Description du jeu */}
           Data City est un Serious Game qui a été créé pour vous sensibiliser à
-          la protection de vos données et à la cybersécurité. Le but du jeu et
-          qu’en fonction de vos choix, ainsi que la réussite ou non des mini
-          jeux au cours de la partie, vous devez éliminer les autres joueurs de
-          la partie en découvrant leurs adresses.
+          la protection de vos données et à la cybersécurité. Le but du jeu est
+          d'éliminer les autres joueurs de la partie en découvrant leurs
+          adresses. En fonction de vos choix et des mini jeux vous aurez plus ou
+          moins de pourcentage de perdre ou de gagner.
         </Description>
       </Home>
       <Rules>
@@ -268,8 +278,8 @@ const Homepage = () => {
       </Rules>
       <Footer>
         {/* TODO Mettre les liens */}
-        <Link href="#">Mentions Légales</Link>
-        <Link href="#">Conditions générales d'utilisation</Link>
+        <Link onClick={handleClickml}>Mentions Légales</Link>
+        <Link onClick={handleClickcgu}>Conditions générales d'utilisation</Link>
         <Contact href="mailto:marius.pistoresi@etu.univ-amu.fr, mattias.gervilliers@etu.univ-amu.fr, guillaume.kusiak@etu.univ-amu.fr, melanie.hugues@etu.univ-amu.fr">
           <FooterIcon className="material-icons">mail</FooterIcon>
           Contactez-nous : PCFv2

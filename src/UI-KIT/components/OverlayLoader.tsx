@@ -84,7 +84,7 @@ const OverlayLoader = (props: OverlayLoaderProps): JSX.Element => {
           <Dot></Dot>
           <Dot></Dot>
         </Dots>
-        <LoadingMessage>{props.message || "Chargement inconnu"}</LoadingMessage>
+        <LoadingMessage>{props.message || "Chargement..."}</LoadingMessage>
       </Overlay__content>
     </Overlay>
   );

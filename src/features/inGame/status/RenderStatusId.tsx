@@ -17,6 +17,41 @@ import { ConfigProfile } from "./organisms";
 import Attack from "./organisms/attack/Attack";
 import Day from "./organisms/day/Day";
 import Evening from "./organisms/evening/Evening";
+import styled from "@emotion/styled";
+import dayBackground from "src/assets/img/inGame/backgrounds/day.webp";
+import nightBackground from "src/assets/img/inGame/backgrounds/night.webp";
+
+const DayContainer = styled.div`
+  background: url(${dayBackground}) no-repeat center center fixed;
+  background-size: cover;
+  height: 100%;
+  padding: 1rem 10rem 0 10rem;
+  display: flex;
+  flex-direction: column;
+  row-gap: 2rem;
+`;
+
+const ConfigProfileContainer = styled.div`
+  background: url(${dayBackground}) no-repeat center center fixed;
+  background-size: cover;
+  padding: 1rem 10rem 1rem 10rem;
+  @media (max-width: 800px) {
+    padding: 0;
+  }
+`;
+
+const MainTitle = styled.h1`
+  color: ${(props) => props.theme.colors.primary.white};
+  font-family: ${(props) => props.theme.font.family.title};
+  font-size: ${(props) => props.theme.font.size.page_title};
+  margin: 0;
+`;
+
+const BackgroundNight = styled.div`
+  background: url(${nightBackground}) no-repeat center center fixed;
+  background-size: cover;
+  height: 100%;
+`;
 
 const RenderStatusId = () => {
   const navigate = useNavigate();
@@ -142,21 +177,22 @@ const RenderStatusId = () => {
   switch (round.statusId) {
     case 2:
       return (
-        <div>
+        <ConfigProfileContainer>
           <ConfigProfile handleFinishRound={handleClick} />
-        </div>
+        </ConfigProfileContainer>
       );
     case 3:
       return (
-        <div>
+        <ConfigProfileContainer>
           <ConfigProfile handleFinishRound={handleClick} />
-        </div>
+        </ConfigProfileContainer>
       );
     case 4:
       return (
-        <div>
+        <DayContainer>
+          <MainTitle>Data City</MainTitle>
           <Day handleFinishRound={handleClick} />
-        </div>
+        </DayContainer>
       );
     case 5:
       return (
@@ -169,9 +205,9 @@ const RenderStatusId = () => {
       );
     case 6:
       return (
-        <div>
+        <BackgroundNight>
           <Attack handleFinishRound={handleClick} />
-        </div>
+        </BackgroundNight>
       );
     default:
       return <></>;
