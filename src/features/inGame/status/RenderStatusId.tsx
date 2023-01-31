@@ -25,10 +25,12 @@ const DayContainer = styled.div`
   background: url(${dayBackground}) no-repeat center center fixed;
   background-size: cover;
   height: 100%;
-  padding: 1rem 10rem 0 10rem;
   display: flex;
   flex-direction: column;
   row-gap: 2rem;
+  @media (max-width: 800px) {
+    padding: 0;
+  }
 `;
 
 const ConfigProfileContainer = styled.div`
@@ -45,6 +47,19 @@ const MainTitle = styled.h1`
   font-family: ${(props) => props.theme.font.family.title};
   font-size: ${(props) => props.theme.font.size.page_title};
   margin: 0;
+  padding: 30px 30px;
+`;
+
+const EveningContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  background: url(${nightBackground}) no-repeat center center fixed;
+  background-size: cover;
+  height: 100%;
+  @media (max-width: 800px) {
+    height: auto;
+  }
 `;
 
 const BackgroundNight = styled.div`
@@ -178,12 +193,14 @@ const RenderStatusId = () => {
     case 2:
       return (
         <ConfigProfileContainer>
+          <MainTitle>Data City</MainTitle>
           <ConfigProfile handleFinishRound={handleClick} />
         </ConfigProfileContainer>
       );
     case 3:
       return (
         <ConfigProfileContainer>
+          <MainTitle>Data City</MainTitle>
           <ConfigProfile handleFinishRound={handleClick} />
         </ConfigProfileContainer>
       );
@@ -196,12 +213,13 @@ const RenderStatusId = () => {
       );
     case 5:
       return (
-        <div>
+        <EveningContainer>
+          <MainTitle>Data City</MainTitle>
           <Evening
             handleFinishRound={handleClick}
             setHasFinishedGame={setHasFinishedGame}
           />
-        </div>
+        </EveningContainer>
       );
     case 6:
       return (

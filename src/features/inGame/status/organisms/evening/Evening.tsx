@@ -14,18 +14,17 @@ import styled from "@emotion/styled";
 import { PrimaryButton } from "src/UI-KIT/components/Button";
 import { useNavigate } from "react-router-dom";
 import { requestFinishGame } from "src/app/requestServer";
-import { SOCKET_CODE } from "src/constants";
 import { botSetFinished } from "src/features/bot/bot";
 
 const Container = styled.div`
-  background: url(${background}) no-repeat center center fixed;
-  background-size: cover;
-  height: 100vh;
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 50px;
+  & button {
+    margin: 30px 0;
+  }
 `;
 
 const Content = styled.div`
@@ -42,6 +41,7 @@ const Profil = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex-wrap: wrap;
 `;
 
 const Title = styled.h2`
@@ -65,7 +65,13 @@ const Status = styled.div`
 
 const Opponent = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
   gap: 30px;
+  @media (max-width: 800px) {
+    flex-direction: column;
+  }
 `;
 
 const Evening = (

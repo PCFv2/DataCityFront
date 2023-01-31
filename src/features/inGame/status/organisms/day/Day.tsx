@@ -7,6 +7,36 @@ import Question from "./question/Question";
 import { QUESTIONS } from "../../../../../constants/question";
 import { useNavigate } from "react-router-dom";
 import { botSetFinished } from "src/features/bot/bot";
+import styled from "@emotion/styled";
+import background from "src/assets/img/inGame/backgrounds/day.webp";
+import { PrimaryButton } from "../../../../../UI-KIT/components/Button";
+
+const QuestionContainer = styled.div`
+  background-color: ${(props) => `${props.theme.colors.primary.white}E6`};
+  border-radius: ${(props) => props.theme.radius.big};
+  padding: 1rem 3rem 2rem 3rem;
+`;
+
+const ResponseContainer = styled.div`
+  background-color: ${(props) => `${props.theme.colors.primary.white}E6`};
+  border-radius: ${(props) => props.theme.radius.big};
+  display: flex;
+  width: 20em;
+  position: relative;
+  margin: 0 auto;
+`;
+
+const Response = styled.div`
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  padding: 1.5em 3em;
+`;
+
+const ResponseText = styled.p`
+  text-align: center;
+`;
 
 const Day = (props: AttackProps) => {
   const navigate = useNavigate();
@@ -80,7 +110,7 @@ const Day = (props: AttackProps) => {
         question.userId = userAttacks[questionNb].userId;
 
         return (
-          <div>
+          <QuestionContainer>
             <Question
               question={question}
               choices={choices}
@@ -88,17 +118,22 @@ const Day = (props: AttackProps) => {
               questionNb={questionNb}
               setQuestionNb={setQuestionNb}
             />
-          </div>
+          </QuestionContainer>
         );
       }
     }
   }
 
   return (
-    <div>
-      <p>Votre réponse a été validé</p>
-      <button onClick={handleClick}>Suivant</button>
-    </div>
+    <ResponseContainer>
+      <Response>
+        <ResponseText>Votre réponse a été validé</ResponseText>
+        <PrimaryButton
+          onClick={handleClick}
+          content={"Suivant"}
+        ></PrimaryButton>
+      </Response>
+    </ResponseContainer>
   );
 };
 

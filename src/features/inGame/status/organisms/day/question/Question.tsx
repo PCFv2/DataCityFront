@@ -1,5 +1,62 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { useForm } from "react-hook-form";
+import styled from "@emotion/styled";
+
+const QuestionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+`;
+
+const Title = styled.h2`
+  font-weight: bold;
+  font-size: 20px;
+  text-align: center;
+`;
+
+const Button = styled.input`
+  padding: 1em 0;
+  font-family: ${(props) => props.theme.font.family.text}, "Roboto", "Helvetica",
+    sans-serif;
+  font-weight: bold;
+  background-color: ${(props) => props.theme.colors.primary.blue};
+  border-radius: ${(props) => props.theme.radius.small};
+  color: ${(props) => props.theme.colors.primary.white};
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, transform 0.2s,
+    color 0.2s ease-in-out;
+
+  &:hover {
+    transform: scale(1.1);
+    background-color: ${(props) => props.theme.colors.primary.blue_hover};
+  }
+
+  &:active {
+    background-color: ${(props) => props.theme.colors.primary.blue_pressed};
+  }
+`;
+
+const Choices = styled.form`
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+`;
+
+const Choice = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  width: 25%;
+  margin-top: auto;
+`;
+
+const ChoiceText = styled.label`
+  text-align: center;
+  margin-bottom: 1rem;
+`;
+
 const Question = (props: {
   question: Question;
   choices?: Day[];
@@ -39,19 +96,35 @@ const Question = (props: {
   };
 
   return (
-    <div>
-      <h2>{props.question.question}</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <label>{props.question.choices.choice1.value}</label>
-        <input onClick={() => (state = 0)} type={"submit"} value={"Choix 1"} />
-
-        <label>{props.question.choices.choice2.value}</label>
-        <input onClick={() => (state = 1)} type={"submit"} value={"Choix 2"} />
-
-        <label>{props.question.choices.choice3.value}</label>
-        <input onClick={() => (state = 2)} type={"submit"} value={"Choix 3"} />
-      </form>
-    </div>
+    <QuestionContainer>
+      <Title>{props.question.question}</Title>
+      <Choices onSubmit={handleSubmit(onSubmit)}>
+        <Choice>
+          <ChoiceText>{props.question.choices.choice1.value}</ChoiceText>
+          <Button
+            onClick={() => (state = 0)}
+            type={"submit"}
+            value={"Choix 1"}
+          />
+        </Choice>
+        <Choice>
+          <ChoiceText>{props.question.choices.choice2.value}</ChoiceText>
+          <Button
+            onClick={() => (state = 1)}
+            type={"submit"}
+            value={"Choix 2"}
+          />
+        </Choice>
+        <Choice>
+          <ChoiceText>{props.question.choices.choice3.value}</ChoiceText>
+          <Button
+            onClick={() => (state = 2)}
+            type={"submit"}
+            value={"Choix 3"}
+          />
+        </Choice>
+      </Choices>
+    </QuestionContainer>
   );
 };
 
