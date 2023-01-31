@@ -191,8 +191,8 @@ const Maze = (props: AttackProps) => {
   const handleFinish = (): void => {
     const resultAttack: Night = {
       night: {
-        attackId: 2, //Téléchargement furtif
-        effectiveness: hasWon ? 100 : 0,
+        attackId: 2, //hameconnage
+        effectiveness: hasWon ? Math.floor(Math.random() * (100 - 80 + 1) + 80) : Math.floor(Math.random() * (20 + 1)), 
       },
     };
     props.handleFinishRound!(round.statusId, undefined, resultAttack);
