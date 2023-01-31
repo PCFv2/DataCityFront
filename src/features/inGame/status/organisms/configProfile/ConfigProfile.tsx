@@ -234,11 +234,20 @@ const ConfigProfile = (props: ConfigProfileProps) => {
           {Object.values(allConfiguration!).map((elm: Configuration, index) => (
             <TableLine key={elm.configurationId}>
               <TableElementName>{elm.name}</TableElementName>
-              <TableElement isDisabled={playerSpentPoints[index].point + playerPoints < 0}>
+              <TableElement
+                isDisabled={
+                  playerSpentPoints[index] &&
+                  playerSpentPoints[index].point! + playerPoints < 0
+                }
+              >
                 <input
                   id={elm.value1}
                   value={"value1"}
-                  disabled={playerSpentPoints[index].point + playerPoints < 0 && true}
+                  disabled={
+                    playerSpentPoints[index] &&
+                    playerSpentPoints[index].point + playerPoints < 0 &&
+                    true
+                  }
                   type="radio"
                   onClick={() => handleClick(index, elm.configurationId, 0)}
                   {...register(`configuration.${index}.value`)}
@@ -247,11 +256,20 @@ const ConfigProfile = (props: ConfigProfileProps) => {
                   <RenderIcon name={elm.value1}></RenderIcon>
                 </label>
               </TableElement>
-              <TableElement isDisabled={ playerSpentPoints[index].point + playerPoints < 1}>
+              <TableElement
+                isDisabled={
+                  playerSpentPoints[index] &&
+                  playerSpentPoints[index].point! + playerPoints < 1
+                }
+              >
                 <input
                   id={elm.value2}
                   value={"value2"}
-                  disabled={ playerSpentPoints[index].point + playerPoints < 1 && true}
+                  disabled={
+                    playerSpentPoints[index] &&
+                    playerSpentPoints[index].point + playerPoints < 1 &&
+                    true
+                  }
                   type="radio"
                   onClick={() => handleClick(index, elm.configurationId, 1)}
                   {...register(`configuration.${index}.value`)}
@@ -260,11 +278,20 @@ const ConfigProfile = (props: ConfigProfileProps) => {
                   <RenderIcon name={elm.value2}></RenderIcon>
                 </label>
               </TableElement>
-              <TableElement isDisabled={ playerSpentPoints[index].point + playerPoints < 2}>
+              <TableElement
+                isDisabled={
+                  playerSpentPoints[index] &&
+                  playerSpentPoints[index].point! + playerPoints < 2
+                }
+              >
                 <input
                   id={elm.value3}
                   value={"value3"}
-                  disabled={ playerSpentPoints[index].point + playerPoints < 2 && true}
+                  disabled={
+                    playerSpentPoints[index] &&
+                    playerSpentPoints[index].point + playerPoints < 2 &&
+                    true
+                  }
                   type="radio"
                   onClick={() => handleClick(index, elm.configurationId, 2)}
                   {...register(`configuration.${index}.value`)}
@@ -275,12 +302,19 @@ const ConfigProfile = (props: ConfigProfileProps) => {
               </TableElement>
               {elm.value4 && (
                 <>
-                  <TableElement isDisabled={playerSpentPoints[index].point + playerPoints < 3}>
+                  <TableElement
+                    isDisabled={
+                      playerSpentPoints[index] &&
+                      playerSpentPoints[index].point + playerPoints < 3
+                    }
+                  >
                     <input
                       id={elm.value4}
                       value={"value4"}
                       disabled={
-                        playerSpentPoints[index].point + playerPoints < 3 && true
+                        playerSpentPoints[index] &&
+                        playerSpentPoints[index].point + playerPoints < 3 &&
+                        true
                       }
                       type="radio"
                       onClick={() => handleClick(index, elm.configurationId, 3)}
