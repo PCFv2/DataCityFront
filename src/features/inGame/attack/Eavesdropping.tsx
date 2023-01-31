@@ -31,6 +31,7 @@ const Content = styled.span<{
   & span {
     color: ${(props) => (props.isWrong ? "red" : "green")};
     font-size: 50px;
+    user-select: none;
   }
 `;
 
@@ -59,8 +60,8 @@ const SubContainer = styled.div`
 
 const AttackResponse = styled.div`
   padding: 1em;
-  border-radius: 5px;
-  background-color: ${(props) => `${props.theme.colors.primary.white}A6`};
+  background-color: ${(props) => `${props.theme.colors.primary.white}E6`};
+  border-radius: ${(props) => props.theme.radius.big};
   display: flex;
   flex-direction: column;
   gap: 20px;

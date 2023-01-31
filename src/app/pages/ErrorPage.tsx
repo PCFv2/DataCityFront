@@ -1,5 +1,7 @@
+import styled from "@emotion/styled";
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { PrimaryButton } from "src/UI-KIT/components/Button";
 
 /* constant type */
 const TYPE_ERROR = {
@@ -7,12 +9,30 @@ const TYPE_ERROR = {
   api: ":api",
 };
 
+const Container = styled.div`
+  display: flex;
+  margin: 10% 0;
+  flex-direction: column;
+  align-items: center;
+  & span {
+    font-size: 80px;
+    color: ${(props) => props.theme.colors.primary.red};
+  }
+  & p {
+    color: ${(props) => props.theme.colors.primary.blue};
+    font-weight: bold;
+    font-size: 1.1rem;
+    text-align: center;
+  }
+`;
+
 const ErrorPage = () => {
   const navigate = useNavigate();
   const { type } = useParams();
 
   return (
-    <div>
+    <Container>
+      <span className="material-icons">error</span>
       <p>
         {type === TYPE_ERROR.server &&
           "Le serveur est indisponible, veuillez contacter le support"}
@@ -21,8 +41,11 @@ const ErrorPage = () => {
         {type === TYPE_ERROR.api &&
           "L'API est indisponible, veuillez contacter le support"}
       </p>
-      <button onClick={() => navigate("/")}>Retour à l'accueil</button>
-    </div>
+      <PrimaryButton
+        onClick={() => navigate("/")}
+        content={"Retour à l'accueil"}
+      />
+    </Container>
   );
 };
 

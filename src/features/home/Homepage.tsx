@@ -21,7 +21,6 @@ const Home = styled.div`
   row-gap: 3.5rem;
   margin: 0 20%;
   padding-bottom: 2.5%;
-  height: 100vh;
 `;
 
 const Description = styled.p`
@@ -30,6 +29,7 @@ const Description = styled.p`
   background-color: rgba(255, 255, 255, 0.85);
   border-radius: ${(props) => props.theme.radius.medium};
   padding: 2.5% 7.5%;
+  margin: 10% 0;
   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
 `;
 
@@ -43,21 +43,22 @@ const MainTitle = styled.h1`
 const ButtonLine = styled.div`
   display: flex;
   justify-content: space-evenly;
+  flex-wrap: wrap;
+  gap: 10px;
   margin-top: auto;
-  padding: 0 10%;
+  padding: 10% 10% 5% 10%;
 `;
 
 // Rules
 
 const Rules = styled.div`
+  position: relative;
   background-color: ${(props) => props.theme.colors.primary.blue};
-  //width: 100%;
   padding: 0.5rem 10% 3rem 10%;
   color: ${(props) => props.theme.colors.primary.white};
   margin-top: 2rem;
   display: flex;
   flex-direction: column;
-
   row-gap: 2rem;
 `;
 
@@ -128,11 +129,13 @@ const RulesLineTextText = styled.p`
 // Footer (qui est bien collé au bas de la page
 
 const Footer = styled.footer`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
   margin-top: 5rem;
   background-color: ${(props) => props.theme.colors.primary.blue};
-  display: flex;
-  column-gap: 3rem;
-  justify-content: space-between;
   padding: 1.1rem 10%;
   color: ${(props) => props.theme.colors.primary.lightBlue};
 `;
@@ -153,10 +156,7 @@ const FooterIcon = styled.span`
 
 const Contact = styled.a`
   display: flex;
-  align-items: center;
-  //justify-content: space-between;
-  column-gap: 1rem;
-  margin-left: auto;
+  gap: 10px;
   color: ${(props) => props.theme.colors.primary.lightBlue};
   text-decoration: none;
 
@@ -172,13 +172,13 @@ const Homepage = () => {
     dispatch(setDisplayComponent(DISPLAY_COMPONENT.joinComponent));
   };
 
-const handleClickml = () => {
-  navigate("/mentions-legales");
-}
+  const handleClickml = () => {
+    navigate("/mentions-legales");
+  };
 
-const handleClickcgu = () => {
-  navigate("/cgu");
-}
+  const handleClickcgu = () => {
+    navigate("/cgu");
+  };
 
   return (
     <HomePageStyle>

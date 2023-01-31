@@ -30,6 +30,118 @@ import { useNavigate } from "react-router-dom";
 import { loadBot, botSetFinished } from "src/features/bot/bot";
 import { setBotIsActive } from "src/app/redux/botSlice";
 
+const HostStyle = styled.main`
+  background: url(${background}) no-repeat center center fixed;
+  background-size: cover;
+  padding: 0 10%;
+  height: 100%;
+  @media (max-width: 1100px) {
+    height: auto;
+  }
+`;
+
+const MainTitle = styled.h1`
+  color: ${(props) => props.theme.colors.primary.white};
+  font-family: ${(props) => props.theme.font.family.title};
+  font-size: ${(props) => props.theme.font.size.page_title};
+  margin: 0;
+  padding: 30px 0;
+`;
+
+const MainWindow = styled.div`
+  display: flex;
+  height: 80%;
+  align-items: center;
+  @media (max-width: 1100px) {
+    flex-wrap: wrap;
+    padding: 10% 0;
+  }
+`;
+
+// LeftPanel
+
+const LeftPanel = styled.div`
+  background-color: ${(props) => `${props.theme.colors.primary.white}E6`};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 90%;
+  width: 20%;
+  border-radius: ${(props) => props.theme.radius.small};
+  padding: 0.5rem 1.5rem;
+  @media (max-width: 1100px) {
+    height: auto;
+    width: 100%;
+  }
+`;
+
+const LeftPanelTitle = styled.h2`
+  font-weight: bold;
+  border-bottom: solid 2px ${(props) => props.theme.colors.primary.blue};
+`;
+
+const Players = styled.div`
+  margin-bottom: auto;
+  text-align: center;
+`;
+
+// RightPanel
+
+const RightPanel = styled.div`
+  background-color: ${(props) => `${props.theme.colors.primary.blue}E6`};
+  color: ${(props) => props.theme.colors.primary.white};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 0 ${(props) => props.theme.radius.medium}
+    ${(props) => props.theme.radius.medium} 0;
+  height: 65%;
+  width: 80%;
+  @media (max-width: 1100px) {
+    height: auto;
+    width: 100%;
+    border-radius: ${(props) => props.theme.radius.medium};
+  }
+  padding: 30px 0;
+`;
+
+const RightPanelContainer = styled.div`
+  width: 70%;
+`;
+
+const RightPanelTitle = styled.h2`
+  text-align: center;
+  border-bottom: solid 2px ${(props) => props.theme.colors.primary.white};
+`;
+
+const ConfForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  row-gap: 2.5rem;
+`;
+
+const InputLine = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const ButtonLine = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+
+  button {
+    height: 100%;
+`;
+
+const Input = styled.input`
+  background-color: ${(props) => props.theme.colors.primary.grey};
+  border-radius: ${(props) => props.theme.radius.small};
+  border: solid 2px ${(props) => props.theme.colors.primary.lightBlue};
+  padding: 0.3rem 0.7rem;
+`;
+
 const Host = (): JSX.Element => {
   const navigate = useNavigate();
 
@@ -168,100 +280,6 @@ const Host = (): JSX.Element => {
     isLoadingLastround
   )
     return <OverlayLoader message={MESSAGE_LOADER.partyLoading} />;
-
-  const HostStyle = styled.main`
-    background: url(${background}) no-repeat center center fixed;
-    background-size: cover;
-    height: 97.8%;
-    padding: 1rem 10rem 0 10rem;
-  `;
-
-  const MainTitle = styled.h1`
-    color: ${(props) => props.theme.colors.primary.white};
-    font-family: ${(props) => props.theme.font.family.title};
-    font-size: ${(props) => props.theme.font.size.page_title};
-    margin: 0;
-  `;
-
-  const MainWindow = styled.div`
-    display: flex;
-    height: 90%;
-    align-items: center;
-    justify-content: center;
-  `;
-
-  // LeftPanel
-
-  const LeftPanel = styled.div`
-    background-color: ${(props) => `${props.theme.colors.primary.white}E6`};
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 90%;
-    border-radius: ${(props) => props.theme.radius.small};
-    padding: 0.5rem 1.5rem;
-  `;
-
-  const LeftPanelTitle = styled.h2`
-    font-weight: bold;
-    border-bottom: solid 2px ${(props) => props.theme.colors.primary.blue};
-  `;
-
-  const Players = styled.div`
-    margin-bottom: auto;
-    text-align: center;
-  `;
-
-  // RightPanel
-
-  const RightPanel = styled.div`
-    background-color: ${(props) => `${props.theme.colors.primary.blue}E6`};
-    padding: 1rem 3rem 2rem 3rem;
-    color: ${(props) => props.theme.colors.primary.white};
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-radius: 0 ${(props) => props.theme.radius.medium}
-      ${(props) => props.theme.radius.medium} 0;
-    height: 65%;
-    width: 65%;
-  `;
-
-  const RightPanelContainer = styled.div`
-    width: 70%;
-  `;
-
-  const RightPanelTitle = styled.h2`
-    text-align: center;
-    border-bottom: solid 2px ${(props) => props.theme.colors.primary.white};
-  `;
-
-  const ConfForm = styled.form`
-    display: flex;
-    flex-direction: column;
-    row-gap: 2.5rem;
-  `;
-
-  const InputLine = styled.div`
-    display: flex;
-    flex-direction: column;
-  `;
-
-  const ButtonLine = styled.div`
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      button {
-        height: 100%;
-    `;
-
-  const Input = styled.input`
-    background-color: ${(props) => props.theme.colors.primary.grey};
-    border-radius: ${(props) => props.theme.radius.small};
-    border: solid 2px ${(props) => props.theme.colors.primary.lightBlue};
-    padding: 0.3rem 0.7rem;
-  `;
 
   return (
     <HostStyle>
