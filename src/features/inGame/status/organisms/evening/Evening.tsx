@@ -129,7 +129,7 @@ const Evening = (
   return (
     <Container>
       <Content>
-        <Title>Résumer de l'avancée</Title>
+        <Title>Résumé de l'avancée</Title>
         <OppenentStatus>
           {Object.entries(oppenent!).length ? (
             Object.entries(oppenent!).map((elm) => (

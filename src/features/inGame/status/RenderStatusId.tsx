@@ -31,6 +31,7 @@ const DayContainer = styled.div`
   @media (max-width: 800px) {
     padding: 0;
   }
+  padding: 0 10%;
 `;
 
 const ConfigProfileContainer = styled.div`
@@ -60,6 +61,7 @@ const EveningContainer = styled.div`
   @media (max-width: 800px) {
     height: auto;
   }
+  padding: 0 10%;
 `;
 
 const BackgroundNight = styled.div`

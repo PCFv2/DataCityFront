@@ -143,6 +143,7 @@ const Footer = styled.footer`
 const Link = styled.a`
   color: ${(props) => props.theme.colors.primary.lightBlue};
   text-decoration: none;
+  cursor: pointer;
 
   &:hover {
     text-decoration: underline;
@@ -192,9 +193,10 @@ const Homepage = () => {
           <GameCreate /> {/* Button create game */}
         </ButtonLine>
         <Description>
-          {/* TODO Description du jeu */}
-          Data City est un Serious Game qui a été créé pour vous sensibiliser à
-          la protection de vos données et à la cybersécurité. Le but du jeu est d'éliminer les autres joueurs de la partie en découvrant leurs adresses. En fonction de vos choix et des mini jeux vous aurez plus ou moins de pourcentage de perdre ou de gagner.
+          Data City est un serious game qui a été créé pour vous sensibiliser à l'importance de la confidentialité
+          de vos données.<br />
+          Le but du jeu est d'être le dernier joueur en vie. Vous aurez à réussir des mini-jeux et à répondre correctement
+          à des questions.
         </Description>
       </Home>
       <Rules>
@@ -212,23 +214,22 @@ const Homepage = () => {
             <RulesLineTextTitle>Au début du jeu</RulesLineTextTitle>
             <RulesLineTextText>
               Vous devez configurer votre profil en attribuant vos points dans
-              les options de sécurité par catégorie comme Physique, Social et
+              les options de sécurité par catégorie : Physique, Social et
               Internet. Il faut être stratégique pour choisir soigneusement vos
-              options. Ainsi à chaque fois que vous éliminez un joueur en
-              atteignant 100% du hacking vous gagnez des points qui vous
+              options.<br />
+              A chaque fois que vous mettez 100% dans une catégorie à un joueur vous gagnez 5 points qui vous
               permettrons d’améliorer votre sécurité.
             </RulesLineTextText>
           </RulesLineText>
         </RulesLine>
         <RulesLineReverse>
           <RulesLineTextReverse>
-            <RulesLineTextTitle>Pendant la journée</RulesLineTextTitle>
+            <RulesLineTextTitle>Pendant la journée et la soirée</RulesLineTextTitle>
             <RulesLineTextText>
-              Vous avez des activités à risques. C’est-à-dire, vous avez des
-              évènements et des choix à faire et en fonction de vos choix vous
-              prenez des risques de vous faire hacker ou non. A la fin de la
-              journée, pendant la soirée vous verrez le résultat de votre
-              journée et votre taux de réussite ou non.
+              Vous aurez à répondre à des questions orienté sur la confidentialité des données.
+              En fonction de vos choix vous prenez des risques de vous faire hacker ou non.<br />
+              Pendant la soirée vous verrez le résultat de vos attaques pendant la journée et votre avancée sur les
+              autres joueurs.
             </RulesLineTextText>
           </RulesLineTextReverse>
           <RulesLineIcon className="material-icons">light_mode</RulesLineIcon>
@@ -236,7 +237,7 @@ const Homepage = () => {
         <RulesLine>
           <RulesLineIcon className="material-icons">dark_mode</RulesLineIcon>
           <RulesLineText>
-            <RulesLineTextTitle>Pendant la nuit</RulesLineTextTitle>
+            <RulesLineTextTitle>Pendant la nuit et la matinée</RulesLineTextTitle>
             <RulesLineTextText>
               Les activités de hacking commence pour tous les joueurs. C’est
               sous forme de mini jeux, si vous réussissez les mini-jeux proposés

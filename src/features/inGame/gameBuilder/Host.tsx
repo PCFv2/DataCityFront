@@ -333,7 +333,7 @@ const Host = (): JSX.Element => {
                 )}
 
                 {!bot.botIsActive && userInGame?.length === 1 && (
-                  <SecondaryButton
+                  <Primary2Button
                     onClick={handleLoadBot}
                     content={"Lancer la partie avec un bot"}
                   />

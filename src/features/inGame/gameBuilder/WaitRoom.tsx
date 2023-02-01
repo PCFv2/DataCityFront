@@ -1,17 +1,17 @@
-import React, {useEffect} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {useNavigate} from "react-router-dom";
-import {finishRound} from "src/app/finishedRound/finishRound";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { finishRound } from "src/app/finishedRound/finishRound";
 import {
   setDisplayComponent,
   setIsLoading,
 } from "src/app/redux/displayComponentSlice";
-import {setGameData} from "src/app/redux/gameSlice";
-import {setNbPoints} from "src/app/redux/userSlice";
-import {requestFinishRound} from "src/app/requestServer";
-import {RootState} from "src/app/store";
-import {DISPLAY_COMPONENT, SOCKET_CODE} from "src/constants";
-import {MESSAGE_LOADER} from "src/constants/messageLoader";
+import { setGameData } from "src/app/redux/gameSlice";
+import { setNbPoints } from "src/app/redux/userSlice";
+import { requestFinishRound } from "src/app/requestServer";
+import { RootState } from "src/app/store";
+import { DISPLAY_COMPONENT, SOCKET_CODE } from "src/constants";
+import { MESSAGE_LOADER } from "src/constants/messageLoader";
 import {
   gameApi,
   useGetAllUsersByGameIdQuery,
@@ -21,12 +21,19 @@ import {
 import OverlayLoader from "src/UI-KIT/components/OverlayLoader";
 import styled from "@emotion/styled";
 import background from "../../../assets/img/beforeGame/background.webp";
-import {Primary2Button, SecondaryButton} from "../../../UI-KIT/components/Button";
-
+import {
+  Primary2Button,
+  SecondaryButton,
+} from "../../../UI-KIT/components/Button";
 
 const HostStyle = styled.main`
   background: url(${background}) no-repeat center center fixed;
   background-size: cover;
+  height: 100%;
+  padding: 0 10%;
+  @media (max-width: 1100px) {
+    height: auto;
+  }
 `;
 
 const MainTitle = styled.h1`
@@ -34,13 +41,17 @@ const MainTitle = styled.h1`
   font-family: ${(props) => props.theme.font.family.title};
   font-size: ${(props) => props.theme.font.size.page_title};
   margin: 0;
+  padding: 30px 0;
 `;
 
 const MainWindow = styled.div`
   display: flex;
-  height: 90%;
+  height: 80%;
   align-items: center;
-  justify-content: center;
+  @media (max-width: 1100px) {
+    flex-wrap: wrap;
+    padding: 10% 0;
+  }
 `;
 
 // LeftPanel
@@ -51,8 +62,14 @@ const LeftPanel = styled.div`
   flex-direction: column;
   align-items: center;
   height: 90%;
+  width: 20%;
+  @media (max-width: 1100px) {
+    height: auto;
+    width: 100%;
+  }
   border-radius: ${(props) => props.theme.radius.small};
   padding: 0.5rem 1.5rem;
+  text-align: center;
 `;
 
 const LeftPanelTitle = styled.h2`
@@ -69,14 +86,18 @@ const Players = styled.div`
 
 const RightPanel = styled.div`
   background-color: ${(props) => `${props.theme.colors.primary.blue}E6`};
-  padding: 1rem 3rem 2rem 3rem;
   color: ${(props) => props.theme.colors.primary.white};
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-radius: 0 ${(props) => props.theme.radius.medium} ${(props) => props.theme.radius.medium} 0;
+  border-radius: 0 ${(props) => props.theme.radius.medium}
+    ${(props) => props.theme.radius.medium} 0;
   height: 65%;
-  width: 65%;
+  width: 80%;
+  @media (max-width: 1100px) {
+    height: auto;
+    width: 100%;
+  }
 `;
 
 const RightPanelContainer = styled.div`
@@ -146,10 +167,10 @@ const WaitRoom = (): JSX.Element => {
     isError: gameInfosIsError,
   } = useGetGameByIdQuery(game.gameId);
 
-  const [setFinished, {isLoading: setFinishedIsLoading}] =
+  const [setFinished, { isLoading: setFinishedIsLoading }] =
     useSetFinishedMutation();
 
-  const [lastround, {isLoading: isLoadingLastround}] =
+  const [lastround, { isLoading: isLoadingLastround }] =
     gameApi.endpoints.getLastround.useLazyQuery();
 
   /* manage error */
@@ -200,7 +221,7 @@ const WaitRoom = (): JSX.Element => {
   };
 
   if (userLoading || gameLoading || isLoadingLastround || setFinishedIsLoading)
-    return <OverlayLoader message={MESSAGE_LOADER.partyLoading}/>;
+    return <OverlayLoader message={MESSAGE_LOADER.partyLoading} />;
 
   return (
     <HostStyle>
@@ -216,24 +237,31 @@ const WaitRoom = (): JSX.Element => {
         </LeftPanel>
         <RightPanel>
           <RightPanelContainer>
-            <RightPanelTitle>
-              Patie {game.gameId}
-            </RightPanelTitle>
+            <RightPanelTitle>Patie {game.gameId}</RightPanelTitle>
             <ConfForm>
               <InputLine>
                 <label>Nombre de joueurs maximum</label>
-                <Input placeholder={gameInfos?.maxPlayers.toString()} disabled/>
+                <Input
+                  placeholder={gameInfos?.maxPlayers.toString()}
+                  disabled
+                />
               </InputLine>
               <InputLine>
                 <label>Nombre de points de départ</label>
-                <Input placeholder={gameInfos?.startNbPoints.toString()} disabled/>
+                <Input
+                  placeholder={gameInfos?.startNbPoints.toString()}
+                  disabled
+                />
               </InputLine>
               <InputLine>
                 <label>Difficultée de la partie (0 à 100)</label>
-                <Input placeholder={gameInfos?.difficulty.toString()} disabled/>
+                <Input
+                  placeholder={gameInfos?.difficulty.toString()}
+                  disabled
+                />
               </InputLine>
               <ButtonLine>
-                <SecondaryButton content={"Prêt"} onClick={handleReady}/>
+                <SecondaryButton content={"Prêt"} onClick={handleReady} />
               </ButtonLine>
             </ConfForm>
           </RightPanelContainer>
