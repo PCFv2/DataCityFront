@@ -1,7 +1,9 @@
 import styled from "@emotion/styled";
 import React from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { PrimaryButton } from "src/UI-KIT/components/Button";
+import { setBotIsActive } from "../redux/botSlice";
 
 /* constant type */
 const TYPE_ERROR = {
@@ -27,6 +29,7 @@ const Container = styled.div`
 `;
 
 const ErrorPage = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { type } = useParams();
 
@@ -42,7 +45,10 @@ const ErrorPage = () => {
           "L'API est indisponible, veuillez contacter le support"}
       </p>
       <PrimaryButton
-        onClick={() => navigate("/")}
+        onClick={() => {
+          navigate("/");
+          dispatch(setBotIsActive(false));
+        }}
         content={"Retour à l'accueil"}
       />
     </Container>
