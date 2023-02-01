@@ -2,7 +2,7 @@ import React from "react";
 
 const VirtuelCommunication = () => {
   return (
-    <div>
+    <div style={{ padding: "0 30%", textAlign: "justify" }}>
       <p>
         Les réseaux sociaux sont des outils de communication et d’information
         puissants et facilement accessibles. Aujourd’hui installés dans les

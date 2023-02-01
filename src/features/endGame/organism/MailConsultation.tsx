@@ -2,7 +2,7 @@ import React from "react";
 
 const MailConsultation = () => {
   return (
-    <div>
+    <div style={{ padding: "0 30%", textAlign: "justify" }}>
       <p>
         Certaines escroqueries par email peuvent être très convaincantes, avec
         des logos de marque et un langage officiel. N'oubliez pas de prendre le
