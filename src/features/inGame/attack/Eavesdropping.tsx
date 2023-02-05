@@ -111,7 +111,7 @@ const EavesDropping = (props: AttackProps) => {
     const resultAttack: Night = {
       night: {
         attackId: 3, //hameconnage
-        effectiveness: hasWon ? 100 : 0,
+        effectiveness: hasWon ? Math.floor(Math.random() * (100 - 80 + 1) + 80) : Math.floor(Math.random() * (20 + 1)), 
       },
     };
     props.handleFinishRound!(round.statusId, undefined, resultAttack);
